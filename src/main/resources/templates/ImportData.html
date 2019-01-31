@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:c="http://java.sun.com/xml/ns/javaee">
+<head>
+    <!-- Required meta tags -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+    <title>Import Data Files</title>
+    <style>
+        /* a.button {
+             -webkit-appearance: button;
+             -moz-appearance: button;
+             appearance: button;
+
+             text-decoration: none;
+             color: initial;
+         }*/
+        /*.btn-dark{
+            width: 250px;
+            height: 60px;
+        }*/
+        .container{
+            padding: 20px;
+        }
+
+        /*input{
+            width: 200px;
+            height: 50px;
+            border-radius: 5px;
+            margin: 0 auto;
+        }*/
+        table{
+            height: 100px;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+            table-layout: fixed;
+            font-size: 5px;
+        }
+        table,tr,th,td{
+
+            padding:20px;
+            color:white;
+            border:1px solid #080808;
+            border-collapse: collapse;
+            font-size: 15px;
+            font-family: Arial;
+            /*background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
+            background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%); */
+        }
+        td:hover{
+            background:grey;
+        }
+    </style>
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+<body>
+<!-- <div class= "container" id="main-container"> -->
+<div class="wrapper" id="body-wrapper">
+
+    <p>Upload Doctor Data Excel File - Note: Only .xls, .xlsx, and .csv files accepted.
+        <br>Expected format: Names in Column 1 and Emails in Column 2</p>
+    <c:url value="/import-Data/doctors" var="import-Data/doctors" />
+    <form method="post" enctype="multipart/form-data"
+          action="/import-Data/doctors/${uploadFileUrl}">
+        <input type="file" name="file" accept=".xls,.xlsx, .csv" /> <input
+            type="submit" value="Upload file" />
+        <p th:text="${docImportMsg}"></p>
+    </form>
+
+    <p>Upload Student Data Excel File - Note: Only .xls, .xlsx, and .csv files accepted.
+        <br>Expected format: Names in Column 1 and Emails in Column 2</p>
+    <c:url value="/import-Data/students" var="import-Data/students" />
+    <form method="post" enctype="multipart/form-data"
+          action="/import-Data/students/${uploadFileUrl}">
+        <input type="file" name="file" accept=".xls,.xlsx, .csv" /> <input
+            type="submit" value="Upload file" />
+        <p th:text="${stuImportMsg}"></p>
+    </form>
+</div>
+</body>
+
+<script th:inline="javascript">
+
+
+    window.onload = checkAvail;
+
+    var cellColors = ['c1c','c2c','c3c','c4c','c5c','c6c','c7c','c11c','c22c','c33c','c44c','c55c','c66c','c77c'];
+    var cellLabels = ['c1l','c2l','c3l','c4l','c5l','c6l','c7l','c11l','c22l','c33l','c44l','c55l','c66l','c77l'];
+    var cellButtons = ['c1b','c2b','c3b','c4b','c5b','c6b','c7b','c11b','c22b','c33b','c44b','c55b','c66b','c77b'];
+    var cellIDs = ["cell1","cell2","cell3","cell4","cell5","cell6","cell7","cell11","cell22","cell33","cell44","cell55","cell66","cell77"];
+    var clerkBtns = ["1","2","3","4","5","6","7","8","9"];
+
+
+    //Function that updates window every time it reloads
+    function checkAvail(){
+
+        //iterates through each cell and updates text and color
+        for(i = 0; i<=14; i++){
+            if(sessionStorage.getItem(cellColors[i])) {
+
+                document.getElementById(cellIDs[i]).style.background = sessionStorage.getItem(cellColors[i]); //setting background for cells
+                document.getElementById(cellIDs[i]).innerHTML = sessionStorage.getItem(cellLabels[i]); //setting text for cells
+            }
+        }
+        //turn buttons on/off
+        for(j = 0; j<=9; j++ ){
+
+            if(sessionStorage.getItem(clerkBtns[j]) === "off"){
+                document.getElementById(clerkBtns[j]).disabled = true;
+            }else{
+                document.getElementById(clerkBtns[j]).disabled = false;
+            }
+        }
+
+        var btnCount = 0;
+        for(t = 0; t<=9; t++){
+            if(sessionStorage.getItem(clerkBtns[j]) === "off"){
+                btnCount += 1;
+            }
+        }
+        //send window alert if all clerkships selected
+        if(btnCount === 9){
+            window.alert("Press 'Schedule' to submit schedule!")
+        }
+
+    }
+
+    //function gets called when a cell is selected
+    //
+    function test(x,cellColor,cellLabel,cellBtn,cellBool,y,row,col){
+
+        var table = document.getElementById("table1");
+        var count = y;
+        var id1 = /*[[${id}]]*/null;
+        var btn = document.getElementById(id1);
+        var prof = /*[[${prof}]]*/ null;
+
+        //determine whether the cell has already been selected
+        if(sessionStorage.getItem(cellBool) == '1') {
+
+
+
+            var label = table.rows[row].cells[col].innerHTML;
+            //if this label was selected
+            if(label == "Neurology"){
+                sessionStorage.setItem("1", "on"); //button
+                var temp = document.getElementById("1");
+                temp.disabled = false; //disable button
+            }else if(label == "Family Medicine"){
+                sessionStorage.setItem("2", "on");
+                var temp = document.getElementById("2");
+                temp.disabled = false;
+            }else if(label == "Internal Medicine"){
+                sessionStorage.setItem("3", "on");
+                var temp = document.getElementById("3");
+                temp.disabled = false;
+            }else if(label == "Surgery"){
+                sessionStorage.setItem("4", "on");
+                var temp = document.getElementById("4");
+                temp.disabled = false;
+            }else if(label == "ER"){
+                sessionStorage.setItem("5", "on");
+                var temp = document.getElementById("5");
+                temp.disabled = false;
+            }else if(label == "OBGYN"){
+                sessionStorage.setItem("6", "on");
+                var temp = document.getElementById("6");
+                temp.disabled = false;
+            }else if(label == "Pediatrics"){
+                sessionStorage.setItem("7", "on");
+                var temp = document.getElementById("7");
+                temp.disabled = false;
+            }else if(label == "Phychiatry"){
+                sessionStorage.setItem("8", "on");
+                var temp = document.getElementById("8");
+                temp.disabled = false;
+            }else if(label == "IM Sub-Specialty"){
+                sessionStorage.setItem("9", "on");
+                var temp = document.getElementById("9");
+                temp.disabled = false;
+            }
+
+
+            x.style.background = "initial";
+            sessionStorage.setItem(cellColor,"initial"); //set background to initial color
+            sessionStorage.setItem(cellLabel, count); //set cell text
+            x.innerHTML = sessionStorage.getItem(cellLabel);
+            sessionStorage.setItem(cellBool, '0');
+        }else{
+
+            //if no doctors are available send alert
+            if (count === '0') {
+                window.alert("No Doctors Available at this time!");
+            } else {
+                btn.disabled = true; //disable button
+                x.style.background = "green";
+                sessionStorage.setItem(id1, "off");
+                sessionStorage.setItem(cellColor,"green"); //set cell background to green
+                sessionStorage.setItem(cellLabel, prof);
+                x.innerHTML = sessionStorage.getItem(cellLabel); //set cell text to current button name
+                sessionStorage.setItem(cellBool, '1'); //boolean identifying that the cell has been pressed
+            }
+        }
+    }
+
+
+
+</script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="../../Desktop/LIC/UC04v1/src/main/resources/templates/js/bootstrap.min.js"></script>
+</body>
+<!-- <script th:inline="javascript">
+     $('button[name="nbtn"]').click(function(event){
+         event.preventDefault();
+         var data = $('form').seralize();
+         data += "carl" + "Neurology";
+         $.post('/index', data, 'html');
+     })
+ </script>-->
+</html>
+
