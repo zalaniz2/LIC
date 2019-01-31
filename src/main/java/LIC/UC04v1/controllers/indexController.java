@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -77,7 +78,16 @@ public class indexController {
         return "index";
     }
 
+    @RequestMapping(value="/save",method=RequestMethod.POST)
 
+    public  @ResponseBody String  getSearchUserProfiles(@RequestBody Search search) {
+        System.out.println("testing");
+        String pName = search.getpName();
+        String lName = search.getlName();
+        System.out.println(lName + pName);
+        // your logic next
+        return "index";
+    }
 
     @RequestMapping(path = "/joke")
     public String joke(){

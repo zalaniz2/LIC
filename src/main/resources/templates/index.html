@@ -170,7 +170,7 @@
                     </div>
                 </div>
             <div align="center">
-                <button type ="button" class= "btn btn-default btn-lg" >Submit</button>
+                <button onclick="submit()" type ="button" class= "btn btn-default btn-lg" >Submit</button>
 
             </div>
 
@@ -261,6 +261,23 @@
 
             }
 
+        }
+
+        function submit() {
+            var search = {
+                "pName": "bhanu",
+                "lName": "prasad"
+            }
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/save",
+                data: JSON.stringify(search), // Note it is important
+                success: function (result) {
+                    // do what ever you want with data
+                }
+            });
         }
 
     </script>
