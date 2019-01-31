@@ -1,0 +1,282 @@
+ <!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+      <title>Student Menu</title>
+    <style>
+        a.button {
+            -webkit-appearance: button;
+            -moz-appearance: button;
+            appearance: button;
+
+            text-decoration: none;
+            color: initial;
+        }
+        .btn-default{
+            width:180px;
+            height:60px;
+        }
+        .container{
+            padding: 20px;
+        }
+        .wrapper{
+            display:grid;
+
+            grid-template-columns: 85% 15%;
+            grid-column-gap: 1 em;
+        }
+        input{
+            width: 200px;
+            height: 50px;
+            border-radius: 5px;
+            margin: 0 auto;
+        }
+        table{
+            height: 100px;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+            table-layout: fixed;
+            font-size: 5px;
+        }
+        table,tr,th,td{
+
+            padding:20px;
+            color:white;
+            border:1px solid #080808;
+            border-collapse: collapse;
+            font-size: 18px;
+            font-family: Arial;
+            background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
+            background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
+        }
+        td:hover{
+            background:grey;
+        }
+    </style>
+  </head>
+  <body>
+    <div class= "container">
+        <h1 class="page-header text-center">Student Schedule</h1>
+        <hr>
+        <div>
+            <div th:text="${stu.getName()}"></div>
+            <div th:text="${stu.getEmail()}"></div>
+        </div>
+        <div class="wrapper">
+            <div class = "row">
+
+                <div style="overflow-x:auto;" class = "container">
+                    <h1 class="text-center"><small>Week 1</small></h1>
+                    <table>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th> Sun</th>
+                            <th> Mon</th>
+                            <th> Tues</th>
+                            <th> Wed</th>
+                            <th> Thur</th>
+                            <th> Fri</th>
+                            <th> Sat</th>
+                        </tr>
+                        <tr>
+                            <td>Morning</td>
+                            <td id="cell1" onclick="cell(1,this)" th:text="${count[0]}"></td>
+                            <td id="cell2" onclick="cell(2,this)" th:text="${count[1]}"></td>
+                            <td id="cell3" onclick="cell(3,this)" th:text="${count[2]}"></td>
+                            <td id="cell4" onclick="cell(4,this)" th:text="${count[3]}"></td>
+                            <td id="cell5" onclick="cell(5,this)" th:text="${count[4]}"></td>
+                            <td id="cell6" onclick="cell(6,this)" th:text="${count[5]}"></td>
+                            <td id="cell7" onclick="cell(7,this)" th:text="${count[6]}"></td>
+                        </tr>
+                        <tr>
+                            <td>Afternoon</td>
+                            <td id="cell8" onclick="cell(8,this)" th:text="${count[7]}"></td>
+                            <td id="cell9" onclick="cell(9,this)" th:text="${count[8]}"></td>
+                            <td id="cell10" onclick="cell(10,this)" th:text="${count[9]}"></td>
+                            <td id="cell11" onclick="cell(11,this)" th:text="${count[10]}"></td>
+                            <td id="cell12" onclick="cell(12,this)" th:text="${count[11]}"></td>
+                            <td id="cell13" onclick="cell(13,this)" th:text="${count[12]}"></td>
+                            <td id="cell14" onclick="cell(14,this)" th:text="${count[13]}"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class = "container"> <h1 class="text-center"><small>Week 2</small></h1>
+                    <table>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th> Sun</th>
+                            <th> Mon</th>
+                            <th> Tues</th>
+                            <th> Wed</th>
+                            <th> Thur</th>
+                            <th> Fri</th>
+                            <th> Sat</th>
+                        </tr>
+                        <tr >
+                            <td>Morning</td>
+                            <td id="cell15" onclick="cell(15,this)" th:text="${count[14]}"></td>
+                            <td id="cell16" onclick="cell(16,this)" th:text="${count[15]}"></td>
+                            <td id="cell17" onclick="cell(17,this)" th:text="${count[16]}"></td>
+                            <td id="cell18" onclick="cell(18,this)" th:text="${count[17]}"></td>
+                            <td id="cell19" onclick="cell(19,this)" th:text="${count[18]}"></td>
+                            <td id="cell20" onclick="cell(20,this)" th:text="${count[19]}"></td>
+                            <td id="cell21" onclick="cell(21,this)" th:text="${count[20]}"></td>
+                        </tr>
+                        <tr>
+                            <td>Afternoon</td>
+                            <td id="cell22" onclick="cell(22,this)" th:text="${count[21]}"></td>
+                            <td id="cell23" onclick="cell(23,this)" th:text="${count[22]}"></td>
+                            <td id="cell24" onclick="cell(24,this)" th:text="${count[23]}"></td>
+                            <td id="cell25" onclick="cell(25,this)" th:text="${count[24]}"></td>
+                            <td id="cell26" onclick="cell(26,this)" th:text="${count[25]}"></td>
+                            <td id="cell27" onclick="cell(27,this)" th:text="${count[26]}"></td>
+                            <td id="cell28" onclick="cell(28,this)" th:text="${count[27]}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+                <div class = "row">
+                    <div class = "container btn-group-vertical" role="group">
+                        <form action = "#" th:action="@{/{path}/Neurology(path=${stu.getId()})}"  >
+                            <input type="submit" value="Neurology" id="Neurology"/>
+                        </form>
+                        <form action = "#" th:action="@{/{path}/Family Medicine(path=${stu.getId()})}" >
+                            <input type="submit" value="Family Medicine" id="Family Medicine"/>
+                        </form>
+                        <form action = "#" th:action="@{/{path}/Internal Medicine(path=${stu.getId()})}" >
+                            <input type="submit" value="Internal Medicine" id="Internal Medicine"/>
+                        </form>
+                        <form action = "#" th:action="@{/{path}/Surgery(path=${stu.getId()})}" >
+                            <input type="submit" value="Surgery" id="Surgery"/>
+                        </form>
+                        <form action = "#" th:action="@{/{path}/OBGYN(path=${stu.getId()})}" >
+                            <input type="submit" value="OBGYN" id="OBGYN"/>
+                        </form>
+                        <form action = "#" th:action="@{/{path}/Pediatrics(path=${stu.getId()})}" >
+                            <input type="submit" value="Pediatrics" id="Pediatrics"/>
+                        </form>
+                        <form action = "#" th:action="@{/{path}/Phychiatry(path=${stu.getId()})}" >
+                            <input type="submit" value="Phychiatry" id="Phychiatry"/>
+                        </form>
+                    </div>
+                </div>
+            <div align="center">
+                <button type ="button" class= "btn btn-default btn-lg" >Submit</button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <script th:inline="javascript">
+
+        //sessionStorage.cell1Color = null;
+        window.onload = loadFunc;
+        var cells = ["cell1", "cell2", "cell3", "cell4", "cell5", "cell6", "cell7",
+        "cell8", "cell9", "cell10", "cell11", "cell12", "cell13","cell14","cell15",
+        "cell16","cell17","cell18","cell19","cell20","cell21","cell22","cell23","cell24",
+        "cell25","cell26","cell27", "cell28"]
+        var specialty = ["Neurology","Family Medicine", "Internal Medicine", "Surgery", "OBGYN", "Pediatrics","Phychiatry"]
+
+        function cell(cellNum,x) {
+            cellNum=cellNum-1
+            var prof = /*[[${prof}]]*/ null;
+            if (x.innerText!=0 && x.style.background != "green") {
+                if (prof == "Family Medicine" || prof == "Pediatrics" ||prof == "Surgery"||prof == "Internal Medicine"){
+                    if (cellNum <14){
+                        nextCell = document.getElementById(cells[cellNum+14])
+                    }
+                    else {
+                        nextCell = document.getElementById(cells[cellNum-14])
+                    }
+                    if (nextCell.innerText==0 ||nextCell.style.background=="green") {
+                        window.alert("This profession happens weekly. Please clear up your schedule!")
+                        return;
+                    }
+                    sessionStorage.setItem(prof, cellNum);
+                    x.style.background = "green";
+                    x.innerText = prof;
+                    x.disabled = true;
+                    clear(prof,x.id);
+                    nextCell.style.background = "green";
+                    nextCell.innerText = prof;
+                    nextCell.disabled = true;
+                    return;
+                }
+                sessionStorage.setItem(prof, cellNum);
+                x.style.background = "green";
+                x.innerText = prof;
+                x.disabled = true;
+                clear(prof, x.id);
+            }
+        }
+
+        function clear(prof,x) {
+            var count = /*[[${count}]]*/ null;
+            for (var i = 0; i<cells.length;i++){
+                if (cells[i]!=x && document.getElementById(cells[i]).innerText===prof) {
+                    document.getElementById(cells[i]).innerText = count[i];
+                    document.getElementById(cells[i]).style.background = "#3C3C3C";
+                    document.getElementById(cells[i]).disabled = false
+                }
+            }
+        }
+
+
+        function loadFunc(){
+            var prof = /*[[${prof}]]*/ null;
+            document.getElementById(prof).style.background="#29b471"
+            for (var key in specialty) {
+                var schedule = sessionStorage.getItem(specialty[key]);
+                //console.log(schedule);
+                if (schedule!==null){
+                    schedule = parseInt(schedule);
+                    if (schedule>-1) {
+                        if (specialty[key] == "Family Medicine" || specialty[key] == "Pediatrics" ||specialty[key] == "Surgery"||specialty[key] == "Internal Medicine"){
+                            if (schedule <14){
+                                nextCell = document.getElementById(cells[schedule+14])
+                            }
+                            else {
+                                nextCell = document.getElementById(cells[schedule - 14])
+                            }
+                            nextCell.style.background = "green";
+                            nextCell.innerText= specialty[key];
+                            nextCell.disabled = true;
+                        }
+                        document.getElementById(cells[schedule]).style.background = "green";
+                        document.getElementById(cells[schedule]).innerText= specialty[key];
+                        document.getElementById(cells[schedule]).disabled = true;
+                    }
+                }
+
+            }
+
+        }
+
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="../../Desktop/LIC/UC04v1/src/main/resources/templates/js/bootstrap.min.js"></script>
+  </body>
+<!-- <script th:inline="javascript">
+     $('button[name="nbtn"]').click(function(event){
+         event.preventDefault();
+         var data = $('form').seralize();
+         data += "carl" + "Neurology";
+         $.post('/index', data, 'html');
+     })
+ </script>-->
+</html>
+

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+
+    <link th:href="@{css/studentPage.css}" href="UC04v1/src/main/resources/static/css/studentPage.css" rel="stylesheet" type="text/css" media="screen"/>
+
+</head>
+
+<body>
+
+<!-- <div class= "container" id="main-container"> -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+    </a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Student John Smith</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+        </form>
+    </div>
+</nav>
+
+<div class="wrapper" id="body-wrapper">
+    <div class = "row">
+        <div class="col-9" id="weekly-calendar">
+            <h5>Week 1</h5>
+            <table class="table table-dark table-striped">
+                <tr>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col"> Sun</th>
+                    <th scope="col"> Mon</th>
+                    <th scope="col"> Tues</th>
+                    <th scope="col"> Wed</th>
+                    <th scope="col"> Thur</th>
+                    <th scope="col"> Fri</th>
+                    <th scope="col"> Sat</th>
+                </tr>
+                <tr>
+                    <th scope="row" id="morn1"> Morning</th>
+                    <td class="bg-danger">N/A</td>
+                    <td th:text="${count}" id="Monday Morning W1">stock</td>
+                    <td th:text="${count}" id="Tuesday Morning W1">stock</td>
+                    <td th:text="${count}" id="Wednesday Morning W1">stock</td>
+                    <td th:text="${count}" id="Thursday Morning W1">stock</td>
+                    <td th:text="${count}" id="Friday Morning W1">stock</td>
+                    <td th:text="${count}" id="Saturday Morning W1">stock</td>
+                </tr>
+                <tr>
+                    <th scope="row" id="aft1">Afternoon</th>
+                    <td class="bg-danger">N/A</td>
+                    <td th:text="${count}" id="Monday Afternoon W1">stock</td>
+                    <td th:text="${count}" id="Tuesday Afternoon W1">stock</td>
+                    <td th:text="${count}" id="Wednesday Afternoon W1">stock</td>
+                    <td th:text="${count}" id="Thursday Afternoon W1">stock</td>
+                    <td th:text="${count}" id="Friday Afternoon W1">stock</td>
+                    <td th:text="${count}" id="Saturday Afternoon W1">stock</td>
+                </tr>
+            </table>
+
+            <h5>Week 2</h5>
+            <table class="table table-dark table-striped">
+                <tr>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col"> Sun</th>
+                    <th scope="col"> Mon</th>
+                    <th scope="col"> Tues</th>
+                    <th scope="col"> Wed</th>
+                    <th scope="col"> Thur</th>
+                    <th scope="col"> Fri</th>
+                    <th scope="col"> Sat</th>
+                </tr>
+                <tr>
+                    <th scope="row" id="morn2">Morning</th>
+                    <td class="bg-danger">N/A</td>
+                    <td th:text="${count}" id="Monday Morning W2">stock</td>
+                    <td th:text="${count}" id="Tuesday Morning W2">stock</td>
+                    <td th:text="${count}" id="Wednesday Morning W2">stock</td>
+                    <td th:text="${count}" id="Thursday Morning W2">stock</td>
+                    <td th:text="${count}" id="Friday Morning W2">stock</td>
+                    <td th:text="${count}" id="Saturday Morning W2">stock</td>
+                </tr>
+                <tr>
+                    <th scope="row" id="aft2">Afternoon</th>
+                    <td class="bg-danger">N/A</td>
+                    <td th:text="${count}" id="Monday Afternoon W2">stock</td>
+                    <td th:text="${count}" id="Tuesday Afternoon W2">stock</td>
+                    <td th:text="${count}" id="Wednesday Afternoon W2">stock</td>
+                    <td th:text="${count}" id="Thursday Afternoon W2">stock</td>
+                    <td th:text="${count}" id="Friday Afternoon W2">stock</td>
+                    <td th:text="${count}" id="Saturday Afternoon W2">stock</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-3" id="specialty-column">
+            <p class="text-center" id="button-header"><strong>Choose Clerkship</strong></p>
+            <div class = "btn-group-vertical" role="group" id="specialty-buttons">
+                <form action="/specialty" id="specialty-chosen">
+                    <!-- specialty?id=Neurology -->
+                    <input type ="submit" class= "btn btn-dark" value="Neurology" name="id" id="neuro">
+                    <!-- specialty?id=Family+Medicine -->
+                    <input type ="submit" class= "btn btn-dark" value="Family Medicine" name="id">
+                    <!-- specialty?id=Internal+Medicine -->
+                    <input type ="submit" class= "btn btn-dark" value="Internal Medicine" name="id">
+                    <!-- specialty?id=Surgery -->
+                    <input type ="submit" class= "btn btn-dark" value="Surgery" name="id">
+                    <!-- specialty?id=ER -->
+                    <input type ="submit" class= "btn btn-dark" value="ER" name="id">
+                    <!-- specialty?id=OBGYN -->
+                    <input type ="submit" class= "btn btn-dark" value="OBGYN" name="id">
+                    <!-- specialty?id=Pediatrics -->
+                    <input type ="submit" class= "btn btn-dark" value="Pediatrics" name="id">
+                    <!-- specialty?id=Psychiatry -->
+                    <input type ="submit" class= "btn btn-dark" value="Psychiatry" name="id">
+                    <!-- specialty?id=IM+Sub-Specialty -->
+                    <input type ="submit" class= "btn btn-dark" value="IM Sub-Specialty" name="id">
+                </form>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#scheduleModal" id="schedule-popup">
+                    Schedule
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Your Current Schedule</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list-group" id="schedule-group">
+                                    <!--<li class="list-group-item" th:text="${schedule}"></li> -->
+                                    <!--<h1 id="hold" th:text="${schedule}"></h1> -->
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-light" id="schedule-popup-submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button th:text="${value}" hidden id="choice"></button>
+    </div>
+    <div class="row" id="key-row">
+        <div class="col-9">
+            <div class="card card-horizontal">
+                <div class="card-body bg-light">
+                    <p class="card-title"><strong>Selection Key</strong></p>
+                    <p class="card-text">Each color represents a different criteria you have matched with.</p>
+                </div>
+                <div class="card-body bg-light">
+                    <div class="row text-center pagination-center">
+                        <div class="col-3">
+                            <div class="square" id="personality">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <p class="key-text">Doctor with matching personality</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body bg-light">
+                    <div class="row text-center pagination-center">
+                        <div class="col-3">
+                            <div class="square" id="na">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <p class="key-text" style="margin-left: 15px;">No matching criteria</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body bg-light">
+                    <div class="row text-center pagination-center">
+                        <div class="col-3">
+                            <div class="square" id="location">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <p class="key-text">Doctor with matching location</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-body bg-light">
+                    <div class="row text-center pagination-center">
+                        <div class="col-3">
+                            <div class="square" id="match-both">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <p class="key-text">Matching personality & location</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- </div> -->
+<script>
+
+    var scheduleString;
+
+    $('td').click(function() {
+
+        console.log("got click");
+        var time = $(this).attr("id");
+
+        choice = $("#choice").text();
+
+        var scheduleString = choice + " " + time;
+
+        $("#schedule-group").append("<li class=\"list-group-item\">" + scheduleString + "</li>");
+
+        /*
+        $.ajax({
+            type: "POST",
+            url: "schedule?id=" + choice + "&utime=" + time,
+            data: {specialty: choice, time: time},
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+            }
+        });
+        */
+
+
+    });
+
+</script>
+</body>
+</html>
+

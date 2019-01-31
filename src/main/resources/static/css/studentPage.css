@@ -1,0 +1,130 @@
+body{
+    background-color: #fcfcfc;
+}
+#specialty-buttons{
+    /*margin-top: 25px;*/
+}
+#specialty-buttons .btn{
+    margin-bottom: 5px;
+}
+#weekly-calendar{
+}
+#main-container{
+    padding-top: 15px;
+}
+#weekly-calendar h5{
+    margin-left: 20%;
+    font-weight: bold;
+    color:#404040;
+}
+
+#body-wrapper{
+    margin: 35px;
+}
+.card {
+    display: flex; flex-direction: column;
+}
+.card-horizontal {
+    flex-direction: row;
+}
+
+td:hover{
+}
+
+#schedule-popup{
+    margin-top: 50px;
+}
+
+.square {
+    height: 40px;
+    width: 40px;
+    margin-top: 20px;
+}
+#personality{
+    background-color: cadetblue;
+}
+.key-text{
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+#na{
+    background-color: grey;
+
+}
+#location{
+    background-color: cornflowerblue;
+}
+#match-both{
+    background-color: mediumspringgreen;
+}
+thead, tr, th, td{
+    text-align: center;
+    color: #f2f2f2;
+
+
+}
+tr {
+    line-height: 30px;
+    line-widows: 30px;
+    min-height: 30px;
+    height: 30px;
+}
+td{
+}
+td:hover{
+    background-color: #6c3ab7;
+}
+table{
+    width: 80% !important;
+    margin-left: 10%;
+    background-color:    #563c7c !important;
+    border: 2px solid #563c7c;
+}
+.list-group-item{
+    margin-top: 45px;
+}
+#key-row{
+    margin-top: -75px;
+}
+.card-body{
+}
+hr{
+    margin-right: 5%;
+    margin-left: 5%;
+}
+#button-header{
+    color:#404040;
+}
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: #6f5499;
+}
+.table-striped>tbody>tr:nth-child(odd)>td:hover{
+    background-color: #7952b3;
+}
+#schedule-popup-submit{
+    background-color: #6f5499;
+    color:  #f2f2f2;
+
+}
+#brand-header{
+    color: #6f5499;
+    font-weight: bolder;
+}
+
+.match-personality{
+    background-color: cadetblue;
+}
+.no-match{
+    background-color: grey;
+}
+.u-match-location{
+    background-color: cornflowerblue !important;
+}
+.u-match-both{
+    background-color: mediumspringgreen !important;
+}
+
+
