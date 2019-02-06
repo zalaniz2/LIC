@@ -11,7 +11,7 @@ public class Clerkship {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @ManyToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "Student_ID", referencedColumnName = "ID")
+    //@JoinColumn(name = "Student_ID123", referencedColumnName = "ID")
     private Student student;
     @OneToOne
     private Doctor doctor;

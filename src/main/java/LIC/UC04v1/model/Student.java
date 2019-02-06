@@ -14,7 +14,7 @@ public class Student {
     @Id
     private String id;
     private String email;
-    @OneToMany(mappedBy = "student", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade=CascadeType.ALL)//
     private Map<String, Clerkship> clerkships = new HashMap<>();
     private String Name;
 
