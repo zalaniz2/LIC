@@ -63,7 +63,7 @@ public class indexController {
         for(Doctor doc: doctorRepository.findAll()){
             if((doc.getProfession().equals(profession))){
                 for(int i = 0; i<28;i++){
-                    if(doc.isAvailable().charAt(i) == '1'){
+                    if(doc.getAvailable().charAt(i) == '1'){
                         counts[i] = counts[i]+1;
                     }
                 }

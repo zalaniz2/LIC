@@ -15,7 +15,7 @@ public class Doctor {
     private String profession;
     private String available;
 
-    public String isAvailable() {
+    public String getAvailable() {
         return available;
     }
 

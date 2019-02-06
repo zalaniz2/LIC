@@ -1,5 +1,6 @@
 package LIC.UC04v1.Bootstrap;
 
+import LIC.UC04v1.model.Clerkship;
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Student;
 import LIC.UC04v1.repositories.ClerkshipRepository;
@@ -75,6 +76,34 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             Student stu = new Student();
             stu.setName(values[0]+" "+values[1]);
             stu.setEmail(values[2]);
+            Clerkship clerk1 = new Clerkship();
+            Clerkship clerk2 = new Clerkship();
+            Clerkship clerk3 = new Clerkship();
+            clerk1.setTitle("Neurology");
+            clerk1.setStudent(stu);
+            clerk1.setStudentName(stu.getName());
+            clerk1.setTime(values[3]);
+            clerk1.setLocation("Dallas");
+
+            clerk2.setTitle("Family Medicine");
+            clerk2.setTime(values[4]);
+            clerk2.setStudent(stu);
+            clerk2.setStudentName(stu.getName());
+            clerk2.setLocation("Plano");
+
+            clerk3.setTitle("Internal Medicine");
+            clerk3.setTime(values[5]);
+            clerk3.setStudent(stu);
+            clerk3.setStudentName(stu.getName());
+            clerk3.setLocation("Fort Worth");
+
+
+            stu.addClerkship(clerk1.getTitle(),clerk1);
+            stu.addClerkship(clerk2.getTitle(),clerk2);
+            stu.addClerkship(clerk3.getTitle(),clerk3);
+            clerkshipRepository.save(clerk1);
+            clerkshipRepository.save(clerk2);
+            clerkshipRepository.save(clerk3);
             studentRepository.save(stu);
         }
     }
