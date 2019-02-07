@@ -32,10 +32,10 @@ public class indexController {
         this.studentRepository = studentRepository;
     }
 
-    @GetMapping(path = "/{id}")
+/*    @GetMapping(path = "/{id}")
     public String getDoctors(Model model,@PathVariable String id){
         String stuID = id;
-       /* int count = 0;
+       *//* int count = 0;
         ArrayList<Doctor> AvailDoctors = new ArrayList<Doctor>();
         for(Doctor doc: doctorRepository.findAll()){
             if(doc.getId()==3)doc.setAvailable(false);
@@ -45,7 +45,7 @@ public class indexController {
             }
         }
         model.addAttribute("doctors", AvailDoctors);
-        model.addAttribute("count", count);*/
+        model.addAttribute("count", count);*//*
 
         return "redirect:/" +stuID+"/Neurology";
     }
@@ -75,13 +75,9 @@ public class indexController {
         model.addAttribute("count", counts);
 
         return "index";
-    }
+    }*/
 
 
 
-    @RequestMapping(path = "/joke")
-    public String joke(){
-        System.out.println("joke");
-        return "index";
-    }
+
 }

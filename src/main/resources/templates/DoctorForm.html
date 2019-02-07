@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Prescheduling Form</title>
+</head>
+<body>
+    <div>
+        <!--/*@thymesVar id="doctor" type="LIC.UC04v1.domain.doctorForm.java"*/-->
+        <form action="#" th:action="@{/thankDoctor}" th:object="${doctor}" method="post">
+        <label>Plese select all times you are available to partake in a clerkship.</label>
+        <ul>
+            <li>
+                <input type="checkbox"
+                       th:field="*{MM}"/>
+                <label>Monday 8AM - 12PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{MA}" />
+                <label>Monday 1PM - 5PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{TM}" />
+                <label>Tuesday 8AM - 12PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{TA}" />
+                <label>Tuesday 1PM - 5PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{WM}" />
+                <label>Wednsday 8AM - 12PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{WA}" />
+                <label>Wednsday 1PM - 5PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{RM}" />
+                <label>Thursday 8AM - 12PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{RA}" />
+                <label>Thursday 1PM - 5PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{FM}" />
+                <label>Friday 8AM - 12PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{FA}" />
+                <label>Friday 1PM - 5PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{AM}" />
+                <label>Saturday 8AM - 12PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{AA}" />
+                <label>Saturday 1PM - 5PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{UM}" />
+                <label>Sunday 8AM - 12PM</label>
+            </li>
+            <li>
+                <input type="checkbox"
+                       th:field="*{UA}" />
+                <label>Sunday 1Pm - 5PM</label>
+            </li>
+        </ul>
+
+            <select th:field="*{Location}">
+                <option th:each="value : ${T(LIC.UC04v1.domain.Location).values()}"
+                        th:value="${value.name()}"
+                        th:text="${value.name()}"
+                >val</option>
+            </select>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="../../Desktop/LIC/UC04v1/src/main/resources/templates/js/bootstrap.min.js"></script>
+</body>
+
+</html>
