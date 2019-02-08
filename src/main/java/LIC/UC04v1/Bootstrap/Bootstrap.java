@@ -97,13 +97,14 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             clerk3.setStudentName(stu.getName());
             clerk3.setLocation("Fort Worth");
 
+            //clerkshipRepository.save(clerk1);
+            //clerkshipRepository.save(clerk2);
+            //clerkshipRepository.save(clerk3);
 
             stu.addClerkship(clerk1.getTitle(),clerk1);
             stu.addClerkship(clerk2.getTitle(),clerk2);
             stu.addClerkship(clerk3.getTitle(),clerk3);
-            //clerkshipRepository.save(clerk1);
-            //clerkshipRepository.save(clerk2);
-            //clerkshipRepository.save(clerk3);
+
             studentRepository.save(stu);
         }
     }
