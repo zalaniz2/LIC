@@ -32,11 +32,18 @@ public class DoctorController {
 
         return "index";
     }*/
-    @RequestMapping("new")
-    public String docForm(Model model){
+    @RequestMapping("/doctor/{id}")
+    public String docForm(Model model, @PathVariable int id){
         model.addAttribute("doctor", new doctorForm());
 
         return "DoctorForm";
+    }
+
+    @RequestMapping("/student/{id}")
+    public String stuForm(Model model, @PathVariable int id){
+        model.addAttribute("doctor", new doctorForm());
+
+        return "StudentForm";
     }
 
     @PostMapping
