@@ -54,10 +54,10 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             doc.setName(values[0]+" "+values[1]);
             doc.setEmail(values[2]);
             doc.setProfession(values[3]);
-            doc.setAvailable(values[4]);
+
             doctorRepository.save(doc);
         }
-        fileName = "student.csv";
+        fileName = "students1.csv";
 
         classLoader = super.getClass().getClassLoader();
 

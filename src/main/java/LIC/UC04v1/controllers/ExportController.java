@@ -9,7 +9,9 @@ import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 
@@ -133,54 +135,132 @@ public class ExportController{
     @RequestMapping(value = "/downloadExcel")
     public void downloadExcel(HttpServletResponse response2) throws IOException{
 
-        String excelFileName = "excelSchedule.xlsx";
+        Student temp = null;
+
+        for(Student stu: studentRepository.findAll()){
+            temp = stu;
+            break;
+        }
+
+        String excelFileName = "StudentSchedules.xlsx";
 
         response2.setHeader("Content-Disposition", "attachment; filename="+excelFileName); //set content type of the response so that jQuery knows what it can expect
         //response2.setHeader("charset", "iso-8859-1");
         response2.setContentType("application/vnd.ms-excel");
 
-        String[] columns = {"Mon", "Tues", "Weds", "Thurs", "Fri", "Sat", "Sun"};
+        String[] columns = {"Time/Period","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
         Workbook workbook = new XSSFWorkbook();
 
+        XSSFFont headerFont1 = (XSSFFont) workbook.createFont();
+        headerFont1.setBold(true);
+        headerFont1.setFontHeightInPoints((short)25);
+        headerFont1.setColor(IndexedColors.LAVENDER.getIndex());
+        CellStyle headerCellStyle1 = workbook.createCellStyle();
+        headerCellStyle1.setFont(headerFont1);
+
+        XSSFFont headerFont2 = (XSSFFont) workbook.createFont();
+        headerFont2.setBold(true);
+        headerFont2.setFontHeightInPoints((short)17);
+        headerFont1.setColor(new XSSFColor(new java.awt.Color(77,25,121)));
+        CellStyle headerCellStyle2 = workbook.createCellStyle();
+        headerCellStyle2.setFont(headerFont2);
+
         CreationHelper creationHelper = workbook.getCreationHelper();
 
-        String stu = "Tom Tom";
-        String name = String.format("%s's Weekly Schedule", stu);
+        for(Student stu: studentRepository.findAll()){
 
-        Sheet sheet = workbook.createSheet(name);
+            Map<String, Clerkship> clerkships = stu.getClerkships();
 
-        Font headerFont = workbook.createFont();
-        headerFont.setBold(true);
-        headerFont.setFontHeightInPoints((short)17);
-        headerFont.setColor(new XSSFColor(new java.awt.Color(77,25,121)).getIndex());
+            String stuName = stu.getName() + "s Weekly Schedule";
+            Sheet sheet = workbook.createSheet(stuName);
+           // sheet.setDefaultColumnWidth(256);
 
 
-        CellStyle headerCellStyle = workbook.createCellStyle();
-        headerCellStyle.setFont(headerFont);
+            Row headerRow = sheet.createRow(0);
+            Cell headerCell = headerRow.createCell(0);
+            headerCell.setCellValue("Weekly Schedule");
+            headerCell.setCellStyle(headerCellStyle1);
 
-        Row headerRow = sheet.createRow(0);
 
-        for(int i = 0; i < columns.length; i++){
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(columns[i]);
-            cell.setCellStyle(headerCellStyle);
-        }
+            Row stuNameRow = sheet.createRow(1);
+            Cell stuNameCell = stuNameRow.createCell(0);
+            stuNameCell.setCellValue("Student: " + stu.getName());
 
-        int rowNum = 1;
-        for(Student stu1: studentRepository.findAll()){
-            Row row = sheet.createRow(rowNum++);
 
-            row.createCell(0)
-                    .setCellValue(stu1.getName());
 
-            row.createCell(1)
-                    .setCellValue(stu1.getId());
 
-        }
 
-        for (int i = 0; i < columns.length; i++){
-            sheet.autoSizeColumn(i);
+
+            Row weekDay = sheet.createRow(2);
+            for(int i = 0; i<columns.length;i++){
+                    Cell cell = weekDay.createCell(i+1);
+                    cell.setCellValue(columns[i]);
+                    cell.setCellStyle(headerCellStyle2);
+
+            }
+
+            for(int i = 3; i < 6; i++){
+                Row row = sheet.createRow(i);
+                for(int t = 2; t<9; t++){
+                    Cell cell = row.createCell(t);
+                    sheet.setColumnWidth(i+1,4000);
+                }
+            }
+
+            Row row = sheet.getRow(3);
+            Cell mornCell = row.createCell(1);
+            mornCell.setCellValue("Morning");
+            mornCell.setCellStyle(headerCellStyle2);
+
+            Row row1 = sheet.getRow(4);
+            Cell afternoonCell = row1.createCell(1);
+            afternoonCell.setCellStyle(headerCellStyle2);
+            afternoonCell.setCellValue("Afternoon");
+
+
+            CellReference MonAM = new CellReference("C4");
+            CellReference MonPM = new CellReference("C5");
+            CellReference TuesAM = new CellReference("D4");
+            CellReference TuesPM = new CellReference("D5");
+            CellReference WedAM = new CellReference("E4");
+            CellReference WedPM = new CellReference("E5");
+            CellReference ThursAM = new CellReference("F4");
+            CellReference ThursPM = new CellReference("F5");
+            CellReference FriAM = new CellReference("G4");
+            CellReference FriPM = new CellReference("G5");
+            CellReference SatAM = new CellReference("H4");
+            CellReference SatPM = new CellReference("H5");
+            CellReference SunAM = new CellReference("I4");
+            CellReference SunPM = new CellReference("I5");
+
+            for(String key: clerkships.keySet()){
+                Clerkship clerk = clerkships.get(key);
+                switch(clerk.getTime()){
+                    case "MonAM":
+                        Row r1 = sheet.getRow(MonAM.getRow());
+                        Cell c1 = r1.getCell(MonAM.getCol());
+                        c1.setCellValue(clerk.getTitle());
+                        break;
+                    case "WedPM":
+                        Row r2 = sheet.getRow(WedPM.getRow());
+                        Cell c2 = r2.getCell(WedPM.getCol());
+                        c2.setCellValue(clerk.getTitle());
+                        break;
+                    case "FriAM":
+                        Row r3 = sheet.getRow(FriAM.getRow());
+                        Cell c3 = r3.getCell(FriAM.getCol());
+                        c3.setCellValue(clerk.getTitle());
+                        break;
+
+                }
+
+            }
+
+            for (int i = 0; i < columns.length; i++){
+                sheet.autoSizeColumn(i);
+            }
+
         }
 
         OutputStream outputStream = null;
