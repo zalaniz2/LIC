@@ -99,7 +99,7 @@ public class ExportController{
 
         response2.setContentType("text/csv");
 
-        // creates mock data
+
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"",
                 csvFileName);
@@ -143,16 +143,17 @@ public class ExportController{
             break;
         }
 
-        String excelFileName = "StudentSchedules.xlsx";
+        String excelFileName = "StudentSchedules.xlsx"; //file name
 
         response2.setHeader("Content-Disposition", "attachment; filename="+excelFileName); //set content type of the response so that jQuery knows what it can expect
         //response2.setHeader("charset", "iso-8859-1");
         response2.setContentType("application/vnd.ms-excel");
 
-        String[] columns = {"Time/Period","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        String[] columns = {"Time/Period","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}; //weekly calendar header
 
-        Workbook workbook = new XSSFWorkbook();
+        Workbook workbook = new XSSFWorkbook(); //New excel workbook
 
+        //Header Cell style formatting
         XSSFFont headerFont1 = (XSSFFont) workbook.createFont();
         headerFont1.setBold(true);
         headerFont1.setFontHeightInPoints((short)25);
@@ -160,10 +161,10 @@ public class ExportController{
         CellStyle headerCellStyle1 = workbook.createCellStyle();
         headerCellStyle1.setFont(headerFont1);
 
+        //2nd Header Cell Style formatting
         XSSFFont headerFont2 = (XSSFFont) workbook.createFont();
         headerFont2.setBold(true);
         headerFont2.setFontHeightInPoints((short)17);
-
         CellStyle headerCellStyle2 = workbook.createCellStyle();
         headerCellStyle2.setFont(headerFont2);
         headerCellStyle2.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
@@ -202,15 +203,16 @@ public class ExportController{
 
         //CreationHelper creationHelper = workbook.getCreationHelper();
 
+        //Creates a new sheet in the workbook for every student in repository
         for(Student stu: studentRepository.findAll()){
 
-            Map<String, Clerkship> clerkships = stu.getClerkships();
+            Map<String, Clerkship> clerkships = stu.getClerkships(); //map of the student's clerkships
 
-            String stuName = stu.getName() + "s Weekly Schedule";
-            Sheet sheet = workbook.createSheet(stuName);
-            sheet.setDefaultColumnWidth(20);
+            String stuName = stu.getName() + "s Weekly Schedule"; //sheet name
+            Sheet sheet = workbook.createSheet(stuName); //create new sheet
+            sheet.setDefaultColumnWidth(20); //set default column width
 
-
+            //Creating Header cell
             Row headerRow = sheet.createRow(0);
             Cell headerCell = headerRow.createCell(0);
             headerCell.setCellValue("Weekly Schedule");
@@ -219,7 +221,7 @@ public class ExportController{
             sheet.setColumnWidth(indexCell,10000);
 
 
-
+            //Creating cell for student info
             Row stuNameRow = sheet.createRow(1);
             Cell stuNameCell = stuNameRow.createCell(0);
             stuNameCell.setCellValue("Student: " + stu.getName() + "\n" + "Email: " + stu.getEmail());
@@ -227,15 +229,15 @@ public class ExportController{
 
 
 
-
+            //creating week day header cells
             Row weekDay = sheet.createRow(2);
             for(int i = 0; i<columns.length;i++){
                     Cell cell = weekDay.createCell(i+1);
                     cell.setCellValue(columns[i]);
                     cell.setCellStyle(headerCellStyle2);
-
             }
 
+            //creating cells for week days (where clerkships will go)
             for(int i = 3; i < 5; i++){
                 Row row = sheet.createRow(i);
                 //row.setHeightInPoints((2*sheet.getDefaultRowHeightInPoints()));
@@ -246,8 +248,8 @@ public class ExportController{
             }
 
 
+            //Morning and Afternoon header cells
             Row row = sheet.getRow(3);
-
             Cell mornCell = row.createCell(1);
             mornCell.setCellValue("Morning:");
             mornCell.setCellStyle(style);
@@ -260,6 +262,7 @@ public class ExportController{
             afternoonCell.setCellStyle(style);
 
 
+            //Creating references for all cells where clerkships will need to go
             CellReference MonAM = new CellReference("C4");
             CellReference MonPM = new CellReference("C5");
             CellReference TuesAM = new CellReference("D4");
@@ -275,6 +278,7 @@ public class ExportController{
             CellReference SunAM = new CellReference("I4");
             CellReference SunPM = new CellReference("I5");
 
+            //Iterates through all clerkships a student has and place info in correct cell 
             for(String key: clerkships.keySet()){
                 Clerkship clerk = clerkships.get(key);
                 switch(clerk.getTime()){
