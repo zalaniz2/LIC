@@ -57,7 +57,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
             doctorRepository.save(doc);
         }
-        fileName = "students1.csv";
+        fileName = "student.csv";
 
         classLoader = super.getClass().getClassLoader();
 
@@ -79,6 +79,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             Clerkship clerk1 = new Clerkship();
             Clerkship clerk2 = new Clerkship();
             Clerkship clerk3 = new Clerkship();
+
             clerk1.setTitle("Neurology");
             clerk1.setStudent(stu);
             clerk1.setStudentName(stu.getName());

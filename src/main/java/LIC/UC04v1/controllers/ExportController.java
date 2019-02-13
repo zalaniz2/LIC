@@ -8,6 +8,7 @@ import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -155,18 +156,51 @@ public class ExportController{
         XSSFFont headerFont1 = (XSSFFont) workbook.createFont();
         headerFont1.setBold(true);
         headerFont1.setFontHeightInPoints((short)25);
-        headerFont1.setColor(IndexedColors.LAVENDER.getIndex());
+        headerFont1.setColor(new XSSFColor(new java.awt.Color(77,25,121)));
         CellStyle headerCellStyle1 = workbook.createCellStyle();
         headerCellStyle1.setFont(headerFont1);
 
         XSSFFont headerFont2 = (XSSFFont) workbook.createFont();
         headerFont2.setBold(true);
         headerFont2.setFontHeightInPoints((short)17);
-        headerFont1.setColor(new XSSFColor(new java.awt.Color(77,25,121)));
+
         CellStyle headerCellStyle2 = workbook.createCellStyle();
         headerCellStyle2.setFont(headerFont2);
+        headerCellStyle2.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+        headerCellStyle2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerCellStyle2.setBorderBottom(BorderStyle.MEDIUM);
+        headerCellStyle2.setBorderTop(BorderStyle.MEDIUM);
+        headerCellStyle2.setBorderRight(BorderStyle.MEDIUM);
+        headerCellStyle2.setBorderLeft(BorderStyle.MEDIUM);
 
-        CreationHelper creationHelper = workbook.getCreationHelper();
+        //Style for "Morning" and "Afternoon" header cells
+        XSSFFont font = (XSSFFont) workbook.createFont();
+        font.setBold(false);
+        font.setItalic(true);
+        font.setFontHeightInPoints((short)17);
+        CellStyle style = workbook.createCellStyle();
+        style.setFont(font);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+
+
+        //Style for data cells
+        XSSFFont dataFont = (XSSFFont) workbook.createFont();
+        font.setFontHeightInPoints((short)12);
+        CellStyle dataStyle = workbook.createCellStyle();
+        dataStyle.setFont(dataFont);
+        dataStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        dataStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        dataStyle.setBorderBottom(BorderStyle.THIN);
+        dataStyle.setBorderTop(BorderStyle.THIN);
+        dataStyle.setBorderRight(BorderStyle.THIN);
+        dataStyle.setBorderLeft(BorderStyle.THIN);
+        dataStyle.setWrapText(true);
+
+
+        //CreationHelper creationHelper = workbook.getCreationHelper();
 
         for(Student stu: studentRepository.findAll()){
 
@@ -174,20 +208,22 @@ public class ExportController{
 
             String stuName = stu.getName() + "s Weekly Schedule";
             Sheet sheet = workbook.createSheet(stuName);
-           // sheet.setDefaultColumnWidth(256);
+            sheet.setDefaultColumnWidth(20);
 
 
             Row headerRow = sheet.createRow(0);
             Cell headerCell = headerRow.createCell(0);
             headerCell.setCellValue("Weekly Schedule");
             headerCell.setCellStyle(headerCellStyle1);
+            int indexCell = headerCell.getColumnIndex();
+            sheet.setColumnWidth(indexCell,10000);
+
 
 
             Row stuNameRow = sheet.createRow(1);
             Cell stuNameCell = stuNameRow.createCell(0);
-            stuNameCell.setCellValue("Student: " + stu.getName());
-
-
+            stuNameCell.setCellValue("Student: " + stu.getName() + "\n" + "Email: " + stu.getEmail());
+            stuNameCell.setCellStyle(dataStyle);
 
 
 
@@ -200,23 +236,28 @@ public class ExportController{
 
             }
 
-            for(int i = 3; i < 6; i++){
+            for(int i = 3; i < 5; i++){
                 Row row = sheet.createRow(i);
+                //row.setHeightInPoints((2*sheet.getDefaultRowHeightInPoints()));
                 for(int t = 2; t<9; t++){
                     Cell cell = row.createCell(t);
-                    sheet.setColumnWidth(i+1,4000);
+                    cell.setCellStyle(dataStyle);
                 }
             }
 
+
             Row row = sheet.getRow(3);
+
             Cell mornCell = row.createCell(1);
-            mornCell.setCellValue("Morning");
-            mornCell.setCellStyle(headerCellStyle2);
+            mornCell.setCellValue("Morning:");
+            mornCell.setCellStyle(style);
+
 
             Row row1 = sheet.getRow(4);
             Cell afternoonCell = row1.createCell(1);
             afternoonCell.setCellStyle(headerCellStyle2);
-            afternoonCell.setCellValue("Afternoon");
+            afternoonCell.setCellValue("Afternoon:");
+            afternoonCell.setCellStyle(style);
 
 
             CellReference MonAM = new CellReference("C4");
@@ -240,26 +281,92 @@ public class ExportController{
                     case "MonAM":
                         Row r1 = sheet.getRow(MonAM.getRow());
                         Cell c1 = r1.getCell(MonAM.getCol());
-                        c1.setCellValue(clerk.getTitle());
+                        c1.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c1.setCellStyle(dataStyle);
+                        break;
+                    case "MonPM":
+                        Row r2 = sheet.getRow(MonPM.getRow());
+                        Cell c2 = r2.getCell(MonPM.getCol());
+                        c2.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c2.setCellStyle(dataStyle);
+                        break;
+                    case "TuesAM":
+                        Row r3 = sheet.getRow(TuesAM.getRow());
+                        Cell c3 = r3.getCell(TuesAM.getCol());
+                        c3.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c3.setCellStyle(dataStyle);
+                        break;
+                    case "TuesPM":
+                        Row r4 = sheet.getRow(TuesPM.getRow());
+                        Cell c4 = r4.getCell(TuesPM.getCol());
+                        c4.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c4.setCellStyle(dataStyle);
+                        break;
+                    case "WedAM":
+                        Row r5 = sheet.getRow(WedAM.getRow());
+                        Cell c5 = r5.getCell(WedAM.getCol());
+                        c5.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c5.setCellStyle(dataStyle);
                         break;
                     case "WedPM":
-                        Row r2 = sheet.getRow(WedPM.getRow());
-                        Cell c2 = r2.getCell(WedPM.getCol());
-                        c2.setCellValue(clerk.getTitle());
+                        Row r6 = sheet.getRow(WedPM.getRow());
+                        Cell c6 = r6.getCell(WedPM.getCol());
+                        c6.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c6.setCellStyle(dataStyle);
+                        break;
+                    case "ThursAM":
+                        Row r7 = sheet.getRow(ThursAM.getRow());
+                        Cell c7 = r7.getCell(ThursAM.getCol());
+                        c7.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c7.setCellStyle(dataStyle);
+                        break;
+                    case "ThursPM":
+                        Row r8 = sheet.getRow(ThursPM.getRow());
+                        Cell c8 = r8.getCell(ThursPM.getCol());
+                        c8.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c8.setCellStyle(dataStyle);
                         break;
                     case "FriAM":
-                        Row r3 = sheet.getRow(FriAM.getRow());
-                        Cell c3 = r3.getCell(FriAM.getCol());
-                        c3.setCellValue(clerk.getTitle());
+                        Row r9 = sheet.getRow(FriAM.getRow());
+                        Cell c9 = r9.getCell(FriAM.getCol());
+                        c9.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c9.setCellStyle(dataStyle);
                         break;
-
+                    case "FriPM":
+                        Row r10 = sheet.getRow(FriPM.getRow());
+                        Cell c10 = r10.getCell(FriPM.getCol());
+                        c10.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c10.setCellStyle(dataStyle);
+                        break;
+                    case "SatAM":
+                        Row r11 = sheet.getRow(SatAM.getRow());
+                        Cell c11 = r11.getCell(SatAM.getCol());
+                        c11.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c11.setCellStyle(dataStyle);
+                        break;
+                    case "SatPM":
+                        Row r12 = sheet.getRow(SatPM.getRow());
+                        Cell c12 = r12.getCell(SatPM.getCol());
+                        c12.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c12.setCellStyle(dataStyle);
+                        break;
+                    case "SunAM":
+                        Row r13 = sheet.getRow(SunAM.getRow());
+                        Cell c13 = r13.getCell(SunAM.getCol());
+                        c13.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c13.setCellStyle(dataStyle);
+                        break;
+                    case "SunPM":
+                        Row r14 = sheet.getRow(SunPM.getRow());
+                        Cell c14 = r14.getCell(SunPM.getCol());
+                        c14.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c14.setCellStyle(dataStyle);
+                        break;
                 }
 
             }
 
-            for (int i = 0; i < columns.length; i++){
-                sheet.autoSizeColumn(i);
-            }
+       //autoSizeColumns(workbook);
 
         }
 
@@ -276,6 +383,22 @@ public class ExportController{
 
         workbook.close();
 
+    }
+
+    public void autoSizeColumns(Workbook workbook) {
+        int numberOfSheets = workbook.getNumberOfSheets();
+        for (int i = 0; i < numberOfSheets; i++) {
+            Sheet sheet = workbook.getSheetAt(i);
+            if (sheet.getPhysicalNumberOfRows() > 0) {
+                Row row = sheet.getRow(sheet.getFirstRowNum());
+                Iterator<Cell> cellIterator = row.cellIterator();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    int columnIndex = cell.getColumnIndex();
+                    sheet.autoSizeColumn(columnIndex);
+                }
+            }
+        }
     }
 
 
