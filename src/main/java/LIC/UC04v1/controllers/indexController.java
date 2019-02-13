@@ -36,18 +36,6 @@ public class indexController {
     @GetMapping(path = "/{id}")
     public String getDoctors(Model model,@PathVariable String id){
         String stuID = id;
-       /* int count = 0;
-        ArrayList<Doctor> AvailDoctors = new ArrayList<Doctor>();
-        for(Doctor doc: doctorRepository.findAll()){
-            if(doc.getId()==3)doc.setAvailable(false);
-            if(doc.isAvailable() && doc.getProfession().equals(que)){
-                count++;
-                AvailDoctors.add(doc);
-            }
-        }
-        model.addAttribute("doctors", AvailDoctors);
-        model.addAttribute("count", count);*/
-
         return "redirect:/" +stuID+"/Neurology";
     }
 
@@ -60,11 +48,11 @@ public class indexController {
 
         int count = 0;
         ArrayList<Doctor> AvailNeuroDocs = new ArrayList<Doctor>();
-        int counts[] = new int[28];
+        int counts[] = new int[20];
         for(Doctor doc: doctorRepository.findAll()){
-            if((doc.getProfession().equals(profession))){
-                for(int i = 0; i<28;i++){
-                    if(doc.isAvailable().charAt(i) == '1'){
+            if((doc.getSpecialty().equals(profession))){
+                for(int i = 0; i<20;i++){
+                    if(doc.getAvailabilities().charAt(i) == '1'){
                         counts[i] = counts[i]+1;
                     }
                 }
@@ -78,20 +66,17 @@ public class indexController {
         return "index";
     }
 
-    @RequestMapping(value="/save",method=RequestMethod.POST)
+    @RequestMapping(value="/",method=RequestMethod.POST)
 
-    public  @ResponseBody String  getSearchUserProfiles(@RequestBody Search search) {
+    public  @ResponseBody String save(@RequestBody Search search) {
+
         System.out.println("testing");
         String pName = search.getpName();
         String lName = search.getlName();
         System.out.println(lName + pName);
         // your logic next
-        return "index";
+        return "submit";
     }
 
-    @RequestMapping(path = "/joke")
-    public String joke(){
-        System.out.println("joke");
-        return "index";
-    }
+
 }

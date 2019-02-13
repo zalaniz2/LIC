@@ -89,23 +89,23 @@
                         </tr>
                         <tr>
                             <td>Morning</td>
-                            <td id="cell1" onclick="cell(1,this)" th:text="${count[0]}"></td>
+                            <td id="cell1" onclick="cell(1,this)" ></td>
                             <td id="cell2" onclick="cell(2,this)" th:text="${count[1]}"></td>
                             <td id="cell3" onclick="cell(3,this)" th:text="${count[2]}"></td>
                             <td id="cell4" onclick="cell(4,this)" th:text="${count[3]}"></td>
                             <td id="cell5" onclick="cell(5,this)" th:text="${count[4]}"></td>
                             <td id="cell6" onclick="cell(6,this)" th:text="${count[5]}"></td>
-                            <td id="cell7" onclick="cell(7,this)" th:text="${count[6]}"></td>
+                            <td id="cell7" onclick="cell(7,this)" ></td>
                         </tr>
                         <tr>
                             <td>Afternoon</td>
-                            <td id="cell8" onclick="cell(8,this)" th:text="${count[7]}"></td>
+                            <td id="cell8" onclick="cell(8,this)" ></td>
                             <td id="cell9" onclick="cell(9,this)" th:text="${count[8]}"></td>
                             <td id="cell10" onclick="cell(10,this)" th:text="${count[9]}"></td>
                             <td id="cell11" onclick="cell(11,this)" th:text="${count[10]}"></td>
                             <td id="cell12" onclick="cell(12,this)" th:text="${count[11]}"></td>
                             <td id="cell13" onclick="cell(13,this)" th:text="${count[12]}"></td>
-                            <td id="cell14" onclick="cell(14,this)" th:text="${count[13]}"></td>
+                            <td id="cell14" onclick="cell(14,this)" ></td>
                         </tr>
                     </table>
                 </div>
@@ -123,23 +123,23 @@
                         </tr>
                         <tr >
                             <td>Morning</td>
-                            <td id="cell15" onclick="cell(15,this)" th:text="${count[14]}"></td>
+                            <td id="cell15" onclick="cell(15,this)" ></td>
                             <td id="cell16" onclick="cell(16,this)" th:text="${count[15]}"></td>
                             <td id="cell17" onclick="cell(17,this)" th:text="${count[16]}"></td>
                             <td id="cell18" onclick="cell(18,this)" th:text="${count[17]}"></td>
                             <td id="cell19" onclick="cell(19,this)" th:text="${count[18]}"></td>
                             <td id="cell20" onclick="cell(20,this)" th:text="${count[19]}"></td>
-                            <td id="cell21" onclick="cell(21,this)" th:text="${count[20]}"></td>
+                            <td id="cell21" onclick="cell(21,this)" ></td>
                         </tr>
                         <tr>
                             <td>Afternoon</td>
-                            <td id="cell22" onclick="cell(22,this)" th:text="${count[21]}"></td>
-                            <td id="cell23" onclick="cell(23,this)" th:text="${count[22]}"></td>
-                            <td id="cell24" onclick="cell(24,this)" th:text="${count[23]}"></td>
-                            <td id="cell25" onclick="cell(25,this)" th:text="${count[24]}"></td>
-                            <td id="cell26" onclick="cell(26,this)" th:text="${count[25]}"></td>
-                            <td id="cell27" onclick="cell(27,this)" th:text="${count[26]}"></td>
-                            <td id="cell28" onclick="cell(28,this)" th:text="${count[27]}"></td>
+                            <td id="cell22" onclick="cell(22,this)" ></td>
+                            <td id="cell23" onclick="cell(23,this)" th:text="${count[14]}"></td>
+                            <td id="cell24" onclick="cell(24,this)" th:text="${count[0]}"></td>
+                            <td id="cell25" onclick="cell(25,this)" th:text="${count[6]}"></td>
+                            <td id="cell26" onclick="cell(26,this)" th:text="${count[7]}"></td>
+                            <td id="cell27" onclick="cell(27,this)" th:text="${count[13]}"></td>
+                            <td id="cell28" onclick="cell(28,this)" ></td>
                         </tr>
                     </table>
                 </div>
@@ -164,8 +164,8 @@
                         <form action = "#" th:action="@{/{path}/Pediatrics(path=${stu.getId()})}" >
                             <input type="submit" value="Pediatrics" id="Pediatrics"/>
                         </form>
-                        <form action = "#" th:action="@{/{path}/Phychiatry(path=${stu.getId()})}" >
-                            <input type="submit" value="Phychiatry" id="Phychiatry"/>
+                        <form action = "#" th:action="@{/{path}/Psychiatry(path=${stu.getId()})}" >
+                            <input type="submit" value="Psychiatry" id="Psychiatry"/>
                         </form>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
         "cell8", "cell9", "cell10", "cell11", "cell12", "cell13","cell14","cell15",
         "cell16","cell17","cell18","cell19","cell20","cell21","cell22","cell23","cell24",
         "cell25","cell26","cell27", "cell28"]
-        var specialty = ["Neurology","Family Medicine", "Internal Medicine", "Surgery", "OBGYN", "Pediatrics","Phychiatry"]
+        var specialty = ["Neurology","Family Medicine", "Internal Medicine", "Surgery", "OBGYN", "Pediatrics","Psychiatry"]
 
         function cell(cellNum,x) {
             cellNum=cellNum-1
@@ -272,7 +272,7 @@
                 type: "POST",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
-                url: "/save",
+                url: "/",
                 data: JSON.stringify(search), // Note it is important
                 success: function (result) {
                     // do what ever you want with data
@@ -287,13 +287,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="../../Desktop/LIC/UC04v1/src/main/resources/templates/js/bootstrap.min.js"></script>
   </body>
-<!-- <script th:inline="javascript">
-     $('button[name="nbtn"]').click(function(event){
-         event.preventDefault();
-         var data = $('form').seralize();
-         data += "carl" + "Neurology";
-         $.post('/index', data, 'html');
-     })
- </script>-->
+
 </html>
 

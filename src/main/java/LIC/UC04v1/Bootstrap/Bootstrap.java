@@ -1,5 +1,7 @@
 package LIC.UC04v1.Bootstrap;
 
+import LIC.UC04v1.controllers.Specialty;
+import LIC.UC04v1.controllers.TimeSlot;
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Student;
 import LIC.UC04v1.repositories.ClerkshipRepository;
@@ -10,6 +12,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.ArrayList;
+
 @Component
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private ClerkshipRepository clerkshipRepository;
@@ -52,8 +56,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             Doctor doc = new Doctor();
             doc.setName(values[0]+" "+values[1]);
             doc.setEmail(values[2]);
-            doc.setProfession(values[3]);
-            doc.setAvailable(values[4]);
+            doc.setSpecialty(values[3]);
+            doc.setAvailabilities(values[4]);
+            doc.setSpecialtyInText(convertSpecialty(values[3]));
             doctorRepository.save(doc);
         }
         fileName = "student.csv";
@@ -77,5 +82,19 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             stu.setEmail(values[2]);
             studentRepository.save(stu);
         }
+    }
+
+
+    private Specialty convertSpecialty(String specialty) {
+        switch (specialty) {
+            case "Neurology": return Specialty.Neurology;
+            case "Family Medicine": return Specialty.FamilyMedicine;
+            case "Internal Medicine": return Specialty.InternalMedicine;
+            case "Surgery": return Specialty.Surgery;
+            case "OBGYN": return Specialty.OBGYN;
+            case "Pediatrics": return Specialty.Pediatrics;
+            case "Psychiatry": return Specialty.Psychiatry;
+        }
+        return null;
     }
 }

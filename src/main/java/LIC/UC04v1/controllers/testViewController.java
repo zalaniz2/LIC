@@ -30,7 +30,7 @@ public class testViewController {
 
         for (Doctor doc : doctorRepository.findAll()) {
 
-            if (doc.getProfession().equals(specialty)) {
+            if (doc.getSpecialty().equals(specialty)) {
                 docCount++;
                 AvailDoctors.add(doc);
             }

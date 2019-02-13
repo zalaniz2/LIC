@@ -1,6 +1,10 @@
 package LIC.UC04v1.model;
 
+import LIC.UC04v1.controllers.Specialty;
+import LIC.UC04v1.controllers.TimeSlot;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 public class Doctor {
@@ -12,16 +16,35 @@ public class Doctor {
     private Clerkship clerkship;
     private String name;
     private String email;
-    private String profession;
-    private String available;
+    private String specialty;
+    private boolean available = true;
+    private String availabilities;
+    private Specialty specialtyInText;
 
-    public String isAvailable() {
+    public Specialty getSpecialtyInText() {
+        return specialtyInText;
+    }
+
+    public void setSpecialtyInText(Specialty specialtyInText) {
+        this.specialtyInText = specialtyInText;
+    }
+
+    public boolean isAvailable() {
         return available;
     }
 
-    public void setAvailable(String available) {
+    public void setAvailable(boolean available) {
         this.available = available;
     }
+
+    public String getAvailabilities() {
+        return availabilities;
+    }
+
+    public void setAvailabilities(String availabilities) {
+        this.availabilities = availabilities;
+    }
+
 
     public int getId() {
         return id;
@@ -55,12 +78,12 @@ public class Doctor {
         this.email = email;
     }
 
-    public String getProfession() {
-        return profession;
+    public String getSpecialty() {
+        return specialty;
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
     }
 
     public Doctor(){
