@@ -1,7 +1,10 @@
 package LIC.UC04v1.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 public class Doctor {
 
@@ -15,14 +18,18 @@ public class Doctor {
     private String name;
     private String email;
     private String profession;
+    private String Location;
     private String available;
 
-    public String getAvailable() {
+
+    public String getLocation() { return Location; }
+
+    public void setLocation(String location) { Location = location; }
+    public String isAvailable() {
         return available;
     }
 
-    public void setAvailable(String available) {
-        this.available = available;
+    public Doctor(){
     }
 
     public int getId() {
@@ -65,8 +72,12 @@ public class Doctor {
         this.profession = profession;
     }
 
-    public Doctor(){
+    public String getAvailable() {
+        return available;
+    }
 
+    public void setAvailable(String available) {
+        this.available = available;
     }
 
     public Doctor(String name){
