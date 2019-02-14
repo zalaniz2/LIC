@@ -89,7 +89,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             clerk1.setTime(values[3]);
             clerk1.setLocation("Dallas");
 
-
             clerk2.setTitle("Family Medicine");
             clerk2.setTime(values[4]);
             clerk2.setStudent(stu);
@@ -119,10 +118,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             clerk6.setStudent(stu);
             clerk6.setStudentName(stu.getName());
             clerk6.setLocation("Fort Worth");
-
-            //clerkshipRepository.save(clerk1);
-            //clerkshipRepository.save(clerk2);
-            //clerkshipRepository.save(clerk3);
 
             stu.addClerkship(clerk1.getTitle(),clerk1);
             stu.addClerkship(clerk2.getTitle(),clerk2);
