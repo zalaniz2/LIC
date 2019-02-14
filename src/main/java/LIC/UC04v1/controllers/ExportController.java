@@ -10,7 +10,10 @@ import LIC.UC04v1.repositories.StudentRepository;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -153,6 +156,16 @@ public class ExportController{
 
         Workbook workbook = new XSSFWorkbook(); //New excel workbook
 
+
+        //Header Cell style formatting
+        XSSFFont headerFont = (XSSFFont) workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setUnderline(XSSFFont.U_DOUBLE);
+        headerFont.setFontHeightInPoints((short)30);
+        headerFont.setColor(new XSSFColor(new java.awt.Color(77,25,121)));
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+
         //Header Cell style formatting
         XSSFFont headerFont1 = (XSSFFont) workbook.createFont();
         headerFont1.setBold(true);
@@ -165,9 +178,10 @@ public class ExportController{
         XSSFFont headerFont2 = (XSSFFont) workbook.createFont();
         headerFont2.setBold(true);
         headerFont2.setFontHeightInPoints((short)17);
-        CellStyle headerCellStyle2 = workbook.createCellStyle();
+        XSSFCellStyle headerCellStyle2 = (XSSFCellStyle) workbook.createCellStyle();
         headerCellStyle2.setFont(headerFont2);
-        headerCellStyle2.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+       // headerFont2.setColor(new XSSFColor(new java.awt.Color(47,86,41)));
+        headerCellStyle2.setFillForegroundColor(new XSSFColor(new java.awt.Color(47,86,41)));
         headerCellStyle2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         headerCellStyle2.setBorderBottom(BorderStyle.MEDIUM);
         headerCellStyle2.setBorderTop(BorderStyle.MEDIUM);
@@ -179,8 +193,11 @@ public class ExportController{
         font.setBold(false);
         font.setItalic(true);
         font.setFontHeightInPoints((short)17);
-        CellStyle style = workbook.createCellStyle();
+        //font.setColor(new XSSFColor(new java.awt.Color(72,130,63)));
+        XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
         style.setFont(font);
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(72,130,63)));
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         style.setBorderBottom(BorderStyle.THIN);
         style.setBorderTop(BorderStyle.THIN);
         style.setBorderRight(BorderStyle.THIN);
@@ -189,10 +206,10 @@ public class ExportController{
 
         //Style for data cells
         XSSFFont dataFont = (XSSFFont) workbook.createFont();
-        font.setFontHeightInPoints((short)12);
-        CellStyle dataStyle = workbook.createCellStyle();
+        dataFont.setFontHeightInPoints((short)12);
+        XSSFCellStyle dataStyle = (XSSFCellStyle) workbook.createCellStyle();
         dataStyle.setFont(dataFont);
-        dataStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        dataStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(193,224,184)));
         dataStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         dataStyle.setBorderBottom(BorderStyle.THIN);
         dataStyle.setBorderTop(BorderStyle.THIN);
@@ -200,6 +217,21 @@ public class ExportController{
         dataStyle.setBorderLeft(BorderStyle.THIN);
         dataStyle.setWrapText(true);
 
+        //Style for WEEK header cell
+        XSSFFont weekHeaderFont = (XSSFFont) workbook.createFont();
+        weekHeaderFont.setFontHeightInPoints((short)20);
+        weekHeaderFont.setBold(true);
+        CellStyle weekHeaderStyle = workbook.createCellStyle();
+        weekHeaderStyle.setFont(weekHeaderFont);
+
+
+        //Style for Stu Info Cell
+        XSSFFont stuInfoFont = (XSSFFont) workbook.createFont();
+        stuInfoFont.setFontHeightInPoints((short)15);
+        stuInfoFont.setBold(true);
+        CellStyle stuInfoStyle = workbook.createCellStyle();
+        stuInfoStyle.setFont(stuInfoFont);
+        stuInfoStyle.setWrapText(true);
 
         //CreationHelper creationHelper = workbook.getCreationHelper();
 
@@ -212,8 +244,13 @@ public class ExportController{
             Sheet sheet = workbook.createSheet(stuName); //create new sheet
             sheet.setDefaultColumnWidth(20); //set default column width
 
+            sheet.addMergedRegion(new CellRangeAddress(0,0,3,6));
+            String head = "TCU/UNT Medical School Scheduling";
+            Cell cellMerge = CellUtil.createCell(CellUtil.getRow(0,sheet),3,head,headerCellStyle);
+            CellUtil.setAlignment(cellMerge,HorizontalAlignment.CENTER);
+
             //Creating Header cell
-            Row headerRow = sheet.createRow(0);
+            Row headerRow = sheet.createRow(1);
             Cell headerCell = headerRow.createCell(0);
             headerCell.setCellValue("Weekly Schedule");
             headerCell.setCellStyle(headerCellStyle1);
@@ -222,23 +259,23 @@ public class ExportController{
 
 
             //Creating cell for student info
-            Row stuNameRow = sheet.createRow(1);
+            Row stuNameRow = sheet.createRow(2);
             Cell stuNameCell = stuNameRow.createCell(0);
             stuNameCell.setCellValue("Student: " + stu.getName() + "\n" + "Email: " + stu.getEmail());
-            stuNameCell.setCellStyle(dataStyle);
+            stuNameCell.setCellStyle(stuInfoStyle);
 
 
 
             //creating week day header cells
-            Row weekDay = sheet.createRow(2);
+            Row row3 = sheet.createRow(3);
             for(int i = 0; i<columns.length;i++){
-                    Cell cell = weekDay.createCell(i+1);
+                    Cell cell = row3.createCell(i+1);
                     cell.setCellValue(columns[i]);
                     cell.setCellStyle(headerCellStyle2);
             }
 
             //creating cells for week days (where clerkships will go)
-            for(int i = 3; i < 5; i++){
+            for(int i = 4; i < 6; i++){
                 Row row = sheet.createRow(i);
                 //row.setHeightInPoints((2*sheet.getDefaultRowHeightInPoints()));
                 for(int t = 2; t<9; t++){
@@ -248,35 +285,41 @@ public class ExportController{
             }
 
 
+
+            Row row2 = sheet.getRow(2);
+            Cell weekCell = row2.createCell(1);
+            weekCell.setCellValue("WEEK 1:");
+            weekCell.setCellStyle(weekHeaderStyle);
+
             //Morning and Afternoon header cells
-            Row row = sheet.getRow(3);
-            Cell mornCell = row.createCell(1);
+            Row row4 = sheet.getRow(4);
+            Cell mornCell = row4.createCell(1);
             mornCell.setCellValue("Morning:");
             mornCell.setCellStyle(style);
 
 
-            Row row1 = sheet.getRow(4);
-            Cell afternoonCell = row1.createCell(1);
+            Row row5 = sheet.getRow(5);
+            Cell afternoonCell = row5.createCell(1);
             afternoonCell.setCellStyle(headerCellStyle2);
             afternoonCell.setCellValue("Afternoon:");
             afternoonCell.setCellStyle(style);
 
 
             //Creating references for all cells where clerkships will need to go
-            CellReference MonAM = new CellReference("C4");
-            CellReference MonPM = new CellReference("C5");
-            CellReference TuesAM = new CellReference("D4");
-            CellReference TuesPM = new CellReference("D5");
-            CellReference WedAM = new CellReference("E4");
-            CellReference WedPM = new CellReference("E5");
-            CellReference ThursAM = new CellReference("F4");
-            CellReference ThursPM = new CellReference("F5");
-            CellReference FriAM = new CellReference("G4");
-            CellReference FriPM = new CellReference("G5");
-            CellReference SatAM = new CellReference("H4");
-            CellReference SatPM = new CellReference("H5");
-            CellReference SunAM = new CellReference("I4");
-            CellReference SunPM = new CellReference("I5");
+            CellReference MonAM = new CellReference("C5");
+            CellReference MonPM = new CellReference("C6");
+            CellReference TuesAM = new CellReference("D5");
+            CellReference TuesPM = new CellReference("D6");
+            CellReference WedAM = new CellReference("E5");
+            CellReference WedPM = new CellReference("E6");
+            CellReference ThursAM = new CellReference("F5");
+            CellReference ThursPM = new CellReference("F6");
+            CellReference FriAM = new CellReference("G5");
+            CellReference FriPM = new CellReference("G6");
+            CellReference SatAM = new CellReference("H5");
+            CellReference SatPM = new CellReference("H6");
+            CellReference SunAM = new CellReference("I5");
+            CellReference SunPM = new CellReference("I6");
 
             //Iterates through all clerkships a student has and place info in correct cell 
             for(String key: clerkships.keySet()){
