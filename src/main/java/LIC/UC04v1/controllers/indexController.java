@@ -4,6 +4,7 @@ import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Student;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.jboss.jandex.IndexReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 @Scope("request")
 public class indexController {
@@ -32,10 +34,10 @@ public class indexController {
         this.studentRepository = studentRepository;
     }
 
-    @GetMapping(path = "/{id}")
+/*    @GetMapping(path = "/{id}")
     public String getDoctors(Model model,@PathVariable String id){
         String stuID = id;
-       /* int count = 0;
+       *//* int count = 0;
         ArrayList<Doctor> AvailDoctors = new ArrayList<Doctor>();
         for(Doctor doc: doctorRepository.findAll()){
             if(doc.getId()==3)doc.setAvailable(false);
@@ -45,7 +47,7 @@ public class indexController {
             }
         }
         model.addAttribute("doctors", AvailDoctors);
-        model.addAttribute("count", count);*/
+        model.addAttribute("count", count);*//*
 
         return "redirect:/" +stuID+"/Neurology";
     }
@@ -75,13 +77,9 @@ public class indexController {
         model.addAttribute("count", counts);
 
         return "index";
-    }
+    }*/
 
 
 
-    @RequestMapping(path = "/joke")
-    public String joke(){
-        System.out.println("joke");
-        return "index";
-    }
+
 }
