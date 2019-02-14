@@ -108,6 +108,7 @@
           action="/import-Data/doctors/${uploadFileUrl}">
         <input type="file" name="file" accept=".xls,.xlsx, .csv" /> <input
             type="submit" value="Upload file" />
+        <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
         <p th:text="${docImportMsg}"></p>
     </form>
 
@@ -118,6 +119,7 @@
           action="/import-Data/students/${uploadFileUrl}">
         <input type="file" name="file" accept=".xls,.xlsx, .csv" /> <input
             type="submit" value="Upload file" />
+        <p th:if="${studentsError != null}" style="color:red" th:text="${studentsError}"></p>
         <p th:text="${stuImportMsg}"></p>
     </form>
 </div>
