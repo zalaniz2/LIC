@@ -139,14 +139,10 @@ public class ExportController{
     @RequestMapping(value = "/downloadExcel")
     public void downloadExcel(HttpServletResponse response2) throws IOException{
 
-        Student temp = null;
+        int yr = Calendar.getInstance().get(Calendar.YEAR);
+        String year = Integer.toString(yr);
 
-        for(Student stu: studentRepository.findAll()){
-            temp = stu;
-            break;
-        }
-
-        String excelFileName = "StudentSchedules.xlsx"; //file name
+        String excelFileName = "StudentSchedules-" + year + ".xlsx"; //file name
 
         response2.setHeader("Content-Disposition", "attachment; filename="+excelFileName); //set content type of the response so that jQuery knows what it can expect
         //response2.setHeader("charset", "iso-8859-1");
@@ -240,7 +236,7 @@ public class ExportController{
 
             Map<String, Clerkship> clerkships = stu.getClerkships(); //map of the student's clerkships
 
-            String stuName = stu.getName() + "s Weekly Schedule"; //sheet name
+            String stuName = stu.getName() + "'s Schedule-"+year; //sheet name
             Sheet sheet = workbook.createSheet(stuName); //create new sheet
             sheet.setDefaultColumnWidth(20); //set default column width
 
