@@ -18,22 +18,7 @@ public class Doctor {
     private String profession;
     private String Location;
     private String available;
-    private Boolean MM;
 
-
-    private Boolean MA;
-    private Boolean TM;
-    private Boolean TA;
-    private Boolean WM;
-    private Boolean WA;
-    private Boolean RM;
-    private Boolean RA;
-    private Boolean FM;
-    private Boolean FA;
-    private Boolean AM;
-    private Boolean AA;
-    private Boolean UM;
-    private Boolean UA;
 
     public String getLocation() { return Location; }
 
@@ -44,6 +29,54 @@ public class Doctor {
 
     public Doctor(){
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Clerkship getClerkship() {
+        return clerkship;
+    }
+
+    public void setClerkship(Clerkship clerkship) {
+        this.clerkship = clerkship;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public String getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(String available) {
+        this.available = available;
     }
 
     public Doctor(String name){
