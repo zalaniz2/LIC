@@ -28,7 +28,7 @@ public class BruteController {
         this.studentRepository = studentRepository;
         this.clerkshipRepository = clerkshipRepository;
     }
-    @RequestMapping(path = "brute")
+    @RequestMapping(path = "/brute")
     public String brute(Model model) {
         return "brute";
     }
@@ -46,7 +46,7 @@ public class BruteController {
             ArrayList<TimeSlot> studentSched = new ArrayList<TimeSlot>();
             List<Clerkship> clerks = new ArrayList<Clerkship>() ;
             //randomize through all specialties
-            for (int z =0; z< 7; z++) {
+            for (int z = 0; z< 7; z++) {
                 int randomIndex = rand.nextInt(specialties.size());
                 Specialty specialty = specialties.get(randomIndex);
                 short need;
