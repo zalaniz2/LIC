@@ -4,13 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>Prescheduling Form</title>
+    <link rel="stylesheet" href="css/FormStyle.css" type="text/css">
+    <title>Pre-scheduling Form</title>
 </head>
 <body>
     <div>
         <!--/*@thymesVar id="doctor" type="LIC.UC04v1.domain.doctorForm.java"*/-->
         <form action="#" th:action="@{/thankDoctor}" th:object="${doctor}" method="post">
+            <input type="hidden" th:field="*{id}">
         <label>Plese select all times you are available to partake in a clerkship.</label>
+
         <ul>
             <li>
                 <input type="checkbox"
@@ -80,7 +83,7 @@
             <li>
                 <input type="checkbox"
                        th:field="*{UA}" />
-                <label>Sunday 1Pm - 5PM</label>
+                <label>Sunday 1PM - 5PM</label>
             </li>
         </ul>
 

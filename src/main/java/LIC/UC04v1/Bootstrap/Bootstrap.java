@@ -5,20 +5,22 @@ import LIC.UC04v1.model.Student;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+@Slf4j
 @Component
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private ClerkshipRepository clerkshipRepository;
     private DoctorRepository doctorRepository;
     private StudentRepository studentRepository;
 
-
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        log.debug("debugging bootstrap");
         try {
             initData();
         } catch (IOException e) {

@@ -4,6 +4,7 @@ import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Student;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.jboss.jandex.IndexReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 @Scope("request")
 public class indexController {

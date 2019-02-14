@@ -1,6 +1,7 @@
 package LIC.UC04v1.domain;
 
 public class doctorForm {
+    public int id;
     public Location Location;
     public boolean MM;
     public boolean MA;
@@ -18,6 +19,14 @@ public class doctorForm {
     public boolean UA;
 
     public doctorForm(){}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Location getLocation() {
         return Location;
