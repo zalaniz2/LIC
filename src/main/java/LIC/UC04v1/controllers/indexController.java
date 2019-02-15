@@ -3,6 +3,7 @@ package LIC.UC04v1.controllers;
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Clerkship;
 import LIC.UC04v1.model.Student;
+import LIC.UC04v1.model.sortDoctorByAvailDates;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.StudentRepository;
@@ -12,10 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.Doc;
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.Random;
+import java.util.*;
 
 
 @Controller
@@ -36,13 +34,13 @@ indexController {
     public int[] getAvailabilities(String profession){
 
         int count = 0;
-        int counts[] = new int[20];
+        int counts[] = new int[24];
 
         for(Doctor doc: doctorRepository.findAll()){
 
             if((doc.getSpecialty().equals(profession))){
 
-                for(int i = 0; i<20;i++){
+                for(int i = 0; i<24;i++){
 
                     if(doc.getAvailabilities().charAt(i) == '1' && doc.isAvailable()){
                         counts[i] = counts[i] + 1;
@@ -57,20 +55,6 @@ indexController {
     }
 
 
-    public ArrayList<Doctor> getDocWithProfession(String profession){
-
-        ArrayList<Doctor> d = new ArrayList<Doctor>();
-
-        for( Doctor docs: doctorRepository.findAll()){
-            //loop through all doctors
-            if(docs.getSpecialty().equals(profession)){
-                d.add(docs);
-            }
-        }
-
-        return d;
-
-    }
 
 
     public ArrayList<Integer> addScheduleDays(Schedule s){
@@ -89,20 +73,6 @@ indexController {
 
     }
 
-        /*
-    public void createStudent(){
-
-        Student stu = new Student();
-
-        String name = "student" + id;
-        stu.setName(name);
-
-        student = stu;
-
-        studentRepository.save(student);
-
-    }
-    */
 
     public int getClerkshipDay(int num, Schedule s){
 
@@ -123,12 +93,12 @@ indexController {
 
     }
 
-    public String getClerkshipName(int num){
+    public String getSpecialty(int num){
 
         String prof = "";
 
         switch(num){
-            case 0: prof = "ER"; break;
+            case 0: prof = "Surgery"; break;
             case 1: prof = "Family Medicine"; break;
             case 2: prof = "Internal Medicine"; break;
             case 3: prof = "Neurology"; break;
@@ -141,69 +111,9 @@ indexController {
         return prof;
     }
 
-    /*
-    public boolean createClerkships(Schedule s){
-
-        ArrayList<Integer> days = addScheduleDays(s);
-        ArrayList<Doctor> doctors;
-        ArrayList<Clerkship> stuClerks = new ArrayList<>();
-        System.out.println(days.size());
 
 
-        for( int i = 0; i<7; i++){
 
-            String profession = getClerkshipName(i);
-            System.out.println(profession);
-            doctors = getDocWithProfession(profession);
-            System.out.println(doctors.size());
-            System.out.println("i = " + i);
-            int day = days.get(i);
-
-            for( int j = 0; j<doctors.size(); j++){
-                Doctor d = doctors.get(j);
-                if( d.getAvailability().charAt(day) == '1' && d.isAvailable()){
-
-                    System.out.println("found a doc get out");
-                    Clerkship c = new Clerkship();
-                    c.setDoctor(d);
-                    c.setStudent(student);
-                    c.setTime(day);
-                    clerkshipRepository.save(c);
-                    stuClerks.add(c);
-                    d.setClerkship(c);
-                    d.setAvailable(false);
-                    doctorRepository.save(d);
-                    break;
-                }
-            }
-            System.out.println("back to outer loop on i = " + i);
-
-        }
-        student.setClerkships(stuClerks);
-        studentRepository.save(student);
-
-
-        if( stuClerks.size() == 7){
-            System.out.println("got all clerks");
-        }
-        else{
-            System.out.println("didn't work");
-
-        }
-        id++;
-        return true;
-
-    }
-    */
-
-
-    @GetMapping(path = "/")
-        public String index(){
-
-        System.out.println("Main page.");
-        return "index";
-
-    }
     @RequestMapping(path = "/{stuID}")
     public String neuro(Model model, @PathVariable String stuID){
         Student stu = studentRepository.findById(stuID).orElse(null);
@@ -223,32 +133,6 @@ indexController {
 
     }
 
-        /*
-    @RequestMapping(value="/grabstudents", method=RequestMethod.POST)
-
-    public @ResponseBody
-    ArrayList<String> grabStudents() {
-
-        System.out.println("Ajax call to get students for admin.");
-
-        ArrayList<String> adminView = new ArrayList<String>();
-        for( Student stu: studentRepository.findAll() ){
-
-            adminView.add(stu.getId() + "");
-            adminView.add(stu.getName());
-
-            for( Clerkship clerk : clerkshipRepository.findAll()){
-                adminView.add(clerk.getDoctor().getProfession());
-                adminView.add(clerk.getDoctor().getName());
-                adminView.add(clerk.getTime() + "");
-            }
-
-        }
-
-       return adminView;
-    }
-    */
-
 
     @RequestMapping(value="/getdocs", method=RequestMethod.POST)
 
@@ -267,6 +151,44 @@ indexController {
 
     public @ResponseBody
     boolean sendSchedule(@RequestBody Schedule s) {
+        Student stu = studentRepository.findById(s.getId()).orElse(null);
+        List<Doctor> docs;
+        Map<String, Clerkship> stuSched = new HashMap<>();
+        for( int i = 0; i<7; i++){
+
+            docs = doctorRepository.findBySpecialtyAndAvailable(getSpecialty(i), true);
+
+            //sorting stuffs
+            for (Doctor doc: docs) {
+                doc.setNumberOfDaysAvail();
+            }
+            Collections.sort(docs, new sortDoctorByAvailDates());
+            //end sorting stuffs
+
+            for (Doctor doc: docs) {
+                if (doc.getAvailabilities().charAt(getClerkshipDay(i,s ))=='1'){
+                    Clerkship clerk = new Clerkship();
+                    clerk.setStudent(stu);
+                    clerk.setDoctor(doc);
+                    clerk.setDay(getClerkshipDay(i,s));
+
+                    clerkshipRepository.save(clerk);
+                    doc.setClerkship(clerk);
+                    doc.setAvailable(false);
+                    doctorRepository.save(doc);
+                    stuSched.put(getSpecialty(i),clerk);
+                    break;
+                }
+            }
+
+        }
+        stu.setClerkships(stuSched);
+        studentRepository.save(stu);
+
+        if (stuSched.size()!=7) {
+            System.out.println("fail at student ");
+        }
+
 
         s.schedToString();
 
@@ -301,6 +223,15 @@ class Schedule{
     private String obgyn;
     private String pediatrics;
     private String psychiatry;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getSurgery() {
         return surgery;
@@ -366,6 +297,8 @@ class Schedule{
         System.out.println("OBGYN on day " + getObgyn());
         System.out.println("Pediatrics on day " + getPediatrics());
         System.out.println("Psychiatry on day " + getPsychiatry());
+        System.out.println("ID: " + getId());
+
 
     }
 

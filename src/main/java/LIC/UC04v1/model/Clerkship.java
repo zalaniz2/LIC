@@ -18,6 +18,15 @@ public class Clerkship {
     private TimeSlot time;
     private TimeSlot time2;
     private Specialty specialty;
+    private int day;
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
 
     public Specialty getSpecialty() {
         return specialty;

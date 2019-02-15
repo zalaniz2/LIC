@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface DoctorRepository extends CrudRepository<Doctor, Integer> {
-    List<Doctor> findBySpecialty(String specialty);
+    List<Doctor> findBySpecialtyAndAvailable(String specialty, boolean avail);
     List<Doctor> findBySpecialtyInTextAndAvailable(Specialty specialty, boolean avail);
 }

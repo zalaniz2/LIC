@@ -3,6 +3,7 @@ package LIC.UC04v1.controllers;
 import LIC.UC04v1.model.Clerkship;
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Student;
+import LIC.UC04v1.model.sortDoctorByAvailDates;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
@@ -11,10 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.expression.Lists;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import javax.print.Doc;
+import java.sql.Time;
+import java.util.*;
 
 @Controller
 public class BruteController {
@@ -44,7 +44,7 @@ public class BruteController {
         for (int i = 0; i <studentCount; i++) {
             List<Specialty> specialties = new ArrayList (Arrays.asList(Specialty.values()));
             ArrayList<TimeSlot> studentSched = new ArrayList<TimeSlot>();
-            List<Clerkship> clerks = new ArrayList<Clerkship>() ;
+            Map<String,Clerkship> clerks = new HashMap<String, Clerkship>() ;
             //randomize through all specialties
             for (int z = 0; z< 7; z++) {
                 int randomIndex = rand.nextInt(specialties.size());
@@ -55,17 +55,25 @@ public class BruteController {
                 }
                 else need =1;
 
-                //test
-                System.out.println("Specialty: "+specialty+ " ("+z+") at need = "+need);
                 List<Doctor> docs = doctorRepository.findBySpecialtyInTextAndAvailable(specialty,true);
+                for (Doctor doc: docs) {
+                    doc.setNumberOfDaysAvail();
+                }
+                Collections.sort(docs, new sortDoctorByAvailDates());
+
+                for (Doctor doc: docs) {
+                    System.out.println(doc.getNumberOfDaysAvail());
+                }
                 for (Doctor doc: docs) {
 
                     ArrayList<TimeSlot> docAvail = convertAvailabilities(doc.getAvailabilities());
 
                     //test
-                    for (TimeSlot time: docAvail) {
-                        System.out.println(time);
+                    for (TimeSlot time : docAvail){
+                        System.out.println(time.name());
                     }
+                    System.out.println("---------------");
+
 
                     TimeSlot time;
                     if ((time = compareSchedule(studentSched, docAvail, need))!=null){
@@ -80,7 +88,7 @@ public class BruteController {
                             clerk.setTime(time);
                             clerk.setSpecialty(specialty);
 
-                            clerks.add(clerk);
+                            clerks.put(clerk.getSpecialty().name(),clerk);
 
                             clerkshipRepository.save(clerk);
                             doc.setClerkship(clerk);
@@ -90,14 +98,17 @@ public class BruteController {
                         else {
                             studentSched.add(time);
                             studentSched.add(getOtherTime(time));
+
                             doc.setAvailable(false);
+
                             Clerkship clerk = new Clerkship();
                             clerk.setDoctor(doc);
                             clerk.setStudent(students.get(i));
                             clerk.setTime(time);
                             clerk.setTime2(getOtherTime(time));
                             clerk.setSpecialty(specialty);
-                            clerks.add(clerk);
+
+                            clerks.put(clerk.getSpecialty().name(),clerk);
                             clerkshipRepository.save(clerk);
                             doc.setClerkship(clerk);
                             doctorRepository.save(doc);
@@ -105,18 +116,14 @@ public class BruteController {
                             break;
                         }
                     }
-                    else {
-                        System.out.print("fail at stu " + i);
-                        return null;
-                    }
+
                 }
 
-                System.out.println("Student------ ");
-                for (TimeSlot time: studentSched) {
-                    System.out.println(time);
-                }
-                System.out.println("------------");
                 specialties.remove(randomIndex);
+            }
+            if (clerks.size()!=7) {
+                System.out.println("fail at student "+i);
+                return "brute";
             }
             students.get(i).setClerkships(clerks);
             studentRepository.save(students.get(i));
@@ -167,11 +174,14 @@ public class BruteController {
             case WedA2: return TimeSlot.WedA1;
             case WedM1: return TimeSlot.WedM2;
             case WedM2: return TimeSlot.WedM1;
+            case SatA1: return TimeSlot.SatA2;
+            case SatA2: return TimeSlot.SatA1;
+            case SatM1: return TimeSlot.SatM2;
+            case SatM2: return TimeSlot.SatM1;
         }
         return null;
     }
     private ArrayList<TimeSlot> convertAvailabilities(String avail){
-        System.out.println(avail);
         ArrayList<TimeSlot> returnVal = new ArrayList<TimeSlot>();
         for (int i =0; i <avail.length();i++) {
             if (avail.charAt(i)=='1') {
@@ -186,16 +196,21 @@ public class BruteController {
                     case 7: returnVal.add(TimeSlot.ThuA1); break;
                     case 8: returnVal.add(TimeSlot.FriM1); break;
                     case 9: returnVal.add(TimeSlot.FriA1); break;
-                    case 10: returnVal.add(TimeSlot.MonM2); break;
-                    case 11: returnVal.add(TimeSlot.MonA2); break;
-                    case 12: returnVal.add(TimeSlot.TueM2); break;
-                    case 13: returnVal.add(TimeSlot.TueA2); break;
-                    case 14: returnVal.add(TimeSlot.WedM2); break;
-                    case 15: returnVal.add(TimeSlot.WedA2); break;
-                    case 16: returnVal.add(TimeSlot.ThuM2); break;
-                    case 17: returnVal.add(TimeSlot.ThuA2); break;
-                    case 18: returnVal.add(TimeSlot.FriM2); break;
-                    case 19: returnVal.add(TimeSlot.FriA2); break;
+                    case 10: returnVal.add(TimeSlot.SatM1); break;
+                    case 11: returnVal.add(TimeSlot.SatA1); break;
+                    case 12: returnVal.add(TimeSlot.MonM2); break;
+                    case 13: returnVal.add(TimeSlot.MonA2); break;
+                    case 14: returnVal.add(TimeSlot.TueM2); break;
+                    case 15: returnVal.add(TimeSlot.TueA2); break;
+                    case 16: returnVal.add(TimeSlot.WedM2); break;
+                    case 17: returnVal.add(TimeSlot.WedA2); break;
+                    case 18: returnVal.add(TimeSlot.ThuM2); break;
+                    case 19: returnVal.add(TimeSlot.ThuA2); break;
+                    case 20: returnVal.add(TimeSlot.FriM2); break;
+                    case 21: returnVal.add(TimeSlot.FriA2); break;
+                    case 22: returnVal.add(TimeSlot.SatM2); break;
+                    case 23: returnVal.add(TimeSlot.SatA2); break;
+
                 }
             }
         }

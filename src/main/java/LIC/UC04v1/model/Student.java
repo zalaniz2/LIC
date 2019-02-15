@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Student {
@@ -13,6 +14,12 @@ public class Student {
     @Id
     private String id;
     private String email;
+
+    @OneToMany(mappedBy = "student")
+    private Map<String, Clerkship> clerkships;
+    private String Name;
+
+    public Student(){}
 
     public String getId() {
         return id;
@@ -30,11 +37,11 @@ public class Student {
         this.email = email;
     }
 
-    public List<Clerkship> getClerkships() {
+    public Map<String, Clerkship> getClerkships() {
         return clerkships;
     }
 
-    public void setClerkships(List<Clerkship> clerkships) {
+    public void setClerkships(Map<String, Clerkship> clerkships) {
         this.clerkships = clerkships;
     }
 
@@ -45,11 +52,4 @@ public class Student {
     public void setName(String name) {
         Name = name;
     }
-
-    @OneToMany(mappedBy = "student")
-    private List<Clerkship> clerkships;
-    private String Name;
-
-    public Student(){}
-
 }

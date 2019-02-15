@@ -66,7 +66,7 @@
               </li>
               <li class="nav-item">
                   <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a>
-                  <p th:text="${stu.getId()}" class="hidden" id="stuid"></p>
+                  <p th:text="${stu.getId()}" id="stuid"></p>
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -264,7 +264,10 @@
             var onProfession = false; //boolean to see whether student is clicked into a Profession or not
             var profession;
             var availResult;
-            console.log($("#stuid").text());
+
+            var studentID = $("#stuid").text();
+            console.log(studentID);
+
 
             $("#specialty-chosen input[type=submit]").click(function(e){
 
@@ -670,6 +673,10 @@
                     }
 
                 });
+
+                sched["id"] = studentID;
+
+
 
 
                 $.ajax({
