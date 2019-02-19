@@ -34,7 +34,6 @@ public class DoctorController {
         docF.id = id;
         Doctor doc = doctorService.findById(id);
         docF.name = doc.getName();
-        if(doc.getAvailable().charAt(0)=='1') docF.MM = true;
         if(doc.getAvailabilities().charAt(0)=='1') docF.MM = true;
         else  docF.MM = false;
         if(doc.getAvailabilities().charAt(1)=='1') docF.MA = true;
