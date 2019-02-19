@@ -2,6 +2,7 @@ package LIC.UC04v1.domain;
 
 public class doctorForm {
     public int id;
+    public String name;
     public Location Location;
     public boolean MM;
     public boolean MA;

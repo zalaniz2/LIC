@@ -8,11 +8,12 @@
     <title>Pre-scheduling Form</title>
 </head>
 <body>
-    <div>
+    <div class="vbucks">
         <!--/*@thymesVar id="doctor" type="LIC.UC04v1.domain.doctorForm.java"*/-->
         <form action="#" th:action="@{/thankDoctor}" th:object="${doctor}" method="post">
             <input type="hidden" th:field="*{id}">
-        <label>Plese select all times you are available to partake in a clerkship.</label>
+            <label th:text="*{name}">DrDr</label><br>
+        <label>Please select all times you are available to partake in a clerkship.</label>
 
         <ul>
             <li>

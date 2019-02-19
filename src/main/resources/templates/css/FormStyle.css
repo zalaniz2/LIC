@@ -2,3 +2,24 @@ ul {
     list-style-type: none;
     padding: 0;
 }
+ th{
+     width: 80px !important;
+ }
+.table tbody tr > td.avail {
+    background-color: cornflowerblue !important;
+}
+.table tbody tr > td.avail:hover {
+    background-color: royalblue !important;
+}
+.table tbody tr > td.chosen {
+    background-color: seagreen !important;
+    color: #f2f2f2;
+    font-weight: bold;
+    font-size: 13px;
+}
+.table tbody tr > td.chosen:hover {
+    background-color: forestgreen !important;
+}
+.vbucks{
+    margin-left: 50px;
+}
