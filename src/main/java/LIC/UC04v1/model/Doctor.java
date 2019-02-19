@@ -4,16 +4,21 @@ import LIC.UC04v1.controllers.Location;
 import LIC.UC04v1.controllers.Specialty;
 import LIC.UC04v1.controllers.TimeSlot;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+@Data
 @Entity
 public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    //maybe change to a collection of clerkships so they can change it in the future
+    //have a restraint that kayla can edit the number of clerkships a doctor can have
     @OneToOne
     private Clerkship clerkship;
     private String name;
@@ -26,8 +31,25 @@ public class Doctor {
     private String location;
     private Location locationInText;
 
+    public Doctor() {}
     public String getLocation() {
         return location;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setNumberOfDaysAvail(int numberOfDaysAvail) {
+        this.numberOfDaysAvail = numberOfDaysAvail;
     }
 
     public void setLocation(String location) {
@@ -40,10 +62,6 @@ public class Doctor {
 
     public void setLocationInText(Location locationInText) {
         this.locationInText = locationInText;
-    }
-
-    public boolean isAvailable() {
-        return available;
     }
 
     public void setAvailable(boolean available) {
@@ -89,18 +107,6 @@ public class Doctor {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getSpecialty() {
-        return specialty;
-    }
-
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
-    }
-
-    public Doctor(){
-
     }
 
     public Specialty getSpecialtyInText() {
