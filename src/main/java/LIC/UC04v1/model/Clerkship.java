@@ -65,8 +65,8 @@ public class Clerkship {
     }
     private TimeSlot time;
     private TimeSlot time2;
-    private int timeInt1;
-    private int timeInt2;
+    private int timeInt1=-1;
+    private int timeInt2=-1;
     private Specialty specialty;
     private int day;
 
