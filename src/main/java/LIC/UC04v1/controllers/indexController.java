@@ -17,13 +17,12 @@ import java.util.*;
 
 
 @Controller
-public class
-indexController {
+public class indexController {
 
     private DoctorRepository doctorRepository;
     private ClerkshipRepository clerkshipRepository;
     private StudentRepository studentRepository;
-
+    private MiscMethods misc = new MiscMethods();
 
     public indexController(DoctorRepository doctorRepository, ClerkshipRepository clerkshipRepository, StudentRepository studentRepository){
         this.doctorRepository = doctorRepository;
@@ -53,9 +52,6 @@ indexController {
         return counts;
 
     }
-
-
-
 
     public ArrayList<Integer> addScheduleDays(Schedule s){
 
@@ -96,7 +92,6 @@ indexController {
     public String getSpecialty(int num){
 
         String prof = "";
-
         switch(num){
             case 0: prof = "Surgery"; break;
             case 1: prof = "Family Medicine"; break;
@@ -155,8 +150,10 @@ indexController {
         List<Doctor> docs;
         Map<String, Clerkship> stuSched = new HashMap<>();
         for( int i = 0; i<7; i++){
+            String spe = getSpecialty(i);
+            Specialty specialty = misc.toSpecialty(spe);
 
-            docs = doctorRepository.findBySpecialtyAndAvailable(getSpecialty(i), true);
+            docs = doctorRepository.findBySpecialtyAndAvailable(spe, true);
 
             //sorting stuffs
             for (Doctor doc: docs) {
@@ -165,18 +162,25 @@ indexController {
             Collections.sort(docs, new sortDoctorByAvailDates());
             //end sorting stuffs
 
+
+
             for (Doctor doc: docs) {
                 if (doc.getAvailabilities().charAt(getClerkshipDay(i,s ))=='1'){
                     Clerkship clerk = new Clerkship();
                     clerk.setStudent(stu);
                     clerk.setDoctor(doc);
                     clerk.setDay(getClerkshipDay(i,s));
+                    clerk.setTime(misc.toTimeSlot(getClerkshipDay(i,s)));
+                    clerk.setSpecialty(specialty);
+                    if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
+                        clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
+                    }
 
                     clerkshipRepository.save(clerk);
                     doc.setClerkship(clerk);
                     doc.setAvailable(false);
                     doctorRepository.save(doc);
-                    stuSched.put(getSpecialty(i),clerk);
+                    stuSched.put(spe,clerk);
                     break;
                 }
             }
@@ -186,7 +190,7 @@ indexController {
         studentRepository.save(stu);
 
         if (stuSched.size()!=7) {
-            System.out.println("fail at student ");
+            System.out.println("fail at student # of specialty: "+stuSched.size());
         }
 
 
@@ -197,7 +201,6 @@ indexController {
         return true;
 
     }
-
 
 }
 
@@ -301,6 +304,7 @@ class Schedule{
 
 
     }
+
 
 }
 

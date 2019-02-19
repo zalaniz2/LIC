@@ -1,5 +1,6 @@
 package LIC.UC04v1.Bootstrap;
 
+import LIC.UC04v1.controllers.Location;
 import LIC.UC04v1.controllers.Specialty;
 import LIC.UC04v1.controllers.TimeSlot;
 import LIC.UC04v1.model.Doctor;
@@ -59,6 +60,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             doc.setSpecialty(values[3]);
             doc.setAvailabilities(values[4]);
             doc.setSpecialtyInText(convertSpecialty(values[3]));
+            doc.setLocation(values[5]);
+            doc.setLocationInText(convertLocation(values[5]));
+            doc.setNumberOfDaysAvail();
             doctorRepository.save(doc);
         }
         fileName = "student.csv";
@@ -94,6 +98,18 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             case "OBGYN": return Specialty.OBGYN;
             case "Pediatrics": return Specialty.Pediatrics;
             case "Psychiatry": return Specialty.Psychiatry;
+        }
+        return null;
+    }
+
+    private Location convertLocation(String location) {
+        switch (location) {
+            case "Fort Worth": return Location.FortWorth;
+            case "North Fort Worth": return Location.NorthFortWorth;
+            case "Dallas": return Location.Dallas;
+            case "Keller/South Lake": return Location.KellerSouthLake;
+            case "Arlington": return Location.Arlington;
+            case "Mansfield": return Location.Mansfield;
         }
         return null;
     }

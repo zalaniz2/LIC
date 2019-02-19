@@ -1,5 +1,6 @@
 package LIC.UC04v1.model;
 
+import LIC.UC04v1.controllers.Location;
 import LIC.UC04v1.controllers.Specialty;
 import LIC.UC04v1.controllers.TimeSlot;
 
@@ -22,6 +23,24 @@ public class Doctor {
     private String availabilities;
     private int numberOfDaysAvail;
     private Specialty specialtyInText;
+    private String location;
+    private Location locationInText;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Location getLocationInText() {
+        return locationInText;
+    }
+
+    public void setLocationInText(Location locationInText) {
+        this.locationInText = locationInText;
+    }
 
     public boolean isAvailable() {
         return available;
