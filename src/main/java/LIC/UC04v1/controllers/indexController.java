@@ -171,9 +171,11 @@ public class indexController {
                     clerk.setDoctor(doc);
                     clerk.setDay(getClerkshipDay(i,s));
                     clerk.setTime(misc.toTimeSlot(getClerkshipDay(i,s)));
+                    clerk.setTimeInt1(getClerkshipDay(i,s));
                     clerk.setSpecialty(specialty);
                     if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
                         clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
+                        clerk.setTimeInt2(getClerkshipDay(i,s)-12);
                     }
 
                     clerkshipRepository.save(clerk);

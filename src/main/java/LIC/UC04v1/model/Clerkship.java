@@ -17,8 +17,26 @@ public class Clerkship {
     private Doctor doctor;
     private TimeSlot time;
     private TimeSlot time2;
+    private int timeInt1;
+    private int timeInt2;
     private Specialty specialty;
     private int day;
+
+    public int getTimeInt1() {
+        return timeInt1;
+    }
+
+    public void setTimeInt1(int timeInt1) {
+        this.timeInt1 = timeInt1;
+    }
+
+    public int getTimeInt2() {
+        return timeInt2;
+    }
+
+    public void setTimeInt2(int timeInt2) {
+        this.timeInt2 = timeInt2;
+    }
 
     public int getDay() {
         return day;

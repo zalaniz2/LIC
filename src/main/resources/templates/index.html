@@ -66,7 +66,7 @@
               </li>
               <li class="nav-item">
                   <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a>
-                  <p th:text="${stu.getId()}" id="stuid"></p>
+                  <div th:text="${stu.getId()}" id="stuid" class="d-none"></div>
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -94,20 +94,20 @@
                             <th scope="row" id="morn1"> Morning</th>
                             <td class="bg-danger" id="na">N/A</td>
                             <td id="0"></td>
-                            <td id="1"></td>
                             <td id="2"></td>
-                            <td id="3"></td>
                             <td id="4"></td>
-                            <td id="5"></td>
+                            <td id="6"></td>
+                            <td id="8"></td>
+                            <td id="10"></td>
                         </tr>
                         <tr>
                             <th scope="row" id="aft1">Afternoon</th>
                             <td class="bg-danger" id="na2">N/A</td>
-                            <td id="6"></td>
+                            <td id="1"></td>
+                            <td id="3"></td>
+                            <td id="5"></td>
                             <td id="7"></td>
-                            <td id="8"></td>
                             <td id="9"></td>
-                            <td id="10"></td>
                             <td id="11"></td>
                         </tr>
                     </table>
@@ -128,20 +128,20 @@
                                 <th scope="row" id="morn2">Morning</th>
                                 <td class="bg-danger" id="na3">N/A</td>
                                 <td id="12"></td>
-                                <td id="13"></td>
                                 <td id="14"></td>
-                                <td id="15"></td>
                                 <td id="16"></td>
-                                <td id="17"></td>
+                                <td id="18"></td>
+                                <td id="20"></td>
+                                <td id="22"></td>
                         </tr>
                         <tr>
                                 <th scope="row" id="aft2">Afternoon</th>
                                 <td class="bg-danger" id="na4">N/A</td>
-                                <td id="18"></td>
+                                <td id="13"></td>
+                                <td id="15"></td>
+                                <td id="17"></td>
                                 <td id="19"></td>
-                                <td id="20"></td>
                                 <td id="21"></td>
-                                <td id="22"></td>
                                 <td id="23"></td>
                         </tr>
                     </table>
@@ -608,34 +608,34 @@
                     dayOfWeek = "Monday Morning";
 
                 }
-                else if( day == 6 || day == 18){
+                else if( day == 1 || day == 13){
                     dayOfWeek = "Monday Afternoon";
                 }
-                else if(day == 1 ||  day == 13 ){
+                else if(day == 2 ||  day == 14 ){
                     dayOfWeek = "Tuesday Morning";
                 }
-                else if( day == 7 || day == 19){
+                else if( day == 3 || day == 15){
                     dayOfWeek = "Tuesday Afternoon";
                 }
-                else if(day == 2 || day == 14 ){
+                else if(day == 4 || day == 16 ){
                     dayOfWeek = "Wednesday Morning";
                 }
-                else if(day == 8 || day == 20){
+                else if(day == 5 || day == 17){
                     dayOfWeek = "Wednesday Afternoon";
                 }
-                else if(day == 3 || day == 15){
+                else if(day == 6 || day == 18){
                     dayOfWeek = "Thursday Morning";
                 }
-                else if(day == 9 || day == 21){
+                else if(day == 7 || day == 19){
                     dayOfWeek = "Thursday Afternoon";
                 }
-                else if(day == 4 || day == 16 ) {
+                else if(day == 8 || day == 20 ) {
                     dayOfWeek = "Friday Morning";
                 }
-                else if(day == 10 || day == 22) {
+                else if(day == 9 || day == 21) {
                     dayOfWeek = "Friday Afternoon";
                 }
-                else if(day == 5 || day == 17 ){
+                else if(day == 10 || day == 22 ){
                     dayOfWeek = "Saturday Morning";
                 }
                 else if(day == 11 || day == 23) {
