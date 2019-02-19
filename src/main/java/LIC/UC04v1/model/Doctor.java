@@ -11,6 +11,8 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    //maybe change to a collection of clerkships so they can change it in the future
+    //have a restraint that kayla can edit the number of clerkships a doctor can have
     @OneToOne
     private Clerkship clerkship;
     private String name;
@@ -28,7 +30,6 @@ public class Doctor {
     }
 
     public Doctor(){
-
     }
 
     public int getId() {

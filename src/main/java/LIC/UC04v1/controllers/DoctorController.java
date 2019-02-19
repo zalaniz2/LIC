@@ -33,7 +33,7 @@ public class DoctorController {
         doctorForm docF = new doctorForm();
         docF.id = id;
         Doctor doc = doctorService.findById(id);
-        if(doc.getAvailable().charAt(0)=='1') docF.MM = true;
+        if(doc.isAvailable().charAt(0)=='1') docF.MM = true;
         else  docF.MM = false;
         if(doc.getAvailable().charAt(1)=='1') docF.MA = true;
         else  docF.MA = false;
