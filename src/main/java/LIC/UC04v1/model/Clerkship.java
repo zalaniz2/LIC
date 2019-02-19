@@ -1,5 +1,8 @@
 package LIC.UC04v1.model;
 
+import LIC.UC04v1.controllers.Specialty;
+import LIC.UC04v1.controllers.TimeSlot;
+
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -19,7 +22,6 @@ public class Clerkship {
     private Doctor doctor;
     private String Title;
     private String Location;
-    private String Time; //(day) used for testing purposes and should be deleted
     private Date date;
     private java.sql.Time startTime;
     private java.sql.Time endTime;
@@ -29,10 +31,6 @@ public class Clerkship {
     public String getDescription() { return Description; }
 
     public void setDescription(String description) { Description = description; }
-
-    public String getTime() { return Time; }
-
-    public void setTime(String time) { Time = time; }
 
     public Date getDate() { return date; }
 
@@ -65,7 +63,44 @@ public class Clerkship {
     public int getId() {
         return id;
     }
+    private TimeSlot time;
+    private TimeSlot time2;
+    private int timeInt1=-1;
+    private int timeInt2=-1;
+    private Specialty specialty;
+    private int day;
 
+    public int getTimeInt1() {
+        return timeInt1;
+    }
+
+    public void setTimeInt1(int timeInt1) {
+        this.timeInt1 = timeInt1;
+    }
+
+    public int getTimeInt2() {
+        return timeInt2;
+    }
+
+    public void setTimeInt2(int timeInt2) {
+        this.timeInt2 = timeInt2;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public Specialty getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
+    }
     public Student getStudent() {
         return student;
     }
@@ -88,8 +123,20 @@ public class Clerkship {
 
     public Clerkship(){}
 
+    public TimeSlot getTime2() {
+        return time2;
+    }
+
+    public void setTime2(TimeSlot time2) {
+        this.time2 = time2;
+    }
+
     public Clerkship(int id) {
         this.id = id;
+    }
+
+    public void setTime(TimeSlot time) {
+        this.time = time;
     }
 
     public String getStudentName(){

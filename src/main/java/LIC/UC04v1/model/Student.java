@@ -4,6 +4,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
 import java.util.*;
 
 @Entity
@@ -17,6 +19,8 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade=CascadeType.ALL) //cascade makes sure clerkships are saved in db when student is saved
     private Map<String, Clerkship> clerkships = new HashMap<>();
     private String Name;
+
+    public Student(){}
 
     public String getId() {
         return id;
@@ -54,12 +58,4 @@ public class Student {
     public void setName(String name) {
         Name = name;
     }
-
-
-
-    public Student(){
-        //List<Clerkship> clrk = new List<>();
-        //setClerkships(clrk);
-    }
-
 }

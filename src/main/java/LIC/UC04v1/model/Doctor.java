@@ -1,8 +1,14 @@
 package LIC.UC04v1.model;
 
+import LIC.UC04v1.controllers.Location;
+import LIC.UC04v1.controllers.Specialty;
+import LIC.UC04v1.controllers.TimeSlot;
+
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 @Data
 @Entity
@@ -17,20 +23,59 @@ public class Doctor {
     private Clerkship clerkship;
     private String name;
     private String email;
-    private String profession;
-    private String Location;
-    private String available;
+    private String specialty;
+    private boolean available = true;
+    private String availabilities;
+    private int numberOfDaysAvail;
+    private Specialty specialtyInText;
+    private String location;
+    private Location locationInText;
 
+    public Doctor() {}
+    public String getLocation() {
+        return location;
+    }
 
-    public String getLocation() { return Location; }
+    public String getSpecialty() {
+        return specialty;
+    }
 
-    public void setLocation(String location) { Location = location; }
-    public String isAvailable() {
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
+
+    public boolean isAvailable() {
         return available;
     }
 
-    public Doctor(){
+    public void setNumberOfDaysAvail(int numberOfDaysAvail) {
+        this.numberOfDaysAvail = numberOfDaysAvail;
     }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Location getLocationInText() {
+        return locationInText;
+    }
+
+    public void setLocationInText(Location locationInText) {
+        this.locationInText = locationInText;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public String getAvailabilities() {
+        return availabilities;
+    }
+
+    public void setAvailabilities(String availabilities) {
+        this.availabilities = availabilities;
+    }
+
 
     public int getId() {
         return id;
@@ -64,20 +109,12 @@ public class Doctor {
         this.email = email;
     }
 
-    public String getProfession() {
-        return profession;
+    public Specialty getSpecialtyInText() {
+        return specialtyInText;
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
-    }
-
-    public String getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(String available) {
-        this.available = available;
+    public void setSpecialtyInText(Specialty specialtyInText) {
+        this.specialtyInText = specialtyInText;
     }
 
     public Doctor(String name){
@@ -87,4 +124,20 @@ public class Doctor {
     public Doctor(int id) {
         this.id = id;
     }
+
+    public int getNumberOfDaysAvail() {
+        return numberOfDaysAvail;
+    }
+
+    public void setNumberOfDaysAvail() {
+        int a = 0;
+        for (int i = 0; i <availabilities.length();i++){
+            if (availabilities.charAt(i)=='1'){
+                a++;
+            }
+        }
+        this.numberOfDaysAvail = a;
+    }
+
 }
+

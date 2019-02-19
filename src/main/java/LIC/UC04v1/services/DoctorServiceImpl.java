@@ -24,8 +24,6 @@ public class DoctorServiceImpl implements DoctorService{
 
     @Override
     public Set<Doctor> getDoctors(){
-
-        log.debug("I'm in the service.");
         Set<Doctor> doctorSet = new HashSet<>();
         doctorRepository.findAll().iterator().forEachRemaining(doctorSet::add);
 
@@ -77,7 +75,7 @@ public class DoctorServiceImpl implements DoctorService{
         else availStr += "0";
         if(docForm.UA) availStr += "1";
         else availStr += "0";
-        detachedDoctor.setAvailable(availStr);
+        detachedDoctor.setAvailabilities(availStr);
         detachedDoctor.setLocation(String.valueOf(docForm.Location));
         doctorRepository.save(detachedDoctor);
         return null;

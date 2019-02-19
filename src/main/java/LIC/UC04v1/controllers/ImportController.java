@@ -153,7 +153,7 @@ public class ImportController {
                 Doctor doc = new Doctor();
                 doc.setName(row.getCell(0).getStringCellValue());
                 doc.setEmail(row.getCell(1).getStringCellValue());
-                doc.setProfession(row.getCell(2).getStringCellValue());
+                doc.setSpecialty(row.getCell(2).getStringCellValue());
                 doctorRepository.save(doc);
             }
             else if(type.equals("students")) {
@@ -187,7 +187,7 @@ public class ImportController {
                 Doctor docXLS = new Doctor();
                 docXLS.setName(rowXLS.getCell(0).getStringCellValue());
                 docXLS.setEmail(rowXLS.getCell(1).getStringCellValue());
-                docXLS.setProfession(rowXLS.getCell(2).getStringCellValue());
+                docXLS.setSpecialty(rowXLS.getCell(2).getStringCellValue());
                 doctorRepository.save(docXLS);
             }
             else if(type.equals("students")) {
@@ -224,7 +224,7 @@ public class ImportController {
                 Doctor doc = new Doctor();
                 doc.setName(values[0]);
                 doc.setEmail(values[1]);
-                doc.setProfession(values[2]);
+                doc.setSpecialty(values[2]);
                 doctorRepository.save(doc);
             }
         }
