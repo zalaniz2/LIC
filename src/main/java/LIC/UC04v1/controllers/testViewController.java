@@ -2,6 +2,7 @@ package LIC.UC04v1.controllers;
 
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.repositories.DoctorRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.Doc;
 import java.util.ArrayList;
 
+
+@Slf4j
 @Controller
 public class testViewController {
 
