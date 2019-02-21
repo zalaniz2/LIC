@@ -123,8 +123,8 @@ public class ExportController{
         // uses the Super CSV API to generate CSV data from the model data
         try(ICsvBeanWriter csvWriter = new CsvBeanWriter(response2.getWriter(), CsvPreference.STANDARD_PREFERENCE);){ //try-with-resource management (writer closes automatically)
 
-            String[] header = {"Student Name", "Title", "Time", "Date", "Start Time", "End Time", "Location", "Description"};
-            String[] fieldHead = {"studentName", "Title", "Time", "date", "startTime", "endTime",  "Location", "Description"}; //must match fields in Clerkship model
+            String[] header = {"Student Name", "Title", "Day", "Week", "Start Time", "End Time", "Location", "Description"};
+            String[] fieldHead = {"studentName", "Title", "Time", "week", "startTime", "endTime",  "Location", "Description"}; //must match fields in Clerkship model
             final CellProcessor[] processors = getProcessors();
 
             csvWriter.writeHeader(header);
@@ -320,79 +320,81 @@ public class ExportController{
             //Iterates through all clerkships a student has and place info in correct cell 
             for(String key: clerkships.keySet()){
                 Clerkship clerk = clerkships.get(key);
-//                switch(clerk.getTime()){
-//                    case "MonAM":
-//                        Row r1 = sheet.getRow(MonAM.getRow());
-//                        Cell c1 = r1.getCell(MonAM.getCol());
-//                        c1.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c1.setCellStyle(dataStyle);
-//                        break;
-//                    case "MonPM":
-//                        Row r2 = sheet.getRow(MonPM.getRow());
-//                        Cell c2 = r2.getCell(MonPM.getCol());
-//                        c2.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c2.setCellStyle(dataStyle);
-//                        break;
-//                    case "TuesAM":
-//                        Row r3 = sheet.getRow(TuesAM.getRow());
-//                        Cell c3 = r3.getCell(TuesAM.getCol());
-//                        c3.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c3.setCellStyle(dataStyle);
-//                        break;
-//                    case "TuesPM":
-//                        Row r4 = sheet.getRow(TuesPM.getRow());
-//                        Cell c4 = r4.getCell(TuesPM.getCol());
-//                        c4.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c4.setCellStyle(dataStyle);
-//                        break;
-//                    case "WedAM":
-//                        Row r5 = sheet.getRow(WedAM.getRow());
-//                        Cell c5 = r5.getCell(WedAM.getCol());
-//                        c5.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c5.setCellStyle(dataStyle);
-//                        break;
-//                    case "WedPM":
-//                        Row r6 = sheet.getRow(WedPM.getRow());
-//                        Cell c6 = r6.getCell(WedPM.getCol());
-//                        c6.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c6.setCellStyle(dataStyle);
-//                        break;
-//                    case "ThursAM":
-//                        Row r7 = sheet.getRow(ThursAM.getRow());
-//                        Cell c7 = r7.getCell(ThursAM.getCol());
-//                        c7.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c7.setCellStyle(dataStyle);
-//                        break;
-//                    case "ThursPM":
-//                        Row r8 = sheet.getRow(ThursPM.getRow());
-//                        Cell c8 = r8.getCell(ThursPM.getCol());
-//                        c8.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c8.setCellStyle(dataStyle);
-//                        break;
-//                    case "FriAM":
-//                        Row r9 = sheet.getRow(FriAM.getRow());
-//                        Cell c9 = r9.getCell(FriAM.getCol());
-//                        c9.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c9.setCellStyle(dataStyle);
-//                        break;
-//                    case "FriPM":
-//                        Row r10 = sheet.getRow(FriPM.getRow());
-//                        Cell c10 = r10.getCell(FriPM.getCol());
-//                        c10.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c10.setCellStyle(dataStyle);
-//                        break;
-//                    case "SatAM":
-//                        Row r11 = sheet.getRow(SatAM.getRow());
-//                        Cell c11 = r11.getCell(SatAM.getCol());
-//                        c11.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c11.setCellStyle(dataStyle);
-//                        break;
-//                    case "SatPM":
-//                        Row r12 = sheet.getRow(SatPM.getRow());
-//                        Cell c12 = r12.getCell(SatPM.getCol());
-//                        c12.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
-//                        c12.setCellStyle(dataStyle);
-//                        break;
+               switch(clerk.getDay()){
+                    case 0:
+                        Row r1 = sheet.getRow(MonAM.getRow());
+                        Cell c1 = r1.getCell(MonAM.getCol());
+                        c1.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c1.setCellStyle(dataStyle);
+                        break;
+                    case 1:
+                        Row r2 = sheet.getRow(MonPM.getRow());
+                        Cell c2 = r2.getCell(MonPM.getCol());
+                        c2.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c2.setCellStyle(dataStyle);
+                        break;
+                    case 2:
+                        Row r3 = sheet.getRow(TuesAM.getRow());
+                        Cell c3 = r3.getCell(TuesAM.getCol());
+                        c3.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c3.setCellStyle(dataStyle);
+                        break;
+                    case 3:
+                        Row r4 = sheet.getRow(TuesPM.getRow());
+                        Cell c4 = r4.getCell(TuesPM.getCol());
+                        c4.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c4.setCellStyle(dataStyle);
+                        break;
+                    case 4:
+                        Row r5 = sheet.getRow(WedAM.getRow());
+                        Cell c5 = r5.getCell(WedAM.getCol());
+                        c5.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c5.setCellStyle(dataStyle);
+                        break;
+                    case 5:
+                        Row r6 = sheet.getRow(WedPM.getRow());
+                        Cell c6 = r6.getCell(WedPM.getCol());
+                        c6.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c6.setCellStyle(dataStyle);
+                        break;
+                    case 6:
+                        Row r7 = sheet.getRow(ThursAM.getRow());
+                        Cell c7 = r7.getCell(ThursAM.getCol());
+                        c7.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c7.setCellStyle(dataStyle);
+                        break;
+                    case 7:
+                        Row r8 = sheet.getRow(ThursPM.getRow());
+                        Cell c8 = r8.getCell(ThursPM.getCol());
+                        c8.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c8.setCellStyle(dataStyle);
+                        break;
+                    case 8:
+                        Row r9 = sheet.getRow(FriAM.getRow());
+                        Cell c9 = r9.getCell(FriAM.getCol());
+                        c9.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c9.setCellStyle(dataStyle);
+                        break;
+                    case 9:
+                        Row r10 = sheet.getRow(FriPM.getRow());
+                        Cell c10 = r10.getCell(FriPM.getCol());
+                        c10.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c10.setCellStyle(dataStyle);
+                        break;
+                    case 10:
+                        Row r11 = sheet.getRow(SatAM.getRow());
+                        Cell c11 = r11.getCell(SatAM.getCol());
+                        c11.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c11.setCellStyle(dataStyle);
+                        break;
+                    case 11:
+                        Row r12 = sheet.getRow(SatPM.getRow());
+                        Cell c12 = r12.getCell(SatPM.getCol());
+                        c12.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c12.setCellStyle(dataStyle);
+                        break;
+                   default:
+                       break;
 //                    case "SunAM":
 //                        Row r13 = sheet.getRow(SunAM.getRow());
 //                        Cell c13 = r13.getCell(SunAM.getCol());
@@ -405,7 +407,7 @@ public class ExportController{
 //                        c14.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
 //                        c14.setCellStyle(dataStyle);
 //                        break;
-//                }
+                }
 
             }
 
@@ -445,13 +447,13 @@ public class ExportController{
     }
 
 
-    public static CellProcessor[] getProcessors() {
+    public static CellProcessor[] getProcessors(){
 
         final CellProcessor[] PROCESSORS = new CellProcessor[]{
                 new NotNull(), //Student Name
-                new NotNull(), //Clerkship Title
+                new Optional(), //Clerkship Title
                 new NotNull(), //"Time" (day) remove
-                new Optional(new FmtDate("MM/dd/yyyy")), //Date
+                new Optional(), //Date
                 new Optional(), //Start Time (need to format)
                 new Optional(), //End Time (need to format)
                 new Optional(), //location

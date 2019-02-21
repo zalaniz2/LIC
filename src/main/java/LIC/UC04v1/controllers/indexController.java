@@ -146,14 +146,14 @@ public class indexController {
 
     public @ResponseBody
     boolean sendSchedule(@RequestBody Schedule s) {
-        Student stu = studentRepository.findById(s.getId()).orElse(null);
-        List<Doctor> docs;
-        Map<String, Clerkship> stuSched = new HashMap<>();
-        for( int i = 0; i<7; i++){
+        Student stu = studentRepository.findById(s.getId()).orElse(null); //student that submitted schedule
+        List<Doctor> docs; //list of doctors
+        Map<String, Clerkship> stuSched = new HashMap<>(); //list of student's clerkships
+        for( int i = 0; i<7; i++){ //7 clerkships
             String spe = getSpecialty(i);
             Specialty specialty = misc.toSpecialty(spe);
 
-            docs = doctorRepository.findBySpecialtyAndAvailable(spe, true);
+            docs = doctorRepository.findBySpecialtyAndAvailable(spe, true); //list of all doctors w/ req. speciality
 
             //sorting stuffs
             for (Doctor doc: docs) {
@@ -165,7 +165,7 @@ public class indexController {
 
 
             for (Doctor doc: docs) {
-                if (doc.getAvailabilities().charAt(getClerkshipDay(i,s ))=='1'){
+                if (doc.getAvailabilities().charAt(getClerkshipDay(i,s ))=='1'){ //if the doctor has an availability at that time
                     Clerkship clerk = new Clerkship();
                     clerk.setStudent(stu);
                     clerk.setDoctor(doc);
@@ -221,6 +221,7 @@ class Profession{
 }
 
 class Schedule{
+    //number values corresponding to day of the week
     private String surgery;
     private String familymedicine;
     private String internalmedicine;

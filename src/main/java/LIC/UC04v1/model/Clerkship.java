@@ -23,10 +23,17 @@ public class Clerkship {
     private String Title;
     private String Location;
     private Date date;
-    private java.sql.Time startTime;
-    private java.sql.Time endTime;
+    private String startTime;
+    private String endTime;
     private String studentName;
     private String Description;
+    private TimeSlot time;
+    private TimeSlot time2;
+    private int timeInt1=-1;
+    private int timeInt2=-1;
+    private Specialty specialty;
+    private int day;
+    private String week;
 
     public String getDescription() { return Description; }
 
@@ -36,13 +43,13 @@ public class Clerkship {
 
     public void setDate(Date date) { this.date = date; }
 
-    public java.sql.Time getStartTime() { return startTime; }
+    //public java.sql.Time getStartTime() { return startTime; }
 
-    public void setStartTime(java.sql.Time startTime) { this.startTime = startTime; }
+    //public void setStartTime(java.sql.Time startTime) { this.startTime = startTime; }
 
-    public java.sql.Time getEndTime() { return endTime; }
+    //public java.sql.Time getEndTime() { return endTime; }
 
-    public void setEndTime(java.sql.Time endTime) { this.endTime = endTime; }
+    //public void setEndTime(java.sql.Time endTime) { this.endTime = endTime; }
 
     public void setStudentName(String studentName) {
         this.studentName = studentName;
@@ -63,12 +70,7 @@ public class Clerkship {
     public int getId() {
         return id;
     }
-    private TimeSlot time;
-    private TimeSlot time2;
-    private int timeInt1=-1;
-    private int timeInt2=-1;
-    private Specialty specialty;
-    private int day;
+
 
     public int getTimeInt1() {
         return timeInt1;
@@ -141,6 +143,45 @@ public class Clerkship {
 
     public String getStudentName(){
         return this.student.getName();
+    }
+
+    public String getTime(){
+        switch (day){
+            case 0: return "Monday";
+            case 1: return "Monday";
+            case 2: return "Tuesday";
+            case 3: return "Tuesday";
+            case 4: return "Wednesday";
+            case 5: return "Wednesday";
+            case 6: return "Thursday";
+            case 7: return "Thursday";
+            case 8: return "Friday";
+            case 9: return "Friday";
+            case 10: return "Saturday";
+            case 11: return "Saturday";
+            default: return "week2";
+        }
+    }
+
+    public String getWeek(){
+        if(day<=11){
+            this.week = "Week_1";
+        }else{
+            this.week = "Week_2";
+        }
+        return this.week;
+    }
+
+    public String getStartTime(){
+        if(day%2 == 0){ this.startTime = "08:00:00"; }
+        else{ this.startTime = "13:00:00"; }
+        return this.startTime;
+    }
+
+    public String getEndTime(){
+        if(day%2 == 0){ this.endTime= "12:00:00"; }
+        else{ this.endTime= "17:00:00"; }
+        return this.endTime;
     }
 
 }
