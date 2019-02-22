@@ -63,6 +63,21 @@
       #button-header{
           margin-top: 15px;
       }
+      .dallas{
+
+      }
+      .arlington{
+
+      }
+      .mansfield{
+
+      }
+      .keller{
+
+      }
+      .northfortworth{
+
+      }
 
 
 
@@ -83,8 +98,8 @@
                   <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                 <!--  <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a> -->
-               <!--   <div th:text="${stu.getId()}" id="stuid" class="d-none"></div> -->
+                  <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a>
+                    <div th:text="${stu.getId()}" id="stuid" class="d-none"></div>
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -96,6 +111,9 @@
         <div class="wrapper" id="body-wrapper">
             <div class = "row">
                 <div class="col-9" id="weekly-calendar">
+                    <div>
+                        <h3>Key will go here</h3>
+                    </div>
                     <h5>Week 1</h5>
                     <table class="table table-dark table-striped">
                         <tr>
@@ -304,6 +322,17 @@
             var availResult;
             var loc = "Dallas";
 
+            var spots = {
+                "Int. Med": loc,
+                "Fam. Med.": loc,
+                "Surg.": loc,
+                "OBGYN": loc,
+                "Pedi.": loc,
+                "Psych.": loc,
+                "Neuro": loc
+
+            }
+
             var studentID = $("#stuid").text();
             console.log(studentID);
 
@@ -383,6 +412,8 @@
 
                             $(this).removeClass("avail");
                             $(this).addClass("chosen");
+                            spots[profession] = loc;
+                            console.log(spots);
                             $(this).html(profession);
                             $("#" + (spot+12)).removeClass("avail");
                             $("#" + (spot+12)).addClass("chosen");
@@ -403,6 +434,8 @@
 
                             $(this).removeClass("avail");
                             $(this).addClass("chosen");
+                            spots[profession] = loc;
+                            console.log(spots);
                             $(this).html(profession);
                             $("#" + (spot-12)).removeClass("avail");
                             $("#" + (spot-12)).addClass("chosen");
@@ -435,6 +468,8 @@
 
                         $(this).removeClass("avail");
                         $(this).addClass("chosen");
+                        spots[profession] = loc;
+                        console.log(spots);
                         $(this).html(profession);
 
                         updateCalendar(availResult);
@@ -717,10 +752,13 @@
 
                         var day = data.attr("id");
                         var clerk = data.text();
+                        var clerkLoc = clerk;
                         clerk = lengthenProfName(clerk);
                         var name = clerk.replace(/\s/g, '');
                         name = name.toLowerCase();
+                        var nameLocation = name + "Location";
                         sched[name] = day;
+                        sched[nameLocation] = spots[clerkLoc];
 
                     }
 
