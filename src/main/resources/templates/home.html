@@ -1,35 +1,96 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>Admin Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
+<style>
+    th{
+        width: 80px !important;
+    }
+    #schedule-group p{
+        margin: 2px;
+    }
+    #schedule-group div{
+        margin-bottom: 5px;
+    }
+    span{
+        margin-left: auto;
+        margin-right: auto;
+        padding-right: 500px;
+    }
+    input{
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    #options{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .btn-group-vertical{
+        display: table;
+        width: 45%;
+    }
+    .container{
+        background-image: url('../static/img/tcu.png');
+
+    }
+    .btn-group-vertical{
+        opacity: 1.0;
+    }
+</style>
+
+
 <body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <span class="admin-name text-center" th:utext="${userName}">Admin Page</span>
+        <form class="form-inline my-2 my-lg-0">
+            <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+        </form>
+    </div>
+
+</nav>
 <div class="container">
-
-    <form th:action="@{/logout}" method="get">
-        <button class="btn btn-md btn-danger btn-block" name="registration"
-                type="Submit">Logout
-        </button>
-    </form>
-
     <div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
-            <div class="panel-heading">
-                <span th:utext="${userName}"></span>
-            </div>
-            <div class="panel-body">
-                <img th:src="@{/images/beer.jpg}" class="img-responsive center-block" width="400" height="400"
-                     alt="Beer"/>
-            </div>
             <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
         </div>
+    </div>
+    <div class = "btn-group-vertical align-content-center" role="group" id="options">
+        <form action="/brute">
+            <input type="submit" class= "btn btn-dark" value="Schedule Students"/>
+        </form>
+        <form action="/viewSchedules">
+            <input type="submit" class= "btn btn-dark" value="View Student Schedules"/>
+        </form>
+        <form action="/ImportData">
+            <input type="submit" class= "btn btn-dark" value="Input Data"/>
+        </form>
+        <form action="/registration">
+            <input type="submit" class= "btn btn-dark" value="Add Admin"/>
+        </form>
+        <form action="/export">
+            <input type="submit" class= "btn btn-dark" value="Export Schedules"/>
+        </form>
     </div>
 
 </div>

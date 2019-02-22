@@ -6,6 +6,7 @@ import LIC.UC04v1.controllers.TimeSlot;
 import LIC.UC04v1.model.Clerkship;
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Student;
+import LIC.UC04v1.model.User;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
@@ -39,6 +40,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         this.studentRepository = studentRepository;
     }
     private void initData() throws IOException {
+
         String fileName = "doctors.csv";
 
         ClassLoader classLoader = super.getClass().getClassLoader();
@@ -142,6 +144,10 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             studentRepository.save(stu);
         }
     }
+
+    private void createAdmin(){}
+        User admin = new User();
+
 
 
     private Specialty convertSpecialty(String specialty) {
