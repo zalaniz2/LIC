@@ -30,14 +30,14 @@ public class indexController {
         this.studentRepository = studentRepository;
     }
 
-    public int[] getAvailabilities(String profession){
+    public int[] getAvailabilities(String profession, String location){
 
         int count = 0;
         int counts[] = new int[24];
 
         for(Doctor doc: doctorRepository.findAll()){
 
-            if((doc.getSpecialty().equals(profession))){
+            if((doc.getSpecialty().equals(profession)) && doc.getLocation().equals(location)){
 
                 for(int i = 0; i<24;i++){
 
@@ -108,13 +108,20 @@ public class indexController {
 
 
 
-
+    /*
     @RequestMapping(path = "/{stuID}")
     public String neuro(Model model, @PathVariable String stuID){
         Student stu = studentRepository.findById(stuID).orElse(null);
         if (stu!=null) {
             model.addAttribute("stu", stu);
         }
+        return "index";
+    }
+    */
+
+    @RequestMapping(path = "/")
+    public String home(){
+
         return "index";
     }
 
@@ -135,10 +142,12 @@ public class indexController {
     int[] getDocs(@RequestBody Profession p) {
 
             String profession = p.getprofession();
+            String location = p.getLocation();
             System.out.println(profession);
+            System.out.println(p.getLocation());
 
 
-            return getAvailabilities(profession);
+            return getAvailabilities(profession, location);
     }
 
 
@@ -209,6 +218,15 @@ public class indexController {
 class Profession{
 
     private String profession;
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getprofession(){
         return profession;

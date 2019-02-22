@@ -10,13 +10,21 @@
       <mvc:resources mapping="/resources/**" location="/resources/" />
 
       <!-- Bootstrap CSS -->
+
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+
 
 
       <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
       <!-- Latest compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+
+
+
 
       <link th:href="@{css/studentPage.css}" href="UC04v1/src/main/resources/static/css/studentPage.css" rel="stylesheet" type="text/css" media="screen"/>
 
@@ -47,6 +55,16 @@
       #schedule-group div{
           margin-bottom: 5px;
       }
+      .active a{
+          background-color: #563c7c !important;
+      }
+      #brand-header{ background-color: transparent !important}
+
+      #button-header{
+          margin-top: 15px;
+      }
+
+
 
   </style>
 
@@ -65,8 +83,8 @@
                   <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a>
-                  <div th:text="${stu.getId()}" id="stuid" class="d-none"></div>
+                 <!--  <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a> -->
+               <!--   <div th:text="${stu.getId()}" id="stuid" class="d-none"></div> -->
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -106,7 +124,7 @@
                             <td id="1"></td>
                             <td id="3"></td>
                             <td id="5"></td>
-                            <td id="7"></td>
+                            <td id="leaps1" class="bg-danger">LeAPS</td>
                             <td id="9"></td>
                             <td id="11"></td>
                         </tr>
@@ -140,7 +158,7 @@
                                 <td id="13"></td>
                                 <td id="15"></td>
                                 <td id="17"></td>
-                                <td id="19"></td>
+                                <td id="leaps2" class="bg-danger">LeAPS</td>
                                 <td id="21"></td>
                                 <td id="23"></td>
                         </tr>
@@ -148,6 +166,18 @@
                 </div>
 
                 <div class="col-3" id="specialty-column">
+
+                    <p class="text-center" id="filter-header"><strong>Choose Location</strong></p>
+                    <select class="form-control" id="locations">
+                        <option value="Dallas">Dallas</option>
+                        <option value="North Fort Worth">North Fort Worth</option>
+                        <option value="Keller/South Lake">Keller/South Lake</option>
+                        <option value="Arlington">Arlington</option>
+                        <option value="Mansfield">Mansfield</option>
+
+                    </select>
+
+
                     <p class="text-center" id="button-header"><strong>Choose Clerkship</strong></p>
                     <div class = "btn-group-vertical" role="group" id="specialty-buttons">
                          <form id="specialty-chosen">
@@ -197,6 +227,7 @@
                 </div>
 
              </div>
+
             <!--
             <div class="row" id="key-row">
                 <div class="col-9">
@@ -261,12 +292,30 @@
    <!-- </div> -->
         <script>
 
+
+
+
+
+
+
+
             var onProfession = false; //boolean to see whether student is clicked into a Profession or not
             var profession;
             var availResult;
+            var loc = "Dallas";
 
             var studentID = $("#stuid").text();
             console.log(studentID);
+
+            $("#locations").on('change', function(){
+
+                console.log("got clikc for loaction");
+                loc = $("#locations").find(":selected").text();
+                console.log(loc);
+
+            });
+
+
 
 
             $("#specialty-chosen input[type=submit]").click(function(e){
@@ -278,7 +327,8 @@
                 profession = $(this).val();
 
                 var specialty = {
-                    "profession": profession
+                    "profession": profession,
+                    "location": loc
                 }
 
                 console.log(specialty);
@@ -290,6 +340,7 @@
                     onProfession = true;
                     getAvailableDoctors(specialty);
                     $("#specialty-chosen input[type=submit]").not(getButton).prop("disabled", true);
+                    $("#locations").prop("disabled", true);
 
                 }
 
@@ -297,6 +348,7 @@
 
                     onProfession = false;
                     $("#specialty-chosen input[type=submit]").not(getButton).prop("disabled", false);
+                    $("#locations").prop("disabled", false);
                     updateCalendar();
 
                 }
@@ -704,12 +756,14 @@
 
 
             /*
+
                     1. One clerkship per schedule, when on clerkship be able to click around.
                     2. Keep choice for when they leave that clerkship.
                     2. Family Medicine, Pediatrics, Surgery, Internal Medicine - 2x a week
                     3. Students have to pick the doctor their paired with first.
                     4. Have chosen one of each profession before submit.
                     5. Pass Neurology, 1 Family Medicine - Name and num corresponding to day.
+
 
              */
 
