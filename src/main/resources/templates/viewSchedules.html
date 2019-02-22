@@ -212,6 +212,12 @@
         </div>
     </div>
 </div>
+
+
+<div id="showStudents"></div>
+
+
+
 <nav aria-label="...">
     <ul class="pagination">
         <li>
@@ -238,18 +244,30 @@
 <script>
     function names(){
 
+        var pass = {
+            "argument": "student"
+        }
+
         $.ajax({
             type: "POST",
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             url: "/getStudents",
-            //data: JSON.stringify(),
+            data: JSON.stringify(pass),
 
             success: function (result){
+
                 console.log(result);
-                document.getElementById('btn1').innerHTML = result;
+                for( var i = 0; i<result.length; i++){
+
+                    $("#showStudents").append(result[i].email);
+
+                }
+
+
+              //  document.getElementById('btn1').innerHTML = result;
             }
-        })
+        });
 
 
     }

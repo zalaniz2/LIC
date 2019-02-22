@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,14 +27,42 @@ public class ViewScheduleController {
 
     }
 
+    public List<Student> getAllStudents(){
+
+        List<Student> all = new ArrayList<>();
+
+        for(Student stu: studentRepository.findAll()){
+                all.add(stu);
+
+        }
+        return all;
+    }
+
     @RequestMapping(value = "/schedule", method = RequestMethod.GET)
     public String home() { return "viewSchedules"; }
 
     @RequestMapping(value="/getStudents", method = RequestMethod.POST)
     public @ResponseBody
-    String getStudents(){
-        System.out.println("Made it");
-        return "Barbra S";
+    List<Student> getStudents(@RequestBody AdminView av ){
 
+        if( av.getArgument().equals("student")){
+            return getAllStudents();
+        }
+        return getAllStudents();
+
+
+    }
+}
+
+class AdminView{
+
+    private String argument;
+
+    public String getArgument() {
+        return argument;
+    }
+
+    public void setArgument(String argument) {
+        this.argument = argument;
     }
 }
