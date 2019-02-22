@@ -7,8 +7,6 @@ import LIC.UC04v1.model.Student;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -18,19 +16,12 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.supercsv.cellprocessor.FmtDate;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.cellprocessor.Optional;
@@ -38,7 +29,6 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 import java.util.*;
-import java.awt.Color;
 
 
 @Controller
@@ -119,12 +109,20 @@ public class ExportController{
             }
         }
 
+        //add week (1 or 2)
+        //start date??
+        //Doctor name
+        //Event Type (Default = Clinic)
+        //Change Time to day and then use start and end time
+        //Description (maybe address)
+        //location needs to be specific name of the clinic (physical name of the office)
 
         // uses the Super CSV API to generate CSV data from the model data
         try(ICsvBeanWriter csvWriter = new CsvBeanWriter(response2.getWriter(), CsvPreference.STANDARD_PREFERENCE);){ //try-with-resource management (writer closes automatically)
 
-            String[] header = {"Student Name", "Title", "Day", "Week", "Start Time", "End Time", "Location", "Description"};
-            String[] fieldHead = {"studentName", "Title", "Time", "week", "startTime", "endTime",  "Location", "Description"}; //must match fields in Clerkship model
+            String[] header = {"Student Name", "Title", "Day", "Week", "Start Time", "End Time", "Doctor", "Location", "Description", "Event Type"};
+            //change "Time" field in clerkship to "day"
+            String[] fieldHead = {"studentName", "Title", "Time", "week", "startTime", "endTime", "DoctorName", "Location", "Description", "eventType"}; //must match fields in Clerkship model
             final CellProcessor[] processors = getProcessors();
 
             csvWriter.writeHeader(header);
@@ -456,8 +454,10 @@ public class ExportController{
                 new Optional(), //Date
                 new Optional(), //Start Time (need to format)
                 new Optional(), //End Time (need to format)
+                new Optional(), //Doctor Name
                 new Optional(), //location
                 new Optional(), //Description
+                new Optional(), //Event Type
 
 
         };

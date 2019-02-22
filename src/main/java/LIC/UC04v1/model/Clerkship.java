@@ -34,6 +34,9 @@ public class Clerkship {
     private Specialty specialty;
     private int day;
     private String week;
+    private String eventType = "Clinic";
+
+    public String getEventType() { return eventType; }
 
     public String getDescription() { return Description; }
 
@@ -103,6 +106,7 @@ public class Clerkship {
     public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
+
     public Student getStudent() {
         return student;
     }
@@ -144,6 +148,8 @@ public class Clerkship {
     public String getStudentName(){
         return this.student.getName();
     }
+
+    public String getDoctorName(){return this.doctor.getName();}
 
     public String getTime(){
         switch (day){

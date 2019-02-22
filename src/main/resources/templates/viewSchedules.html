@@ -1,15 +1,260 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:mvc="http://www.springframework.org/schema/mvc">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Student Schedule Download</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+
+    <link th:href="@{css/studentPage.css}" href="UC04v1/src/main/resources/static/css/studentPage.css" rel="stylesheet" type="text/css" media="screen"/>
+
 </head>
+
+<style>
+    th{
+        width: 80px !important;
+    }
+    .table tbody tr > td.avail {
+        background-color: cornflowerblue !important;
+    }
+    .table tbody tr > td.avail:hover {
+        background-color: royalblue !important;
+    }
+    .table tbody tr > td.chosen {
+        background-color: seagreen !important;
+        color: #f2f2f2;
+        font-weight: bold;
+        font-size: 13px;
+    }
+    .table tbody tr > td.chosen:hover {
+        background-color: forestgreen !important;
+    }
+    #schedule-group p{
+        margin: 2px;
+    }
+    #schedule-group div{
+        margin-bottom: 5px;
+    }
+
+</style>
+
 <body>
-<div align="center">
-    <h1>Student Schedule Download</h1>
-    <p><a href="/downloadStudentScheduleCSV">Download Student Schedules CSV Format</a></p>
-    <p><a href="/downloadExcel">Download Student Schedules Excel Format</a></p>
+
+<!-- <div class= "container" id="main-container"> -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+        </form>
+    </div>
+</nav>
+
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" id="btn1">
+                    Collapsible Group Item #1
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <div class="wrapper" id="body-wrapper">
+                    <div class = "row">
+                        <div class="col-9" id="weekly-calendar">
+                            <h5>Week 1</h5>
+                            <table class="table table-dark table-striped">
+                                <tr>
+                                    <th scope="col">&nbsp;</th>
+                                    <th scope="col"> Sun</th>
+                                    <th scope="col"> Mon</th>
+                                    <th scope="col"> Tues</th>
+                                    <th scope="col"> Wed</th>
+                                    <th scope="col"> Thur</th>
+                                    <th scope="col"> Fri</th>
+                                    <th scope="col"> Sat</th>
+                                </tr>
+                                <tr>
+                                    <th scope="row" id="morn1"> Morning</th>
+                                    <td class="bg-danger" id="na">N/A</td>
+                                    <td id="0"></td>
+                                    <td id="2"></td>
+                                    <td id="4"></td>
+                                    <td id="6"></td>
+                                    <td id="8"></td>
+                                    <td id="10"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" id="aft1">Afternoon</th>
+                                    <td class="bg-danger" id="na2">N/A</td>
+                                    <td id="1"></td>
+                                    <td id="3"></td>
+                                    <td id="5"></td>
+                                    <td id="7"></td>
+                                    <td id="9"></td>
+                                    <td id="11"></td>
+                                </tr>
+                            </table>
+
+                            <h5>Week 2</h5>
+                            <table class="table table-dark table-striped">
+                                <tr>
+                                    <th scope="col">&nbsp;</th>
+                                    <th scope="col"> Sun</th>
+                                    <th scope="col"> Mon</th>
+                                    <th scope="col"> Tues</th>
+                                    <th scope="col"> Wed</th>
+                                    <th scope="col"> Thur</th>
+                                    <th scope="col"> Fri</th>
+                                    <th scope="col"> Sat</th>
+                                </tr>
+                                <tr>
+                                    <th scope="row" id="morn2">Morning</th>
+                                    <td class="bg-danger" id="na3">N/A</td>
+                                    <td id="12"></td>
+                                    <td id="14"></td>
+                                    <td id="16"></td>
+                                    <td id="18"></td>
+                                    <td id="20"></td>
+                                    <td id="22"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" id="aft2">Afternoon</th>
+                                    <td class="bg-danger" id="na4">N/A</td>
+                                    <td id="13"></td>
+                                    <td id="15"></td>
+                                    <td id="17"></td>
+                                    <td id="19"></td>
+                                    <td id="21"></td>
+                                    <td id="23"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Collapsible Group Item #2
+                </button>
+            </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Collapsible Group Item #3
+                </button>
+            </h2>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingFour">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    Collapsible Group Item #3
+                </button>
+            </h2>
+        </div>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingFive">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    Collapsible Group Item #3
+                </button>
+            </h2>
+        </div>
+        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
 </div>
+<nav aria-label="...">
+    <ul class="pagination">
+        <li>
+            <a class="page-link" href="#" tabindex="-1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#" onclick="names()">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item"><a class="page-link" href="#">6</a></li>
+        <li>
+            <a class="page-link" href="#" tabindex="-1" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    function names(){
+
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            url: "/getStudents",
+            //data: JSON.stringify(),
+
+            success: function (result){
+                console.log(result);
+                document.getElementById('btn1').innerHTML = result;
+            }
+        })
+
+
+    }
+</script>
+
+
 </body>
 </html>
