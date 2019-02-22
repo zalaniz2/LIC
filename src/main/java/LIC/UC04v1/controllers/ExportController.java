@@ -124,13 +124,21 @@ public class ExportController{
         try(ICsvBeanWriter csvWriter = new CsvBeanWriter(response2.getWriter(), CsvPreference.STANDARD_PREFERENCE);){ //try-with-resource management (writer closes automatically)
 
             String[] header = {"Student Name", "Title", "Day", "Week", "Start Time", "End Time", "Location", "Description"};
-            String[] fieldHead = {"studentName", "Title", "Time", "week", "startTime", "endTime",  "Location", "Description"}; //must match fields in Clerkship model
+            String[] fieldHead = {"studentName", "Title", "Time", "timeInt1", "startTime", "endTime",  "Location", "Description"}; //must match fields in Clerkship model
+            String[] fieldHead2 = {"studentName", "Title", "Time", "timeInt2", "startTime", "endTime",  "Location", "Description"};
             final CellProcessor[] processors = getProcessors();
 
             csvWriter.writeHeader(header);
 
             for (Clerkship clerk : clerkList) {
-                csvWriter.write(clerk, fieldHead, processors); //write all clerkships to csv file
+                String s = clerk.getTitle();
+                if(s.equals("Surgery") || s.equals("Pediatrics") || s.equals("FamilyMedicine") || s.equals("InternalMedicine")){
+                    csvWriter.write(clerk, fieldHead, processors); //write all clerkships to csv file
+                    csvWriter.write(clerk,fieldHead2,processors);
+                }else{
+                    csvWriter.write(clerk, fieldHead, processors);
+                }
+
             }
         }
 

@@ -72,16 +72,16 @@ public class Clerkship {
     }
 
 
-    public int getTimeInt1() {
-        return timeInt1;
+    public String getTimeInt1() {
+        return "Week_1";
     }
 
     public void setTimeInt1(int timeInt1) {
         this.timeInt1 = timeInt1;
     }
 
-    public int getTimeInt2() {
-        return timeInt2;
+    public String getTimeInt2() {
+        return "Week_2";
     }
 
     public void setTimeInt2(int timeInt2) {
@@ -164,7 +164,7 @@ public class Clerkship {
     }
 
     public String getWeek(){
-        if(day<=11){
+        if(timeInt1<=11){
             this.week = "Week_1";
         }else{
             this.week = "Week_2";
