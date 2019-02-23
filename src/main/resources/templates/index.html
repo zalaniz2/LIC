@@ -108,7 +108,6 @@
 
 
 
-
   </style>
 
   <body>
@@ -139,9 +138,7 @@
         <div class="wrapper" id="body-wrapper">
             <div class = "row">
                 <div class="col-9" id="weekly-calendar">
-                    <div>
-                        <h3>Key will go here</h3>
-                    </div>
+
                     <h5>Week 1</h5>
                     <table class="table table-dark table-striped">
                         <tr>
@@ -157,22 +154,22 @@
                         <tr>
                             <th scope="row" id="morn1"> Morning</th>
                             <td class="bg-danger" id="na">N/A</td>
-                            <td id="0"></td>
-                            <td id="2"></td>
-                            <td id="4"></td>
-                            <td id="6"></td>
-                            <td id="8"></td>
-                            <td id="10"></td>
+                            <td id="0" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="2" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="4" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="6" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="8" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="10" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                         </tr>
                         <tr>
                             <th scope="row" id="aft1">Afternoon</th>
                             <td class="bg-danger" id="na2">N/A</td>
-                            <td id="1"></td>
-                            <td id="3"></td>
-                            <td id="5"></td>
+                            <td id="1" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="3" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="5" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                             <td id="leaps1" class="bg-danger">LeAPS</td>
-                            <td id="9"></td>
-                            <td id="11"></td>
+                            <td id="9" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="11" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                         </tr>
                     </table>
 
@@ -191,22 +188,22 @@
                         <tr>
                                 <th scope="row" id="morn2">Morning</th>
                                 <td class="bg-danger" id="na3">N/A</td>
-                                <td id="12"></td>
-                                <td id="14"></td>
-                                <td id="16"></td>
-                                <td id="18"></td>
-                                <td id="20"></td>
-                                <td id="22"></td>
+                                <td id="12" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="14" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="16" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="18" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="20" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="22" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                         </tr>
                         <tr>
                                 <th scope="row" id="aft2">Afternoon</th>
                                 <td class="bg-danger" id="na4">N/A</td>
-                                <td id="13"></td>
-                                <td id="15"></td>
-                                <td id="17"></td>
+                                <td id="13" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="15" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="17" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                                 <td id="leaps2" class="bg-danger">LeAPS</td>
-                                <td id="21"></td>
-                                <td id="23"></td>
+                                <td id="21" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="23" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                         </tr>
                     </table>
                 </div>
@@ -280,11 +277,7 @@
    <!-- </div> -->
         <script>
 
-
-
-
-
-
+            // ***** getLocClass is backwards, must fix later *****
 
 
             var onProfession = false; //boolean to see whether student is clicked into a Profession or not
@@ -305,26 +298,26 @@
 
             function getLocClass( loc ){
 
-                if( loc == "Fort Worth"){
+                if( loc == "Neuro"){
                     return "ft-worth";
                 }
-                if( loc == "Keller"){
+                if( loc == "Pedi."){
                     return "keller";
                 }
-                if( loc == "Southlake"){
+                if( loc == "Int. Med."){
 
                     return "southlake";
                 }
-                if( loc == "Arlington"){
+                if( loc == "OBGYN"){
                     return "arlington";
                 }
-                if( loc == "Alliance"){
+                if( loc == "Fam. Med."){
                     return "alliance";
                 }
-                if( loc == "Mansfield"){
+                if( loc == "Surg."){
                     return "mansfield";
                 }
-                if( loc == "Dallas"){
+                if( loc == "Psych."){
                     return "dallas";
                 }
 
@@ -375,6 +368,7 @@
                     $("#specialty-chosen input[type=submit]").not(getButton).prop("disabled", false);
                     $("#locations").prop("disabled", false);
                     updateCalendar();
+                    updateTooltips();
 
                 }
 
@@ -411,13 +405,14 @@
                             console.log(spots);
                             $(this).removeClass("avail");
                           //  $(this).addClass("chosen");
-                            $(this).addClass(getLocClass(loc));
+                            $(this).addClass(getLocClass(profession));
                             $(this).html(profession);
                             $("#" + (spot+12)).removeClass("avail");
                           //  $("#" + (spot+12)).addClass("chosen");
-                            $("#" + (spot+12)).addClass(getLocClass(loc));
+                            $("#" + (spot+12)).addClass(getLocClass(profession));
                             $("#" + (spot+12)).html(profession);
                             updateCalendar(availResult);
+                            updateTooltips();
 
                         }
 
@@ -437,13 +432,14 @@
                             console.log(spots);
                             $(this).removeClass("avail");
                            // $(this).addClass("chosen");
-                            $(this).addClass(getLocClass(loc));
+                            $(this).addClass(getLocClass(profession));
                             $(this).html(profession);
                             $("#" + (spot-12)).removeClass("avail");
                           //  $("#" + (spot-12)).addClass("chosen");
-                            $("#" + (spot-12)).addClass(getLocClass(loc));
+                            $("#" + (spot-12)).addClass(getLocClass(profession));
                             $("#" + (spot-12)).html(profession);
                             updateCalendar(availResult);
+                            updateTooltips();
 
                         }
                         else{
@@ -474,9 +470,10 @@
                         console.log(spots);
                         $(this).removeClass("avail");
                         //$(this).addClass("chosen");
-                        $(this).addClass(getLocClass(loc));
+                        $(this).addClass(getLocClass(profession));
                         $(this).html(profession);
                         updateCalendar(availResult);
+                        updateTooltips();
 
                     }
 
@@ -531,6 +528,7 @@
                     onProfession = false;
                     $("#specialty-chosen input[type=submit]").prop("disabled", false);
                     updateCalendar();
+                    updateTooltips();
                 }
             });
 
@@ -548,6 +546,7 @@
 
                         availResult = result;
                         updateCalendar();
+                        updateTooltips();
 
                     }
                 });
@@ -581,6 +580,52 @@
                     $("table tr td").removeClass("avail");
 
                 }
+
+            }
+
+            function updateTooltips(){
+
+                $("td").each(function() {
+
+                    var data = $(this);
+
+                    if( data.hasClass("ft-worth") || data.hasClass("keller") || data.hasClass("southlake") || data.hasClass("dallas") || data.hasClass("arlington") || data.hasClass("alliance") || data.hasClass("mansfield") ){
+                        $(this).tooltip('enable');
+
+                        if(  data.hasClass("ft-worth") ) {
+                            data.attr('data-original-title', spots["Neuro"]);
+                        }
+                        else if( data.hasClass("keller") ){
+                            data.attr('data-original-title', spots["Pedi."]);
+
+                        }
+                        else if( data.hasClass("southlake") ){
+                            data.attr('data-original-title', spots["Int. Med."]);
+                        }
+                        else if( data.hasClass("dallas") ){
+                            data.attr('data-original-title', spots["Psych."]);
+
+                        }
+                        else if(  data.hasClass("arlington")  ){
+                            data.attr('data-original-title', spots["OBGYN"]);
+
+                        }
+                        else if( data.hasClass("alliance") ){
+                            data.attr('data-original-title', spots["Fam. Med."]);
+
+                        }
+                        else if( data.hasClass("mansfield") ){
+                            data.attr('data-original-title', spots["Surg."]);
+
+                        }
+
+                    }
+                    else{
+                        $(this).tooltip('disable');
+                    }
+
+
+                });
 
             }
 
