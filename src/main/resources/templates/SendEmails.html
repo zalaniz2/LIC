@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:c="http://java.sun.com/xml/ns/javaee">
+<head>
+    <!-- Required meta tags -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+    <title>Import Data Files</title>
+    <style>
+        /* a.button {
+             -webkit-appearance: button;
+             -moz-appearance: button;
+             appearance: button;
+
+             text-decoration: none;
+             color: initial;
+         }*/
+        /*.btn-dark{
+            width: 250px;
+            height: 60px;
+        }*/
+        .container{
+            padding: 20px;
+        }
+
+        /*input{
+            width: 200px;
+            height: 50px;
+            border-radius: 5px;
+            margin: 0 auto;
+        }*/
+        table{
+            height: 100px;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+            table-layout: fixed;
+            font-size: 5px;
+        }
+        table,tr,th,td{
+
+            padding:20px;
+            color:white;
+            border:1px solid #080808;
+            border-collapse: collapse;
+            font-size: 15px;
+            font-family: Arial;
+            /*background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
+            background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%); */
+        }
+        td:hover{
+            background:grey;
+        }
+    </style>
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+    </a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+        </form>
+    </div>
+</nav>
+
+<body>
+<!-- <div class= "container" id="main-container"> -->
+<div class="wrapper" id="body-wrapper">
+
+    <p>Send out emails with the link to the availability forms to the doctors:</p>
+    <c:url value="/send-emails/doctors" var="send-emails/doctors" />
+        <form id="send-emails-doctors">
+            <input type ="submit" class= "btn btn-dark" value="Send Doctor Emails" id="emailsdoc">
+        </form>
+
+    <p>Send out emails with the link to the scheduling pages to the students:</p>
+    <c:url value="/send-emails/students" var="send-emails/students" />
+    <form id="send-emails-students">
+        <input type ="submit" class= "btn btn-dark" value="Send Student Emails" id="emailsstu">
+    </form>
+</div>
+</body>
+</html>
+
