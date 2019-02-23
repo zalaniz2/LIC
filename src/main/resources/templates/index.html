@@ -31,6 +31,10 @@
   </head>
 
   <style>
+      body{
+          min-width: 960px !important;
+          margin: 0 auto !important;
+      }
       th{
           width: 80px !important;
       }
@@ -40,8 +44,45 @@
       .table tbody tr > td.avail:hover {
           background-color: royalblue !important;
       }
-      .table tbody tr > td.chosen {
+
+      .table tbody tr > td.dallas {
+          background-color: steelblue !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.ft-worth {
+          background-color: mediumslateblue !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.keller {
+          background-color: #10707f !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.southlake {
           background-color: seagreen !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.arlington {
+          background-color: darkorange !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.mansfield {
+          background-color: palevioletred !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.alliance {
+          background-color: peru !important;
           color: #f2f2f2;
           font-weight: bold;
           font-size: 13px;
@@ -63,21 +104,8 @@
       #button-header{
           margin-top: 15px;
       }
-      .dallas{
 
-      }
-      .arlington{
 
-      }
-      .mansfield{
-
-      }
-      .keller{
-
-      }
-      .northfortworth{
-
-      }
 
 
 
@@ -98,8 +126,8 @@
                   <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a>
-                    <div th:text="${stu.getId()}" id="stuid" class="d-none"></div>
+                 <!-- <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a> -->
+                  <!--  <div th:text="${stu.getId()}" id="stuid" class="d-none"></div> -->
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -187,9 +215,11 @@
 
                     <p class="text-center" id="filter-header"><strong>Choose Location</strong></p>
                     <select class="form-control" id="locations">
+                        <option value="Fort Worth">Fort Worth</option>
                         <option value="Dallas">Dallas</option>
-                        <option value="North Fort Worth">North Fort Worth</option>
-                        <option value="Keller/South Lake">Keller/South Lake</option>
+                        <option value="Keller">Keller</option>
+                        <option value="Southlake">Southlake</option>
+                        <option value="Alliance">Alliance</option>
                         <option value="Arlington">Arlington</option>
                         <option value="Mansfield">Mansfield</option>
 
@@ -246,66 +276,6 @@
 
              </div>
 
-            <!--
-            <div class="row" id="key-row">
-                <div class="col-9">
-                    <div class="card card-horizontal">
-                        <div class="card-body bg-light">
-                            <p class="card-title"><strong>Selection Key</strong></p>
-                            <p class="card-text">Each color represents a different criteria you have matched with.</p>
-                        </div>
-                        <div class="card-body bg-light">
-                            <div class="row text-center pagination-center">
-                                <div class="col-3">
-                                    <div class="square" id="personality">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <p class="key-text">Doctor with matching personality</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body bg-light">
-                            <div class="row text-center pagination-center">
-                                <div class="col-3">
-                                    <div class="square" id="na">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <p class="key-text" style="margin-left: 15px;">No matching criteria</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body bg-light">
-                            <div class="row text-center pagination-center">
-                                <div class="col-3">
-                                    <div class="square" id="location">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <p class="key-text">Doctor with matching location</p>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="card-body bg-light">
-                            <div class="row text-center pagination-center">
-                                <div class="col-3">
-                                    <div class="square" id="match-both">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <p class="key-text">Matching personality & location</p>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-            -->
         </div>
    <!-- </div> -->
         <script>
@@ -320,7 +290,7 @@
             var onProfession = false; //boolean to see whether student is clicked into a Profession or not
             var profession;
             var availResult;
-            var loc = "Dallas";
+            var loc = "Fort Worth";
 
             var spots = {
                 "Int. Med": loc,
@@ -333,18 +303,44 @@
 
             }
 
-            var studentID = $("#stuid").text();
-            console.log(studentID);
+            function getLocClass( loc ){
+
+                if( loc == "Fort Worth"){
+                    return "ft-worth";
+                }
+                if( loc == "Keller"){
+                    return "keller";
+                }
+                if( loc == "Southlake"){
+
+                    return "southlake";
+                }
+                if( loc == "Arlington"){
+                    return "arlington";
+                }
+                if( loc == "Alliance"){
+                    return "alliance";
+                }
+                if( loc == "Mansfield"){
+                    return "mansfield";
+                }
+                if( loc == "Dallas"){
+                    return "dallas";
+                }
+
+                return "ft-worth";
+            }
+
+           // var studentID = $("#stuid").text();
+           // console.log(studentID);
 
             $("#locations").on('change', function(){
 
-                console.log("got clikc for loaction");
+                console.log("got click for loaction");
                 loc = $("#locations").find(":selected").text();
                 console.log(loc);
 
             });
-
-
 
 
             $("#specialty-chosen input[type=submit]").click(function(e){
@@ -406,21 +402,25 @@
 
                                 var data = $(this);
                                 if( data.text() == profession){
-                                    data.removeClass("chosen");
+                                    data.removeClass(); // changed here
+                                    data.addClass("avail");
                                 }
                             });
 
-                            $(this).removeClass("avail");
-                            $(this).addClass("chosen");
                             spots[profession] = loc;
                             console.log(spots);
+                            $(this).removeClass("avail");
+                          //  $(this).addClass("chosen");
+                            $(this).addClass(getLocClass(loc));
                             $(this).html(profession);
                             $("#" + (spot+12)).removeClass("avail");
-                            $("#" + (spot+12)).addClass("chosen");
+                          //  $("#" + (spot+12)).addClass("chosen");
+                            $("#" + (spot+12)).addClass(getLocClass(loc));
                             $("#" + (spot+12)).html(profession);
                             updateCalendar(availResult);
 
                         }
+
                         else if($("#" + (spot-12)).hasClass("avail")){
                             console.log("double spot is available, can be added");
 
@@ -428,17 +428,20 @@
 
                                 var data = $(this);
                                 if( data.text() == profession){
-                                    data.removeClass("chosen");
+                                    data.removeClass(); // changed here
+                                    data.addClass("avail");
                                 }
                             });
 
-                            $(this).removeClass("avail");
-                            $(this).addClass("chosen");
                             spots[profession] = loc;
                             console.log(spots);
+                            $(this).removeClass("avail");
+                           // $(this).addClass("chosen");
+                            $(this).addClass(getLocClass(loc));
                             $(this).html(profession);
                             $("#" + (spot-12)).removeClass("avail");
-                            $("#" + (spot-12)).addClass("chosen");
+                          //  $("#" + (spot-12)).addClass("chosen");
+                            $("#" + (spot-12)).addClass(getLocClass(loc));
                             $("#" + (spot-12)).html(profession);
                             updateCalendar(availResult);
 
@@ -462,40 +465,43 @@
 
                             var data = $(this);
                             if( data.text() == profession){
-                                data.removeClass("chosen");
+                                data.removeClass(); // changed here
+                                data.addClass("avail");
                             }
                         });
 
-                        $(this).removeClass("avail");
-                        $(this).addClass("chosen");
                         spots[profession] = loc;
                         console.log(spots);
+                        $(this).removeClass("avail");
+                        //$(this).addClass("chosen");
+                        $(this).addClass(getLocClass(loc));
                         $(this).html(profession);
-
                         updateCalendar(availResult);
 
                     }
 
-                    else if( $(this).hasClass("chosen") && $(this).text() == shortenProfName(profession)){
+                    else if( (! $(this).hasClass("avail") ) && $(this).text() == shortenProfName(profession)){
 
                         if(profession == "Int. Med." || profession == "Fam. Med." || profession == "Pedi." || profession == "Surg." ){
 
                             console.log("remove double choice for this one..");
                             var spot = parseInt($(this).attr("id"));
                             if( spot < 12 ){
-                                $(this).removeClass("chosen");
+                               // $(this).removeClass("chosen");
+                                $(this).removeClass();
                                 $(this).addClass("avail");
                                 $(this).html("");
-                                $("#"+(spot+12)).removeClass("chosen");
+                              //  $("#"+(spot+12)).removeClass("chosen");
+                                $("#"+(spot+12)).removeClass();
                                 $("#"+(spot+12)).addClass("avail");
                                 $("#"+(spot+12)).html("");
 
                             }
                             else{
-                                $(this).removeClass("chosen");
+                                $(this).removeClass(); //here
                                 $(this).addClass("avail");
                                 $(this).html("");
-                                $("#"+(spot-12)).removeClass("chosen");
+                                $("#"+(spot-12)).removeClass();
                                 $("#"+(spot-12)).addClass("avail");
                                 $("#"+(spot-12)).html("");
 
@@ -505,7 +511,7 @@
                         else{
 
                             console.log("removing choice form this spot..");
-                            $(this).removeClass("chosen");
+                            $(this).removeClass();
                             $(this).addClass("avail");
                             $(this).html("");
 
@@ -559,12 +565,13 @@
 
                         if( availResult[i] > 0){ // there is an availability at this spot
 
-                            if(! $("#" + i).hasClass("chosen")){
+                            if( (! $("#" + i).hasClass("ft-worth") ) && (! $("#" + i).hasClass("keller") ) && (! $("#" + i).hasClass("southlake")) && (! $("#" + i).hasClass("dallas") ) && (! $("#" + i).hasClass("arlington") ) && (! $("#" + i).hasClass("alliance"))  && (! $("#" + i).hasClass("mansfield") ) ){
 
                                 $("#" + i ).addClass("avail");
                                 $("#" + i ).html("");
 
                             }
+
                         }
 
                     }
@@ -631,7 +638,7 @@
 
                     var data = $(this);
 
-                    if( data.hasClass("chosen")){
+                    if( data.hasClass("ft-worth") || data.hasClass("keller") || data.hasClass("southlake") || data.hasClass("dallas") || data.hasClass("arlington") || data.hasClass("alliance") || data.hasClass("mansfield") ){
                         count = count + 1;
                     }
 
@@ -669,7 +676,7 @@
 
                     var data = $(this);
 
-                    if( data.hasClass("chosen")){
+                    if( data.hasClass("ft-worth") || data.hasClass("keller") || data.hasClass("southlake") || data.hasClass("dallas") || data.hasClass("arlington") || data.hasClass("alliance") || data.hasClass("mansfield") ){
 
                         var day = parseInt(data.attr("id"));
                         var clerk = data.text();
