@@ -175,7 +175,7 @@ public class indexController {
 
 
 
-    /*
+
     @RequestMapping(path = "/{stuID}")
     public String neuro(Model model, @PathVariable String stuID){
         Student stu = studentRepository.findById(stuID).orElse(null);
@@ -184,14 +184,15 @@ public class indexController {
         }
         return "index";
     }
-    */
 
 
+    /*
     @RequestMapping(path = "/")
     public String home() {
 
         return "index";
     }
+    */
 
 
 

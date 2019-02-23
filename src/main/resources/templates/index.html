@@ -32,7 +32,7 @@
 
   <style>
       body{
-          min-width: 960px !important;
+          min-width: 1200px !important;
           margin: 0 auto !important;
       }
       th{
@@ -125,8 +125,8 @@
                   <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                 <!-- <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a> -->
-                  <!--  <div th:text="${stu.getId()}" id="stuid" class="d-none"></div> -->
+                  <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a>
+                  <div th:text="${stu.getId()}" id="stuid" class="d-none"></div>
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -324,8 +324,8 @@
                 return "ft-worth";
             }
 
-           // var studentID = $("#stuid").text();
-           // console.log(studentID);
+           var studentID = $("#stuid").text();
+           console.log(studentID);
 
             $("#locations").on('change', function(){
 
