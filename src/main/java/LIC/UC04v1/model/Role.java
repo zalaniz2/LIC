@@ -12,6 +12,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "role_id")
     private int id;
+    //@ManyToMany(cascade = CascadeType.ALL)
     @Column(name = "role")
     private String role;
 }

@@ -3,20 +3,20 @@ package LIC.UC04v1.Bootstrap;
 import LIC.UC04v1.controllers.Location;
 import LIC.UC04v1.controllers.Specialty;
 import LIC.UC04v1.controllers.TimeSlot;
-import LIC.UC04v1.model.Clerkship;
-import LIC.UC04v1.model.Doctor;
-import LIC.UC04v1.model.Student;
-import LIC.UC04v1.model.User;
-import LIC.UC04v1.repositories.ClerkshipRepository;
-import LIC.UC04v1.repositories.DoctorRepository;
-import LIC.UC04v1.repositories.StudentRepository;
+import LIC.UC04v1.model.*;
+import LIC.UC04v1.repositories.*;
+import LIC.UC04v1.services.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 @Slf4j
 @Component
@@ -24,6 +24,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private ClerkshipRepository clerkshipRepository;
     private DoctorRepository doctorRepository;
     private StudentRepository studentRepository;
+    private UserRepository userRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private RoleRepository roleRepository;
 
 
     @java.lang.Override
@@ -34,12 +37,20 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             e.printStackTrace();
         }
     }
-    public Bootstrap(ClerkshipRepository clerkshipRepository, DoctorRepository doctorRepository, StudentRepository studentRepository) {
+    @Autowired
+    public Bootstrap(ClerkshipRepository clerkshipRepository, DoctorRepository doctorRepository, StudentRepository studentRepository,UserRepository userRepository,
+                     RoleRepository roleRepository,
+                     BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.clerkshipRepository = clerkshipRepository;
         this.doctorRepository = doctorRepository;
         this.studentRepository = studentRepository;
+        this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRepository = userRepository;
     }
     private void initData() throws IOException {
+
+        //createAdmin();
 
         String fileName = "doctors.csv";
 
@@ -145,8 +156,18 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         }
     }
 
-    private void createAdmin(){}
+    private void createAdmin(){
         User admin = new User();
+        admin.setName("Super");
+        admin.setLastName("Admin");
+        admin.setActive(1);
+        admin.setEmail("admin@superadmin.tcu");
+        Role adminRole = roleRepository.findByRole("ADMIN");
+      //  admin.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
+        admin.setPassword(bCryptPasswordEncoder.encode("Admin123"));
+        userRepository.save(admin);
+    }
+
 
 
 
