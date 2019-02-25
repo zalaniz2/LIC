@@ -40,13 +40,19 @@
         display: table;
         width: 45%;
     }
-    .container{
+    .anything{
         background-image: url('../static/img/tcu.png');
+        padding-bottom: 100%;
 
     }
     .btn-group-vertical{
-        opacity: 1.0;
+        opacity: 1.0 !important;
     }
+    #logout{
+        padding-top: 10px;
+        text-align: center;
+    }
+
 </style>
 
 
@@ -63,13 +69,21 @@
             </li>
         </ul>
         <span class="admin-name text-center" th:utext="${userName}">Admin Page</span>
-        <form class="form-inline my-2 my-lg-0">
-            <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
-        </form>
+        <div class="right-logo">
+            <form class="form-inline my-2 my-lg-0">
+                <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+            </form>
+            <form th:action="@{/logout}" id="logout" method="get">
+                <button class="btn btn-md btn-danger" name="registration"
+                        type="Submit">Logout
+                </button>
+            </form>
+        </div>
     </div>
 
 </nav>
-<div class="container">
+
+<div class="anything">
     <div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
             <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
