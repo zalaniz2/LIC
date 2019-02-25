@@ -159,8 +159,20 @@ public class Clerkship {
             case 9: return "Friday";
             case 10: return "Saturday";
             case 11: return "Saturday";
-            default: return "week2";
+            case 12: return "Monday";
+            case 13: return "Monday";
+            case 14: return "Tuesday";
+            case 15: return "Tuesday";
+            case 16: return "Wednesday";
+            case 17: return "Wednesday";
+            case 18: return "Thursday";
+            case 19: return "Thursday";
+            case 20: return "Friday";
+            case 21: return "Friday";
+            case 22: return "Saturday";
+            case 23: return "Saturday";
         }
+        return "false";
     }
 
     public String getWeek(){
