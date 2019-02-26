@@ -83,17 +83,11 @@ public class Clerkship {
     }
 
 
-    public String getTimeInt1() {
-        return "Week_1";
-    }
+    public int getTimeInt1() { return timeInt1; }
 
-    public void setTimeInt1(int timeInt1) {
-        this.timeInt1 = timeInt1;
-    }
+    public void setTimeInt1(int timeInt1) { this.timeInt1 = timeInt1; }
 
-    public String getTimeInt2() {
-        return "Week_2";
-    }
+    public int getTimeInt2() { return timeInt2; }
 
     public void setTimeInt2(int timeInt2) {
         this.timeInt2 = timeInt2;
@@ -206,5 +200,9 @@ public class Clerkship {
         else{ this.endTime= "17:00:00"; }
         return this.endTime;
     }
+
+    public String getTimeWeek1(){ return "Week_1";}
+
+    public String getTimeWeek2(){ return "Week_2";}
 
 }

@@ -118,8 +118,8 @@ public class ExportController{
         try(ICsvBeanWriter csvWriter = new CsvBeanWriter(response2.getWriter(), CsvPreference.STANDARD_PREFERENCE);){ //try-with-resource management (writer closes automatically)
 
             String[] header = {"Student Name", "Title", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"};
-            String[] fieldHead = {"studentName", "Title", "Description", "Time", "timeInt1", "startTime", "endTime",  "Location", "eventType"}; //must match fields in Clerkship model
-            String[] fieldHead2 = {"studentName", "Title","Description", "Time", "timeInt2", "startTime", "endTime",  "Location", "eventType"};
+            String[] fieldHead = {"studentName", "Title", "Description", "Time", "timeWeek1", "startTime", "endTime",  "Location", "eventType"}; //must match fields in Clerkship model
+            String[] fieldHead2 = {"studentName", "Title","Description", "Time", "timeWeek2", "startTime", "endTime",  "Location", "eventType"};
             final CellProcessor[] processors = getProcessors();
 
             csvWriter.writeHeader(header);
@@ -382,139 +382,139 @@ public class ExportController{
                     case 1:
                         Row r2 = sheet.getRow(MonPM.getRow());
                         Cell c2 = r2.getCell(MonPM.getCol());
-                        c2.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c2.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c2.setCellStyle(dataStyle);
                         break;
                     case 2:
                         Row r3 = sheet.getRow(TuesAM.getRow());
                         Cell c3 = r3.getCell(TuesAM.getCol());
-                        c3.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c3.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c3.setCellStyle(dataStyle);
                         break;
                     case 3:
                         Row r4 = sheet.getRow(TuesPM.getRow());
                         Cell c4 = r4.getCell(TuesPM.getCol());
-                        c4.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c4.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c4.setCellStyle(dataStyle);
                         break;
                     case 4:
                         Row r5 = sheet.getRow(WedAM.getRow());
                         Cell c5 = r5.getCell(WedAM.getCol());
-                        c5.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c5.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c5.setCellStyle(dataStyle);
                         break;
                     case 5:
                         Row r6 = sheet.getRow(WedPM.getRow());
                         Cell c6 = r6.getCell(WedPM.getCol());
-                        c6.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c6.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c6.setCellStyle(dataStyle);
                         break;
                     case 6:
                         Row r7 = sheet.getRow(ThursAM.getRow());
                         Cell c7 = r7.getCell(ThursAM.getCol());
-                        c7.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c7.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c7.setCellStyle(dataStyle);
                         break;
                     case 7:
                         Row r8 = sheet.getRow(ThursPM.getRow());
                         Cell c8 = r8.getCell(ThursPM.getCol());
-                        c8.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c8.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c8.setCellStyle(dataStyle);
                         break;
                     case 8:
                         Row r9 = sheet.getRow(FriAM.getRow());
                         Cell c9 = r9.getCell(FriAM.getCol());
-                        c9.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c9.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c9.setCellStyle(dataStyle);
                         break;
                     case 9:
                         Row r10 = sheet.getRow(FriPM.getRow());
                         Cell c10 = r10.getCell(FriPM.getCol());
-                        c10.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c10.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c10.setCellStyle(dataStyle);
                         break;
                     case 10:
                         Row r11 = sheet.getRow(SatAM.getRow());
                         Cell c11 = r11.getCell(SatAM.getCol());
-                        c11.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c11.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c11.setCellStyle(dataStyle);
                         break;
                     case 11:
                         Row r12 = sheet.getRow(SatPM.getRow());
                         Cell c12 = r12.getCell(SatPM.getCol());
-                        c12.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c12.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c12.setCellStyle(dataStyle);
                         break;
                     case 12:
                         Row r13 = sheet.getRow(MonAM2.getRow());
                         Cell c13 = r13.getCell(MonAM2.getCol());
-                        c13.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c13.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c13.setCellStyle(dataStyle);
                         break;
                     case 13:
                         Row r14 = sheet.getRow(MonPM2.getRow());
                         Cell c14 = r14.getCell(MonPM2.getCol());
-                        c14.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c14.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c14.setCellStyle(dataStyle);
                         break;
                     case 14:
                         Row r15 = sheet.getRow(TuesAM2.getRow());
                         Cell c15 = r15.getCell(TuesAM2.getCol());
-                        c15.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c15.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c15.setCellStyle(dataStyle);
                         break;
                     case 15:
                         Row r16 = sheet.getRow(TuesPM2.getRow());
                         Cell c16 = r16.getCell(TuesPM2.getCol());
-                        c16.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c16.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c16.setCellStyle(dataStyle);
                         break;
                     case 16:
                         Row r17 = sheet.getRow(WedAM2.getRow());
                         Cell c17 = r17.getCell(WedAM2.getCol());
-                        c17.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c17.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c17.setCellStyle(dataStyle);
                         break;
                     case 17:
                         Row r18 = sheet.getRow(WedPM2.getRow());
                         Cell c18 = r18.getCell(WedPM2.getCol());
-                        c18.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c18.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c18.setCellStyle(dataStyle);
                         break;
                     case 18:
                         Row r19 = sheet.getRow(ThursAM2.getRow());
                         Cell c19 = r19.getCell(ThursAM2.getCol());
-                        c19.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c19.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c19.setCellStyle(dataStyle);
                         break;
                     case 19:
                         Row r20 = sheet.getRow(ThursPM2.getRow());
                         Cell c20 = r20.getCell(ThursPM2.getCol());
-                        c20.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c20.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c20.setCellStyle(dataStyle);
                         break;
                     case 20:
                         Row r21 = sheet.getRow(FriAM2.getRow());
                         Cell c21 = r21.getCell(FriAM2.getCol());
-                        c21.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c21.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c21.setCellStyle(dataStyle);
                         break;
                     case 21:
                         Row r22 = sheet.getRow(FriPM2.getRow());
                         Cell c22 = r22.getCell(FriPM2.getCol());
-                        c22.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c22.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c22.setCellStyle(dataStyle);
                         break;
                     case 22:
                         Row r23 = sheet.getRow(SatAM2.getRow());
                         Cell c23 = r23.getCell(SatAM2.getCol());
-                        c23.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c23.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c23.setCellStyle(dataStyle);
                         break;
                     case 23:
                         Row r24 = sheet.getRow(SatPM2.getRow());
                         Cell c24 = r24.getCell(SatPM2.getCol());
-                        c24.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c24.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c24.setCellStyle(dataStyle);
                         break;
                         default:
@@ -528,73 +528,73 @@ public class ExportController{
                         case 12:
                             Row r13 = sheet.getRow(MonAM2.getRow());
                             Cell c13 = r13.getCell(MonAM2.getCol());
-                            c13.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c13.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c13.setCellStyle(dataStyle);
                             break;
                         case 13:
                             Row r14 = sheet.getRow(MonPM2.getRow());
                             Cell c14 = r14.getCell(MonPM2.getCol());
-                            c14.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c14.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c14.setCellStyle(dataStyle);
                             break;
                         case 14:
                             Row r15 = sheet.getRow(TuesAM2.getRow());
                             Cell c15 = r15.getCell(TuesAM2.getCol());
-                            c15.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c15.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c15.setCellStyle(dataStyle);
                             break;
                         case 15:
                             Row r16 = sheet.getRow(TuesPM2.getRow());
                             Cell c16 = r16.getCell(TuesPM2.getCol());
-                            c16.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c16.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c16.setCellStyle(dataStyle);
                             break;
                         case 16:
                             Row r17 = sheet.getRow(WedAM2.getRow());
                             Cell c17 = r17.getCell(WedAM2.getCol());
-                            c17.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c17.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c17.setCellStyle(dataStyle);
                             break;
                         case 17:
                             Row r18 = sheet.getRow(WedPM2.getRow());
                             Cell c18 = r18.getCell(WedPM2.getCol());
-                            c18.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c18.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c18.setCellStyle(dataStyle);
                             break;
                         case 18:
                             Row r19 = sheet.getRow(ThursAM2.getRow());
                             Cell c19 = r19.getCell(ThursAM2.getCol());
-                            c19.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c19.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c19.setCellStyle(dataStyle);
                             break;
                         case 19:
                             Row r20 = sheet.getRow(ThursPM2.getRow());
                             Cell c20 = r20.getCell(ThursPM2.getCol());
-                            c20.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c20.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c20.setCellStyle(dataStyle);
                             break;
                         case 20:
                             Row r21 = sheet.getRow(FriAM2.getRow());
                             Cell c21 = r21.getCell(FriAM2.getCol());
-                            c21.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c21.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c21.setCellStyle(dataStyle);
                             break;
                         case 21:
                             Row r22 = sheet.getRow(FriPM2.getRow());
                             Cell c22 = r22.getCell(FriPM2.getCol());
-                            c22.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c22.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c22.setCellStyle(dataStyle);
                             break;
                         case 22:
                             Row r23 = sheet.getRow(SatAM2.getRow());
                             Cell c23 = r23.getCell(SatAM2.getCol());
-                            c23.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c23.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c23.setCellStyle(dataStyle);
                             break;
                         case 23:
                             Row r24 = sheet.getRow(SatPM2.getRow());
                             Cell c24 = r24.getCell(SatPM2.getCol());
-                            c24.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                            c24.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                             c24.setCellStyle(dataStyle);
                             break;
                         default:
