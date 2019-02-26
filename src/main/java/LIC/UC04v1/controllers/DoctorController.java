@@ -1,7 +1,7 @@
 package LIC.UC04v1.controllers;
 
 
-import LIC.UC04v1.domain.doctorForm;
+import LIC.UC04v1.controllers.doctorForm;
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.services.DoctorService;
@@ -34,6 +34,7 @@ public class DoctorController {
         docF.id = id;
         Doctor doc = doctorService.findById(id);
         docF.name = doc.getName();
+        docF.Location = doc.getLocationInText();
         if(doc.getAvailabilities().charAt(0)=='1') docF.MM = true;
         else  docF.MM = false;
         if(doc.getAvailabilities().charAt(1)=='1') docF.MA = true;
@@ -58,11 +59,6 @@ public class DoctorController {
         else  docF.AM = false;
         if(doc.getAvailabilities().charAt(11)=='1') docF.AA = true;
         else  docF.AA = false;
-//        if(doc.getAvailable().charAt(12)=='1') docF.UM = true;
-//        else  docF.UM = false;
-//        if(doc.getAvailable().charAt(13)=='1') docF.UA = true;
-//        else  docF.UA = false;
-
 
 
 

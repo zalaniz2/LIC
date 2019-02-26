@@ -49,10 +49,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         this.userRepository = userRepository;
     }
     private void initData() throws IOException {
-
-        //createAdmin();
-
-        String fileName = "doctors.csv";
+        String fileName = "demodoctors.csv";
 
         ClassLoader classLoader = super.getClass().getClassLoader();
 
@@ -187,9 +184,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private Location convertLocation(String location) {
         switch (location) {
             case "Fort Worth": return Location.FortWorth;
-            case "North Fort Worth": return Location.NorthFortWorth;
+            case "Denton": return Location.Denton;
             case "Dallas": return Location.Dallas;
-            case "Keller/South Lake": return Location.KellerSouthLake;
+            case "Keller/South Lake/Alliance": return Location.KellerSouthLakeAlliance;
             case "Arlington": return Location.Arlington;
             case "Mansfield": return Location.Mansfield;
         }

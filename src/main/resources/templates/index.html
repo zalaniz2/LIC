@@ -10,19 +10,28 @@
       <mvc:resources mapping="/resources/**" location="/resources/" />
 
       <!-- Bootstrap CSS -->
+
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
 
 
       <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
       <!-- Latest compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
 
       <link th:href="@{css/studentPage.css}" href="UC04v1/src/main/resources/static/css/studentPage.css" rel="stylesheet" type="text/css" media="screen"/>
 
   </head>
 
   <style>
+      body{
+          min-width: 1300px !important;
+          margin: 0 auto !important;
+          overflow: hidden;
+      }
       th{
           width: 80px !important;
       }
@@ -32,14 +41,51 @@
       .table tbody tr > td.avail:hover {
           background-color: royalblue !important;
       }
-      .table tbody tr > td.chosen {
+
+      .table tbody tr > td.dallas {
+          background-color: steelblue !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.ft-worth {
+          background-color: mediumslateblue !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.keller {
+          background-color: #10707f !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.southlake {
           background-color: seagreen !important;
           color: #f2f2f2;
           font-weight: bold;
           font-size: 13px;
       }
+      .table tbody tr > td.arlington {
+          background-color: darkorange !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.mansfield {
+          background-color: palevioletred !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
+      .table tbody tr > td.alliance {
+          background-color: peru !important;
+          color: #f2f2f2;
+          font-weight: bold;
+          font-size: 13px;
+      }
       .table tbody tr > td.chosen:hover {
-          background-color: forestgreen !important;
+            background-color: forestgreen !important;
       }
       #schedule-group p{
           margin: 2px;
@@ -47,6 +93,55 @@
       #schedule-group div{
           margin-bottom: 5px;
       }
+      .active a{
+          background-color: #563c7c !important;
+      }
+      #brand-header{ background-color: transparent !important}
+
+      #button-header{
+          margin-top: 15px;
+      }
+      .btn-warning{
+          font-weight: bold;
+      }
+      #schedule-view-table tr {
+          line-height: 100%;
+          line-widows: 30px;
+          height: 100%;
+      }
+      #schedule-view-table>th{
+          color: black !important;
+      }
+      #schedule-view-table>td{
+          color: black !important;
+      }
+      #schedule-view-table{
+          width: 100% !important;
+          margin-left: 0%;
+          background-color: white !important;
+          border: 1px solid white;
+      }
+      #schedule-view-table td:hover {
+          background-color: transparent;
+      }
+      .btn.disabled {
+          pointer-events: none;
+      }
+      #final-buttons{
+          margin-left: 8%;
+          margin-top: -100px;
+
+      }
+      #schedule-popup{
+          background-color: #6f5499;
+          color:  #f2f2f2;
+      }
+      #sender{
+          font-weight: bold;
+      }
+
+
+
 
   </style>
 
@@ -65,8 +160,8 @@
                   <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link disabled" href="#" th:text="${stu.getName()}"></a>
-                  <div th:text="${stu.getId()}" id="stuid" class="d-none"></div>
+                 <a class="nav-link disabled" id="stuname" href="#" th:text="${stu.getName()}"></a>
+                 <div th:text="${stu.getId()}" id="stuid" class="d-none"></div>
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -80,8 +175,31 @@
         <div class="wrapper" id="body-wrapper">
             <div class = "row">
                 <div class="col-9" id="weekly-calendar">
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#rulesModal" id="rules-popup">
+                        How To Use
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="rulesModal" tabindex="-1" role="dialog" aria-labelledby="rulesModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="col-12 modal-title text-center" id="rulesModalTitle">How To Use</h4>
+                                </div>
+                                <div class="modal-body">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <h5>Week 1</h5>
-                    <table class="table table-dark table-striped">
+                    <table class="table table-dark table-striped text-center">
                         <tr>
                             <th scope="col">&nbsp;</th>
                             <th scope="col"> Sun</th>
@@ -95,27 +213,27 @@
                         <tr>
                             <th scope="row" id="morn1"> Morning</th>
                             <td class="bg-danger" id="na">N/A</td>
-                            <td id="0"></td>
-                            <td id="2"></td>
-                            <td id="4"></td>
-                            <td id="6"></td>
-                            <td id="8"></td>
-                            <td id="10"></td>
+                            <td id="0" data-toggle="tooltip" data-placement="top" title="Hooray!" ></td>
+                            <td id="2" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="4" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="6" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="8" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="10" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                         </tr>
                         <tr>
                             <th scope="row" id="aft1">Afternoon</th>
                             <td class="bg-danger" id="na2">N/A</td>
-                            <td id="1"></td>
-                            <td id="3"></td>
-                            <td id="5"></td>
-                            <td id="7"></td>
-                            <td id="9"></td>
-                            <td id="11"></td>
+                            <td id="1" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="3" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="5" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="leaps1" class="bg-danger">LeAPS</td>
+                            <td id="9" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                            <td id="11" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                         </tr>
                     </table>
 
                     <h5>Week 2</h5>
-                    <table class="table table-dark table-striped">
+                    <table class="table table-dark table-striped text-center">
                         <tr>
                                 <th scope="col">&nbsp;</th>
                                 <th scope="col"> Sun</th>
@@ -129,27 +247,40 @@
                         <tr>
                                 <th scope="row" id="morn2">Morning</th>
                                 <td class="bg-danger" id="na3">N/A</td>
-                                <td id="12"></td>
-                                <td id="14"></td>
-                                <td id="16"></td>
-                                <td id="18"></td>
-                                <td id="20"></td>
-                                <td id="22"></td>
+                                <td id="12" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="14" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="16" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="18" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="20" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="22" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                         </tr>
                         <tr>
                                 <th scope="row" id="aft2">Afternoon</th>
                                 <td class="bg-danger" id="na4">N/A</td>
-                                <td id="13"></td>
-                                <td id="15"></td>
-                                <td id="17"></td>
-                                <td id="19"></td>
-                                <td id="21"></td>
-                                <td id="23"></td>
+                                <td id="13" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="15" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="17" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="leaps2" class="bg-danger">LeAPS</td>
+                                <td id="21" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
+                                <td id="23" data-toggle="tooltip" data-placement="top" title="Hooray!"></td>
                         </tr>
                     </table>
                 </div>
 
                 <div class="col-3" id="specialty-column">
+
+                    <p class="text-center" id="filter-header"><strong>Choose Location</strong></p>
+                    <select class="form-control" id="locations">
+                        <option value="Fort Worth">Fort Worth</option>
+                        <option value="Dallas">Dallas</option>
+                        <option value="Keller">Keller</option>
+                        <option value="Southlake">Southlake</option>
+                        <option value="Alliance">Alliance</option>
+                        <option value="Arlington">Arlington</option>
+                        <option value="Mansfield">Mansfield</option>
+
+                    </select>
+
                     <p class="text-center" id="button-header"><strong>Choose Clerkship</strong></p>
                     <div class = "btn-group-vertical" role="group" id="specialty-buttons">
                          <form id="specialty-chosen">
@@ -162,113 +293,202 @@
                             <input type ="submit" class= "btn btn-dark" value="Psychiatry" name="psych">
                          </form>
 
-
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-dark disabled" data-toggle="modal" data-target="#scheduleModal" id="schedule-popup">
+                        <button type="button" class="btn btn-light disabled" data-toggle="modal" data-target="#scheduleModal" id="schedule-popup">
                             Schedule
                         </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Your Current Schedule</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <ul class="list-group" id="schedule-group">
-                                            <!--<li class="list-group-item" ="${schedule}"></li> -->
-                                            <!--<h1 id="hold" ="${schedule}"></h1> -->
-                                            <h5>Week 1</h5>
-                                            <div id="week1"></div>
-                                            <h5>Week 2</h5>
-                                            <div id="week2"></div>
-                                        </ul>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-light" id="schedule-popup-submit">Submit</button>
-                                    </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="final-buttons">
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger col-4" data-toggle="modal" data-target="#contactModal" style="margin-top: 50px;" id="contact-admin">
+                        Contact Admin.
+                    </button>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="col-12 modal-title text-center" id="contactModalTitle">Send Message</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="sender"></p>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">Send a message to the administrator:</label>
+                                            <textarea class="form-control" id="message-text"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Send</button>
+                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
 
-             </div>
-            <!--
-            <div class="row" id="key-row">
-                <div class="col-9">
-                    <div class="card card-horizontal">
-                        <div class="card-body bg-light">
-                            <p class="card-title"><strong>Selection Key</strong></p>
-                            <p class="card-text">Each color represents a different criteria you have matched with.</p>
-                        </div>
-                        <div class="card-body bg-light">
-                            <div class="row text-center pagination-center">
-                                <div class="col-3">
-                                    <div class="square" id="personality">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <p class="key-text">Doctor with matching personality</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body bg-light">
-                            <div class="row text-center pagination-center">
-                                <div class="col-3">
-                                    <div class="square" id="na">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <p class="key-text" style="margin-left: 15px;">No matching criteria</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body bg-light">
-                            <div class="row text-center pagination-center">
-                                <div class="col-3">
-                                    <div class="square" id="location">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <p class="key-text">Doctor with matching location</p>
-                                </div>
-                            </div>
 
-                        </div>
-                        <div class="card-body bg-light">
-                            <div class="row text-center pagination-center">
-                                <div class="col-3">
-                                    <div class="square" id="match-both">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <p class="key-text">Matching personality & location</p>
-                                </div>
-                            </div>
+            <!-- Modal -->
 
+            <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title col-12 text-center" id="exampleModalLabel">Your Current Schedule</h5>
                         </div>
+                        <div class="modal-body">
+                            <table class="table" id="schedule-view-table" style="color: black !important;">
+                                <thead>
+                                <tr>
+                                    <th scope="col" style="color: black; border-top-color: transparent;">Clerkship</th>
+                                    <th scope="col" style="color: black; border-top-color: transparent;">Day</th>
+                                    <th scope="col" style="color: black; border-top-color: transparent;">Time</th>
+                                    <th scope="col" style="color: black; border-top-color: transparent;">2x a week</th>
+                                    <th scope="col" style="color: black; border-top-color: transparent;">Location</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="schedview1" style="color: black;" id="schedclerk1">Neurology</th>
+                                    <td style="color: black;" id="schedday1">Mark</td>
+                                    <td style="color: black;" id="schedtime1">Otto</td>
+                                    <td style="color: black;" id="schedweek1">@mdo</td>
+                                    <td style="color: black;" id="schedloc1">@mdo</td>
 
+                                </tr>
+                                <tr>
+                                    <th scope="schedview1" style="color: black;" id="schedclerk2">Family Medicine</th>
+                                    <td style="color: black;" id="schedday2">Mark</td>
+                                    <td style="color: black;" id="schedtime2">Otto</td>
+                                    <td style="color: black;" id="schedweek2">@mdo</td>
+                                    <td style="color: black;" id="schedloc2">@mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="schedview1" style="color: black;" id="schedclerk3">Internal Medicine</th>
+                                    <td style="color: black;" id="schedday3">Mark</td>
+                                    <td style="color: black;" id="schedtime3">Otto</td>
+                                    <td style="color: black;" id="schedweek3">@mdo</td>
+                                    <td style="color: black;" id="schedloc3">@mdo</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="schedview1" style="color: black;" id="schedclerk4">Surgery</th>
+                                    <td style="color: black;" id="schedday4">Mark</td>
+                                    <td style="color: black;" id="schedtime4">Otto</td>
+                                    <td style="color: black;" id="schedweek4">@mdo</td>
+                                    <td style="color: black;" id="schedloc4">@mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="schedview1" style="color: black;" id="schedclerk5">OBGYN</th>
+                                    <td style="color: black;" id="schedday5">Mark</td>
+                                    <td style="color: black;" id="schedtime5">Otto</td>
+                                    <td style="color: black;" id="schedweek5">@mdo</td>
+                                    <td style="color: black;" id="schedloc5">@mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="schedview1" style="color: black;" id="schedclerk6">Pediatrics</th>
+                                    <td style="color: black;" id="schedday6">Mark</td>
+                                    <td style="color: black;" id="schedtime6">Otto</td>
+                                    <td style="color: black;" id="schedweek6">@mdo</td>
+                                    <td style="color: black;" id="schedloc6">@mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="schedview1" style="color: black;" id="schedclerk7">Psychiatry</th>
+                                    <td style="color: black;" id="schedday7">Mark</td>
+                                    <td style="color: black;" id="schedtime7">Otto</td>
+                                    <td style="color: black;" id="schedweek7">@mdo</td>
+                                    <td style="color: black;" id="schedloc7">@mdo</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark col-6" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-light col-6" id="schedule-popup-submit">Submit</button>
+                        </div>
                     </div>
                 </div>
+
+
+
 
             </div>
-            -->
+
         </div>
    <!-- </div> -->
         <script>
 
+            // ***** getLocClass is backwards, must fix later *****
+
+
             var onProfession = false; //boolean to see whether student is clicked into a Profession or not
             var profession;
             var availResult;
+            var loc = "Fort Worth";
 
-            var studentID = $("#stuid").text();
-            console.log(studentID);
+            var spots = {
+                "Int. Med": loc,
+                "Fam. Med.": loc,
+                "Surg.": loc,
+                "OBGYN": loc,
+                "Pedi.": loc,
+                "Psych.": loc,
+                "Neuro": loc
+
+            }
+
+            function getLocClass( loc ){
+
+                if( loc == "Neuro"){
+                    return "ft-worth";
+                }
+                if( loc == "Pedi."){
+                    return "keller";
+                }
+                if( loc == "Int. Med."){
+
+                    return "southlake";
+                }
+                if( loc == "OBGYN"){
+                    return "arlington";
+                }
+                if( loc == "Fam. Med."){
+                    return "alliance";
+                }
+                if( loc == "Surg."){
+                    return "mansfield";
+                }
+                if( loc == "Psych."){
+                    return "dallas";
+                }
+
+                return "ft-worth";
+            }
+
+
+           var studentID = $("#stuid").text();
+           var stuName = $("#stuname").text();
+           console.log(studentID);
+           console.log(stuName);
+
+           $("#sender").html(stuName);
+
+            $("#locations").on('change', function(){
+
+                console.log("got click for loaction");
+                loc = $("#locations").find(":selected").text();
+                console.log(loc);
+
+            });
 
 
             $("#specialty-chosen input[type=submit]").click(function(e){
@@ -280,7 +500,8 @@
                 profession = $(this).val();
 
                 var specialty = {
-                    "profession": profession
+                    "profession": profession,
+                    "location": loc
                 }
 
                 console.log(specialty);
@@ -292,6 +513,7 @@
                     onProfession = true;
                     getAvailableDoctors(specialty);
                     $("#specialty-chosen input[type=submit]").not(getButton).prop("disabled", true);
+                    $("#locations").prop("disabled", true);
 
                 }
 
@@ -299,7 +521,9 @@
 
                     onProfession = false;
                     $("#specialty-chosen input[type=submit]").not(getButton).prop("disabled", false);
+                    $("#locations").prop("disabled", false);
                     updateCalendar();
+                    updateTooltips();
 
                 }
 
@@ -327,19 +551,26 @@
 
                                 var data = $(this);
                                 if( data.text() == profession){
-                                    data.removeClass("chosen");
+                                    data.removeClass(); // changed here
+                                    data.addClass("avail");
                                 }
                             });
 
+                            spots[profession] = loc;
+                            console.log(spots);
                             $(this).removeClass("avail");
-                            $(this).addClass("chosen");
+                          //  $(this).addClass("chosen");
+                            $(this).addClass(getLocClass(profession));
                             $(this).html(profession);
                             $("#" + (spot+12)).removeClass("avail");
-                            $("#" + (spot+12)).addClass("chosen");
+                          //  $("#" + (spot+12)).addClass("chosen");
+                            $("#" + (spot+12)).addClass(getLocClass(profession));
                             $("#" + (spot+12)).html(profession);
                             updateCalendar(availResult);
+                            updateTooltips();
 
                         }
+
                         else if($("#" + (spot-12)).hasClass("avail")){
                             console.log("double spot is available, can be added");
 
@@ -347,17 +578,23 @@
 
                                 var data = $(this);
                                 if( data.text() == profession){
-                                    data.removeClass("chosen");
+                                    data.removeClass(); // changed here
+                                    data.addClass("avail");
                                 }
                             });
 
+                            spots[profession] = loc;
+                            console.log(spots);
                             $(this).removeClass("avail");
-                            $(this).addClass("chosen");
+                           // $(this).addClass("chosen");
+                            $(this).addClass(getLocClass(profession));
                             $(this).html(profession);
                             $("#" + (spot-12)).removeClass("avail");
-                            $("#" + (spot-12)).addClass("chosen");
+                          //  $("#" + (spot-12)).addClass("chosen");
+                            $("#" + (spot-12)).addClass(getLocClass(profession));
                             $("#" + (spot-12)).html(profession);
                             updateCalendar(availResult);
+                            updateTooltips();
 
                         }
                         else{
@@ -379,38 +616,44 @@
 
                             var data = $(this);
                             if( data.text() == profession){
-                                data.removeClass("chosen");
+                                data.removeClass(); // changed here
+                                data.addClass("avail");
                             }
                         });
 
+                        spots[profession] = loc;
+                        console.log(spots);
                         $(this).removeClass("avail");
-                        $(this).addClass("chosen");
+                        //$(this).addClass("chosen");
+                        $(this).addClass(getLocClass(profession));
                         $(this).html(profession);
-
                         updateCalendar(availResult);
+                        updateTooltips();
 
                     }
 
-                    else if( $(this).hasClass("chosen") && $(this).text() == shortenProfName(profession)){
+                    else if( (! $(this).hasClass("avail") ) && $(this).text() == shortenProfName(profession)){
 
                         if(profession == "Int. Med." || profession == "Fam. Med." || profession == "Pedi." || profession == "Surg." ){
 
                             console.log("remove double choice for this one..");
                             var spot = parseInt($(this).attr("id"));
                             if( spot < 12 ){
-                                $(this).removeClass("chosen");
+                               // $(this).removeClass("chosen");
+                                $(this).removeClass();
                                 $(this).addClass("avail");
                                 $(this).html("");
-                                $("#"+(spot+12)).removeClass("chosen");
+                              //  $("#"+(spot+12)).removeClass("chosen");
+                                $("#"+(spot+12)).removeClass();
                                 $("#"+(spot+12)).addClass("avail");
                                 $("#"+(spot+12)).html("");
 
                             }
                             else{
-                                $(this).removeClass("chosen");
+                                $(this).removeClass(); //here
                                 $(this).addClass("avail");
                                 $(this).html("");
-                                $("#"+(spot-12)).removeClass("chosen");
+                                $("#"+(spot-12)).removeClass();
                                 $("#"+(spot-12)).addClass("avail");
                                 $("#"+(spot-12)).html("");
 
@@ -420,7 +663,7 @@
                         else{
 
                             console.log("removing choice form this spot..");
-                            $(this).removeClass("chosen");
+                            $(this).removeClass();
                             $(this).addClass("avail");
                             $(this).html("");
 
@@ -440,6 +683,7 @@
                     onProfession = false;
                     $("#specialty-chosen input[type=submit]").prop("disabled", false);
                     updateCalendar();
+                    updateTooltips();
                 }
             });
 
@@ -457,6 +701,7 @@
 
                         availResult = result;
                         updateCalendar();
+                        updateTooltips();
 
                     }
                 });
@@ -474,12 +719,13 @@
 
                         if( availResult[i] > 0){ // there is an availability at this spot
 
-                            if(! $("#" + i).hasClass("chosen")){
+                            if( (! $("#" + i).hasClass("ft-worth") ) && (! $("#" + i).hasClass("keller") ) && (! $("#" + i).hasClass("southlake")) && (! $("#" + i).hasClass("dallas") ) && (! $("#" + i).hasClass("arlington") ) && (! $("#" + i).hasClass("alliance"))  && (! $("#" + i).hasClass("mansfield") ) ){
 
                                 $("#" + i ).addClass("avail");
                                 $("#" + i ).html("");
 
                             }
+
                         }
 
                     }
@@ -489,6 +735,52 @@
                     $("table tr td").removeClass("avail");
 
                 }
+
+            }
+
+            function updateTooltips(){
+
+                $("td").each(function() {
+
+                    var data = $(this);
+
+                    if( data.hasClass("ft-worth") || data.hasClass("keller") || data.hasClass("southlake") || data.hasClass("dallas") || data.hasClass("arlington") || data.hasClass("alliance") || data.hasClass("mansfield") ){
+                        $(this).tooltip('enable');
+
+                        if(  data.hasClass("ft-worth") ) {
+                            data.attr('data-original-title', spots["Neuro"]);
+                        }
+                        else if( data.hasClass("keller") ){
+                            data.attr('data-original-title', spots["Pedi."]);
+
+                        }
+                        else if( data.hasClass("southlake") ){
+                            data.attr('data-original-title', spots["Int. Med."]);
+                        }
+                        else if( data.hasClass("dallas") ){
+                            data.attr('data-original-title', spots["Psych."]);
+
+                        }
+                        else if(  data.hasClass("arlington")  ){
+                            data.attr('data-original-title', spots["OBGYN"]);
+
+                        }
+                        else if( data.hasClass("alliance") ){
+                            data.attr('data-original-title', spots["Fam. Med."]);
+
+                        }
+                        else if( data.hasClass("mansfield") ){
+                            data.attr('data-original-title', spots["Surg."]);
+
+                        }
+
+                    }
+                    else{
+                        $(this).tooltip('disable');
+                    }
+
+
+                });
 
             }
 
@@ -546,7 +838,7 @@
 
                     var data = $(this);
 
-                    if( data.hasClass("chosen")){
+                    if( data.hasClass("ft-worth") || data.hasClass("keller") || data.hasClass("southlake") || data.hasClass("dallas") || data.hasClass("arlington") || data.hasClass("alliance") || data.hasClass("mansfield") ){
                         count = count + 1;
                     }
 
@@ -576,79 +868,121 @@
             function writeSchedule(){
 
                 console.log("undo button and write schedule");
-                $("#week1").html("")
-                $("#week2").html("");
-
-
                 $("td").each(function() {
 
                     var data = $(this);
 
-                    if( data.hasClass("chosen")){
+                    if( data.hasClass("ft-worth") || data.hasClass("keller") || data.hasClass("southlake") || data.hasClass("dallas") || data.hasClass("arlington") || data.hasClass("alliance") || data.hasClass("mansfield") ){
 
-                        var day = parseInt(data.attr("id"));
                         var clerk = data.text();
-                        if( day < 12 ){
-                            $("#week1").append("<p>" + convertToSchedule(day, clerk) + "</p>");
-                        }
-                        else{
-                            $("#week2").append("<p>" + convertToSchedule(day, clerk) + "</p>");
-                        }
+                        var day = data.attr("id");
 
+                        if( clerk == "Neuro"){
+
+                            $("#schedday1").html(turnIntoDay(day));
+                            $("#schedtime1").html(turnIntoTime(day));
+                            $("#schedweek1").html(isTwiceAWeek(clerk));
+                            $("#schedloc1").html(spots[clerk]);
+                        }
+                        else if( clerk == "Fam. Med."){
+
+                            $("#schedday2").html(turnIntoDay(day));
+                            $("#schedtime2").html(turnIntoTime(day));
+                            $("#schedweek2").html(isTwiceAWeek(clerk));
+                            $("#schedloc2").html(spots[clerk]);
+                        }
+                        else if( clerk == "Int. Med."){
+
+                            $("#schedday3").html(turnIntoDay(day));
+                            $("#schedtime3").html(turnIntoTime(day));
+                            $("#schedweek3").html(isTwiceAWeek(clerk));
+                            $("#schedloc3").html(spots[clerk]);
+                        }
+                        else if( clerk == "Surg."){
+
+                            $("#schedday4").html(turnIntoDay(day));
+                            $("#schedtime4").html(turnIntoTime(day));
+                            $("#schedweek4").html(isTwiceAWeek(clerk));
+                            $("#schedloc4").html(spots[clerk]);
+                        }
+                        else if( clerk == "OBGYN"){
+
+                            $("#schedday5").html(turnIntoDay(day));
+                            $("#schedtime5").html(turnIntoTime(day));
+                            $("#schedweek5").html(isTwiceAWeek(clerk));
+                            $("#schedloc5").html(spots[clerk]);
+                        }
+                        else if( clerk == "Pedi."){
+
+                            $("#schedday6").html(turnIntoDay(day));
+                            $("#schedtime6").html(turnIntoTime(day));
+                            $("#schedweek6").html(isTwiceAWeek(clerk));
+                            $("#schedloc6").html(spots[clerk]);
+                        }
+                        else if( clerk == "Psych."){
+
+                            $("#schedday7").html(turnIntoDay(day));
+                            $("#schedtime7").html(turnIntoTime(day));
+                            $("#schedweek7").html(isTwiceAWeek(clerk));
+                            $("#schedloc7").html(spots[clerk]);
+                        }
 
                     }
 
+
                 });
+
             }
 
-            function convertToSchedule(day, clerk){
+            function turnIntoDay(day){
 
-                var dayOfWeek;
-                var name = lengthenProfName(clerk);
+                var theDay = parseInt(day);
+                var d;
 
-                if( day == 0 || day == 12){
-                    dayOfWeek = "Monday Morning";
-
+                if( theDay == 0 || theDay == 1 || theDay == 12 || theDay == 13){
+                    d = "Monday";
                 }
-                else if( day == 1 || day == 13){
-                    dayOfWeek = "Monday Afternoon";
+                else if(theDay == 2 || theDay == 3 || theDay == 14 || theDay == 15){
+                    d = "Tuesday";
                 }
-                else if(day == 2 ||  day == 14 ){
-                    dayOfWeek = "Tuesday Morning";
+                else if(theDay == 4 || theDay == 5 || theDay == 16 || theDay == 17) {
+                    d = "Wednesday";
                 }
-                else if( day == 3 || day == 15){
-                    dayOfWeek = "Tuesday Afternoon";
+                else if(theDay == 6 || theDay == 7 || theDay == 18 || theDay == 19){
+                    d = "Thursday"
                 }
-                else if(day == 4 || day == 16 ){
-                    dayOfWeek = "Wednesday Morning";
+                else if(theDay == 8 || theDay == 9 || theDay == 20 || theDay == 21){
+                    d = "Friday";
                 }
-                else if(day == 5 || day == 17){
-                    dayOfWeek = "Wednesday Afternoon";
-                }
-                else if(day == 6 || day == 18){
-                    dayOfWeek = "Thursday Morning";
-                }
-                else if(day == 7 || day == 19){
-                    dayOfWeek = "Thursday Afternoon";
-                }
-                else if(day == 8 || day == 20 ) {
-                    dayOfWeek = "Friday Morning";
-                }
-                else if(day == 9 || day == 21) {
-                    dayOfWeek = "Friday Afternoon";
-                }
-                else if(day == 10 || day == 22 ){
-                    dayOfWeek = "Saturday Morning";
-                }
-                else if(day == 11 || day == 23) {
-                    dayOfWeek = "Saturday Afternoon";
+                else if(theDay == 10 || theDay == 11 || theDay == 22 || theDay == 23){
+                    d = "Saturday";
                 }
 
-                var info = name + ": " + dayOfWeek;
-                return info;
+                return d;
+
+            }
+
+            function turnIntoTime(day){
+
+                var theDay = parseInt(day);
+
+                if( theDay % 2 == 0){
+                    return "Morning";
+                }
+                return "Afternoon"
 
 
             }
+
+            function isTwiceAWeek(clerk){
+
+                if( clerk == "Int. Med." || clerk == "Fam. Med." || clerk == "Pedi." || clerk == "Surg."){
+                    return "Yes";
+                }
+                return "No";
+            }
+
+
 
             $("#schedule-popup-submit").click(function(){
                 submitSchedule();
@@ -663,14 +997,17 @@
 
                     var data = $(this);
 
-                    if( data.hasClass("chosen")){
+                    if( data.hasClass("ft-worth") || data.hasClass("keller") || data.hasClass("southlake") || data.hasClass("dallas") || data.hasClass("arlington") || data.hasClass("alliance") || data.hasClass("mansfield")){
 
                         var day = data.attr("id");
                         var clerk = data.text();
+                        var clerkLoc = clerk;
                         clerk = lengthenProfName(clerk);
                         var name = clerk.replace(/\s/g, '');
                         name = name.toLowerCase();
+                        var nameLocation = name + "Location";
                         sched[name] = day;
+                        sched[nameLocation] = spots[clerkLoc];
 
                     }
 
@@ -706,12 +1043,14 @@
 
 
             /*
+
                     1. One clerkship per schedule, when on clerkship be able to click around.
                     2. Keep choice for when they leave that clerkship.
                     2. Family Medicine, Pediatrics, Surgery, Internal Medicine - 2x a week
                     3. Students have to pick the doctor their paired with first.
                     4. Have chosen one of each profession before submit.
                     5. Pass Neurology, 1 Family Medicine - Name and num corresponding to day.
+
 
              */
 

@@ -1,4 +1,4 @@
-package LIC.UC04v1.domain;
+package LIC.UC04v1.controllers;
 
 public class doctorForm {
     public int id;

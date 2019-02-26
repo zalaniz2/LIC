@@ -76,8 +76,7 @@ public class ImportController {
         f.close();
 
         //Clear the appropriate table
-        //Not currently working!!
-        if (type == "doctors"){
+        if (type.equals("doctors")){
             doctorRepository.deleteAll();
             currentDocFile = null;
         }
