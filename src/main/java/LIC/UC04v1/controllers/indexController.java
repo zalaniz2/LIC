@@ -186,6 +186,7 @@ public class indexController {
     }
 
 
+
     /*
     @RequestMapping(path = "/")
     public String home() {
@@ -193,6 +194,7 @@ public class indexController {
         return "index";
     }
     */
+
 
 
 
