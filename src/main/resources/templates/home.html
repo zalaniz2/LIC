@@ -23,11 +23,6 @@
     #schedule-group div{
         margin-bottom: 5px;
     }
-    head{
-        margin-left: auto;
-        margin-right: auto;
-        padding-right: 500px;
-    }
     span{
         margin-left: auto;
         margin-right: auto;
@@ -40,14 +35,13 @@
         margin-bottom: 10px;
         text-align: center;
     }
-    .btn-group-vertical{
-        display: table;
-        width: 45%;
-        align-content: center;
-    }
     #options{
         margin-left: auto;
         margin-right: auto;
+    }
+    .btn-group-vertical{
+        display: table;
+        width: 45%;
     }
     .fill{
         display: flex;
@@ -67,11 +61,12 @@
 
 </style>
 
+
 <body>
 <div style="position: relative">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1">
     <a class="navbar-brand" href="#">
-        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -79,11 +74,7 @@
                 <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        <span class="admin-name align-content-center">Schedule Students</span>
-        <head>
-            <meta charset="UTF-8">
-            <title>Schedule Students</title>
-        </head>
+        <span class="admin-name align-content-center">Admin Home Page</span>
         <div class="right-logo">
             <form class="form-inline my-2 my-lg-0">
                 <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
@@ -102,17 +93,26 @@
     <div class="anything" style="position: absolute; z-index: -1; width: 100%; height: 100%">
         <img th:src="@{img/health_center_copy1.jpg}" src="../static/img/health_center_copy1.jpg" alt="" style="width: 100%">
     </div>
-   <!-- <div class="panel-group" style="margin-top:40px">
+    <!--<div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
             <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
         </div>
     </div>-->
     <div class = "btn-group-vertical align-content-center" role="group" id="options" style="position: relative; padding-top: 7%">
-        <form action ="/bruteEx" >
-            <input class= "btn btn-dark" type="submit" value="Automatically Generate Student Schedules" id="button1"/>
+        <form action="/brute">
+            <input type="submit" class= "btn btn-dark" value="Schedule Students"/>
         </form>
-        <form action ="/output">
-            <input class= "btn btn-dark" type="submit" value="Output"/>
+        <form action="/viewSchedules">
+            <input type="submit" class= "btn btn-dark" value="View Student Schedules"/>
+        </form>
+        <form action="/import-Data">
+            <input type="submit" class= "btn btn-dark" value="Import Data"/>
+        </form>
+        <form action="/registration">
+            <input type="submit" class= "btn btn-dark" value="Add Admin"/>
+        </form>
+        <form action="/export">
+            <input type="submit" class= "btn btn-dark" value="Export Schedules"/>
         </form>
     </div>
 
