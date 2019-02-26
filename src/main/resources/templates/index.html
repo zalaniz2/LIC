@@ -623,7 +623,7 @@
                         console.log(spots);
                         $(this).removeClass("avail");
                         //$(this).addClass("chosen");
-                        $(this).addClass(getLocClass(profession)).fadeIn(1000);
+                        $(this).addClass(getLocClass(profession));
                         $(this).html(profession);
                         updateCalendar(availResult);
                         updateTooltips();
