@@ -65,7 +65,6 @@ public class DoctorController {
 
 
 
-
         model.addAttribute("doctor", docF);
 
 
