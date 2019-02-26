@@ -39,7 +39,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         this.studentRepository = studentRepository;
     }
     private void initData() throws IOException {
-        String fileName = "doctors.csv";
+        String fileName = "demodoctors.csv";
 
         ClassLoader classLoader = super.getClass().getClassLoader();
 

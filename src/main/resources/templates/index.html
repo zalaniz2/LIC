@@ -28,8 +28,9 @@
 
   <style>
       body{
-          min-width: 1200px !important;
+          min-width: 1300px !important;
           margin: 0 auto !important;
+          overflow: hidden;
       }
       th{
           width: 80px !important;
@@ -622,7 +623,7 @@
                         console.log(spots);
                         $(this).removeClass("avail");
                         //$(this).addClass("chosen");
-                        $(this).addClass(getLocClass(profession));
+                        $(this).addClass(getLocClass(profession)).fadeIn(1000);
                         $(this).html(profession);
                         updateCalendar(availResult);
                         updateTooltips();
