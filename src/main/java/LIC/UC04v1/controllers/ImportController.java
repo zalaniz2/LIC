@@ -223,7 +223,10 @@ public class ImportController {
                 Doctor doc = new Doctor();
                 doc.setName(values[0]);
                 doc.setEmail(values[1]);
-                doc.setSpecialty(values[2]);
+                doc.setSpecialty(values[3]);
+                //!!!!!!!! FOR THE DEMO - DELETE AFTER
+                doc.setAvailabilities(values[4]);
+                doc.setLocation((values[5]));
                 doctorRepository.save(doc);
             }
         }

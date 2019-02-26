@@ -31,11 +31,11 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        try {
-            initData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            initData();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
     @Autowired
     public Bootstrap(ClerkshipRepository clerkshipRepository, DoctorRepository doctorRepository, StudentRepository studentRepository,UserRepository userRepository,
