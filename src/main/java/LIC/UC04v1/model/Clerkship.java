@@ -34,6 +34,17 @@ public class Clerkship {
     private Specialty specialty;
     private int day;
     private String week;
+    private String eventType = "Clinic";
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+
 
     public String getDescription() { return Description; }
 

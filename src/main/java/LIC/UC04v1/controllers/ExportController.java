@@ -117,9 +117,9 @@ public class ExportController{
         // uses the Super CSV API to generate CSV data from the model data
         try(ICsvBeanWriter csvWriter = new CsvBeanWriter(response2.getWriter(), CsvPreference.STANDARD_PREFERENCE);){ //try-with-resource management (writer closes automatically)
 
-            String[] header = {"Student Name", "Title", "Day", "Week", "Start Time", "End Time", "Location", "Description"};
-            String[] fieldHead = {"studentName", "Title", "Time", "timeInt1", "startTime", "endTime",  "Location", "Description"}; //must match fields in Clerkship model
-            String[] fieldHead2 = {"studentName", "Title", "Time", "timeInt2", "startTime", "endTime",  "Location", "Description"};
+            String[] header = {"Student Name", "Title", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"};
+            String[] fieldHead = {"studentName", "Title", "Description", "Time", "timeInt1", "startTime", "endTime",  "Location", "eventType"}; //must match fields in Clerkship model
+            String[] fieldHead2 = {"studentName", "Title","Description", "Time", "timeInt2", "startTime", "endTime",  "Location", "eventType"};
             final CellProcessor[] processors = getProcessors();
 
             csvWriter.writeHeader(header);
@@ -167,7 +167,7 @@ public class ExportController{
         //Header Cell style formatting
         XSSFFont headerFont1 = (XSSFFont) workbook.createFont();
         headerFont1.setBold(true);
-        headerFont1.setFontHeightInPoints((short)25);
+        headerFont1.setFontHeightInPoints((short)15);
         headerFont1.setColor(new XSSFColor(new java.awt.Color(77,25,121)));
         CellStyle headerCellStyle1 = workbook.createCellStyle();
         headerCellStyle1.setFont(headerFont1);
@@ -243,14 +243,14 @@ public class ExportController{
             sheet.setDefaultColumnWidth(20); //set default column width
 
             sheet.addMergedRegion(new CellRangeAddress(0,0,3,6));
-            String head = "TCU/UNT Medical School Scheduling";
+            String head = "Weekly Schedule";
             Cell cellMerge = CellUtil.createCell(CellUtil.getRow(0,sheet),3,head,headerCellStyle);
             CellUtil.setAlignment(cellMerge,HorizontalAlignment.CENTER);
 
             //Creating Header cell
             Row headerRow = sheet.createRow(1);
             Cell headerCell = headerRow.createCell(0);
-            headerCell.setCellValue("Weekly Schedule");
+            headerCell.setCellValue("TCU/UNT Medical School Scheduling");
             headerCell.setCellStyle(headerCellStyle1);
             int indexCell = headerCell.getColumnIndex();
             sheet.setColumnWidth(indexCell,10000);
@@ -376,7 +376,7 @@ public class ExportController{
                     case 0:
                         Row r1 = sheet.getRow(MonAM.getRow());
                         Cell c1 = r1.getCell(MonAM.getCol());
-                        c1.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation());
+                        c1.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
                         c1.setCellStyle(dataStyle);
                         break;
                     case 1:
@@ -642,12 +642,14 @@ public class ExportController{
         final CellProcessor[] PROCESSORS = new CellProcessor[]{
                 new NotNull(), //Student Name
                 new Optional(), //Clerkship Title
+                new Optional(), //Description
                 new NotNull(), //"Time" (day) remove
                 new Optional(), //Date
                 new Optional(), //Start Time (need to format)
                 new Optional(), //End Time (need to format)
                 new Optional(), //location
-                new Optional(), //Description
+                new Optional(), //Event Type
+
 
 
         };
