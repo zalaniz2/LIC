@@ -23,6 +23,14 @@
     #schedule-group div{
         margin-bottom: 5px;
     }
+    span{
+        margin-left: auto;
+        margin-right: auto;
+        padding-right: 425px;
+        font-size: x-large;
+        font-weight: bold;
+        justify-self: center;
+    }
     head{
         margin-left: auto;
         margin-right: auto;
@@ -41,11 +49,26 @@
         margin-left: auto;
         margin-right: auto;
     }
+    .fill{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+    .fill .anything img{
+        flex-shrink: 0;
+        min-width: 100%;
+        min-height: 100%
+    }
+    #logout{
+        padding-top: 10px;
+        text-align: center;
+    }
 
 </style>
 
 <body>
-
+<div style="position: relative">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">
         <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
@@ -56,6 +79,7 @@
                 <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
             </li>
         </ul>
+        <span class="admin-name align-content-center">Export Schedules</span>
         <head>
             <meta charset="UTF-8">
             <title>Export Student Schedules</title>
@@ -73,14 +97,17 @@
     </div>
 
 </nav>
-
-<div class="anything">
-    <div class="panel-group" style="margin-top:40px">
+</div>
+<div class="fill">
+    <div class="anything" style="position: absolute; z-index: -1; width: 100%; height: 100%">
+        <img th:src="@{img/health_center_copy1.jpg}" src="../static/img/health_center_copy1.jpg" alt="" style="width: 100%">
+    </div>
+    <!--<div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
             <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
         </div>
-    </div>
-    <div class = "btn-group-vertical align-content-center" role="group" id="options">
+    </div>-->
+    <div class = "btn-group-vertical align-content-center" role="group" id="options" style="position: relative; padding-top: 7%">
         <form action ="/downloadStudentScheduleCSV" >
             <input class= "btn btn-dark" type="submit" value="Download Schedules (CSV)" id="button1"/>
         </form>

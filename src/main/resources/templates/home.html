@@ -26,7 +26,10 @@
     span{
         margin-left: auto;
         margin-right: auto;
-        padding-right: 500px;
+        padding-right: 425px;
+        font-size: x-large;
+        font-weight: bold;
+        justify-self: center;
     }
     input{
         margin-bottom: 10px;
@@ -40,13 +43,16 @@
         display: table;
         width: 45%;
     }
-    .anything{
-        background-image: url('../static/img/tcu.png');
-        padding-bottom: 100%;
-
+    .fill{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
     }
-    .btn-group-vertical{
-        opacity: 1.0 !important;
+    .fill .anything img{
+        flex-shrink: 0;
+        min-width: 100%;
+        min-height: 100%
     }
     #logout{
         padding-top: 10px;
@@ -57,10 +63,10 @@
 
 
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div style="position: relative">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1">
     <a class="navbar-brand" href="#">
-        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -68,7 +74,7 @@
                 <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        <span class="admin-name text-center" th:utext="${userName}">Admin Page</span>
+        <span class="admin-name align-content-center">Admin Home Page</span>
         <div class="right-logo">
             <form class="form-inline my-2 my-lg-0">
                 <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
@@ -82,22 +88,25 @@
     </div>
 
 </nav>
-
-<div class="anything">
-    <div class="panel-group" style="margin-top:40px">
+</div>
+<div class="fill">
+    <div class="anything" style="position: absolute; z-index: -1; width: 100%; height: 100%">
+        <img th:src="@{img/health_center_copy1.jpg}" src="../static/img/health_center_copy1.jpg" alt="" style="width: 100%">
+    </div>
+    <!--<div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
             <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
         </div>
-    </div>
-    <div class = "btn-group-vertical align-content-center" role="group" id="options">
+    </div>-->
+    <div class = "btn-group-vertical align-content-center" role="group" id="options" style="position: relative; padding-top: 7%">
         <form action="/brute">
             <input type="submit" class= "btn btn-dark" value="Schedule Students"/>
         </form>
         <form action="/viewSchedules">
             <input type="submit" class= "btn btn-dark" value="View Student Schedules"/>
         </form>
-        <form action="/ImportData">
-            <input type="submit" class= "btn btn-dark" value="Input Data"/>
+        <form action="/import-Data">
+            <input type="submit" class= "btn btn-dark" value="Import Data"/>
         </form>
         <form action="/registration">
             <input type="submit" class= "btn btn-dark" value="Add Admin"/>
