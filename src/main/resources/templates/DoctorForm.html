@@ -9,7 +9,78 @@
     <link rel="stylesheet" href="css/FormStyle.css" type="text/css">
     <title>Pre-scheduling Form</title>
 </head>
+<style>
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    th{
+        width: 80px !important;
+    }
+    .table tbody tr > td.avail {
+        background-color: cornflowerblue !important;
+    }
+    .table tbody tr > td.avail:hover {
+        background-color: royalblue !important;
+    }
+    .table tbody tr > td.chosen {
+        background-color: seagreen !important;
+        color: #f2f2f2;
+        font-weight: bold;
+        font-size: 13px;
+    }
+    .table tbody tr > td.chosen:hover {
+        background-color: forestgreen !important;
+    }
+    .vbucks{
+        margin-left: 50px;
+    }
+    label{
+        font-family: Chalkboard;
+    }
+    th{
+        width: 80px !important;
+    }
+    .table tbody tr > td.avail {
+        background-color: cornflowerblue !important;
+    }
+    .table tbody tr > td.avail:hover {
+        background-color: royalblue !important;
+    }
+    .table tbody tr > td.chosen {
+        background-color: seagreen !important;
+        color: #f2f2f2;
+        font-weight: bold;
+        font-size: 13px;
+    }
+    .table tbody tr > td.chosen:hover {
+        background-color: forestgreen !important;
+    }
+    #schedule-group p{
+        margin: 2px;
+    }
+    #schedule-group div{
+        margin-bottom: 5px;
+    }
+
+</style>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+    </a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+        </form>
+    </div>
+</nav>
     <div class="vbucks">
         <!--/*@thymesVar id="doctor" type="LIC.UC04v1.domain.doctorForm.java"*/-->
         <form action="#" th:action="@{/thankDoctor}" th:object="${doctor}" method="post">
@@ -78,27 +149,29 @@
                        th:field="*{AA}" />
                 <label>Saturday 1PM - 5PM</label>
             </li>
-            <li>
-                <input type="checkbox"
-                       th:field="*{UM}" />
-                <label>Sunday 8AM - 12PM</label>
-            </li>
-            <li>
-                <input type="checkbox"
-                       th:field="*{UA}" />
-                <label>Sunday 1PM - 5PM</label>
-            </li>
         </ul>
-
-            <select th:field="*{Location}">
-                <option th:each="value : ${T(LIC.UC04v1.domain.Location).values()}"
+            <select th:field="*{Location}" id="loc" onchange='check("loc");'>
+                <option value="none">none</option>
+                <option th:each="value : ${T(LIC.UC04v1.controllers.Location).values()}"
                         th:value="${value.name()}"
                         th:text="${value.name()}"
                 >val</option>
-            </select>
-            <input type="submit" value="Submit" />
+            </select><br><br>
+            <input type="submit" value="Submit" id="sub" disabled/>
         </form>
     </div>
+<script>
+    function check(selId){
+        var sel = document.getElementById(selId);
+        var dropDown_sel = sel.options[sel.selectedIndex].text;
+        if(dropDown_sel != "none"){
+            document.getElementById("sub").disabled = false;
+        }
+        else{
+            document.getElementById("sub").disabled = true;
+        }
+    }
+</script>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
