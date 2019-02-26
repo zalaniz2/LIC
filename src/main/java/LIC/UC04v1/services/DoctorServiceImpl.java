@@ -1,6 +1,6 @@
 package LIC.UC04v1.services;
 
-import LIC.UC04v1.domain.doctorForm;
+import LIC.UC04v1.controllers.doctorForm;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.model.Doctor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +77,7 @@ public class DoctorServiceImpl implements DoctorService{
 //        else availStr += "0";
 //        if(docForm.UA) availStr += "1";
 //        else availStr += "0";
+        detachedDoctor.setLocationInText(docForm.Location);
         detachedDoctor.setAvailabilities(availStr);
         detachedDoctor.setLocation(String.valueOf(docForm.Location));
         doctorRepository.save(detachedDoctor);
