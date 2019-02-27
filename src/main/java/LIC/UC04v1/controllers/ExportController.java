@@ -371,7 +371,8 @@ public class ExportController{
             //Iterates through all clerkships a student has and place info in correct cell 
             for(String key: clerkships.keySet()){
                 Clerkship clerk = clerkships.get(key);
-                String s = clerk.getTitle();
+                String s = clerk.getSpecialty().name();
+                Specialty specialty = clerk.getSpecialty();
                 switch(clerk.getDay()) {
                     case 0:
                         Row r1 = sheet.getRow(MonAM.getRow());
@@ -522,7 +523,7 @@ public class ExportController{
                             System.out.println(clerk.getDay());
                             break;
                 }
-                if(s.equals("Surgery") || s.equals("Pediatrics") || s.equals("FamilyMedicine") || s.equals("InternalMedicine")){
+                if(specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine){
                     int week2 = clerk.getDay() + 12;
                     switch(week2){
                         case 12:
