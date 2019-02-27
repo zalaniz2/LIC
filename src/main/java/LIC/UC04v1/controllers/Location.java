@@ -1,9 +1,35 @@
 package LIC.UC04v1.controllers;
 
 public enum Location {
-    FortWorth("Fort Worth"), Denton("Denton"), Dallas("Dallas"), KellerSouthLakeAlliance("Keller/South Lake/Alliance"), Arlington("Arlington"), Mansfield("Mansfield");
-    private final String name;
-    private Location(String s) {
-        name = s;
+    FortWorth{
+        public String toString(){
+            return ("Fort Worth");
+        }
+    },
+    Denton{
+        public String toString(){
+            return ("Denton");
+        }
+    },
+    Dallas{
+        public String toString(){
+            return ("Dallas");
+        }
+    },
+    KellerSouthLakeAlliance{
+        public String toString(){
+            return ("Keller/South Lake/Alliance");
+        }
+    },
+    Arlington {
+        public String toString(){
+            return ("Arlington");
+        }
+    },
+    Mansfield {
+        public String toString(){
+            return ("Mansfield");
+        }
     }
+
 }

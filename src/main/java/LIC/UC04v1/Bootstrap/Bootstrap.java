@@ -1,6 +1,7 @@
 package LIC.UC04v1.Bootstrap;
 
 import LIC.UC04v1.controllers.Location;
+import LIC.UC04v1.controllers.MiscMethods;
 import LIC.UC04v1.controllers.Specialty;
 import LIC.UC04v1.controllers.TimeSlot;
 import LIC.UC04v1.model.*;
@@ -27,15 +28,15 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private RoleRepository roleRepository;
-
+    private MiscMethods misc;
 
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        try {
-//            initData();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            initData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Autowired
     public Bootstrap(ClerkshipRepository clerkshipRepository, DoctorRepository doctorRepository, StudentRepository studentRepository,UserRepository userRepository,
@@ -47,9 +48,10 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
+        misc = new MiscMethods();
     }
     private void initData() throws IOException {
-        String fileName = "demodoctors.csv";
+        String fileName = "doctors.csv";
 
         ClassLoader classLoader = super.getClass().getClassLoader();
 
@@ -72,10 +74,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             doc.setEmail(values[2]);
             doc.setSpecialty(values[3]);
             doc.setAvailabilities(values[4]);
-            doc.setSpecialtyInText(convertSpecialty(values[3]));
+            doc.setSpecialtyInText(misc.convertSpecialty(values[3]));
             doc.setLocation(values[5]);
-            doc.setLocationInText(convertLocation(values[5]));
-            doc.setNumberOfDaysAvail();
+            doc.setLocationInText(misc.convertLocation(values[5]));
             doc.setSpecialty(values[3]);
 
             doctorRepository.save(doc);
@@ -165,31 +166,4 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         userRepository.save(admin);
     }
 
-
-
-
-    private Specialty convertSpecialty(String specialty) {
-        switch (specialty) {
-            case "Neurology": return Specialty.Neurology;
-            case "Family Medicine": return Specialty.FamilyMedicine;
-            case "Internal Medicine": return Specialty.InternalMedicine;
-            case "Surgery": return Specialty.Surgery;
-            case "OBGYN": return Specialty.OBGYN;
-            case "Pediatrics": return Specialty.Pediatrics;
-            case "Psychiatry": return Specialty.Psychiatry;
-        }
-        return null;
-    }
-
-    private Location convertLocation(String location) {
-        switch (location) {
-            case "Fort Worth": return Location.FortWorth;
-            case "Denton": return Location.Denton;
-            case "Dallas": return Location.Dallas;
-            case "Keller/South Lake/Alliance": return Location.KellerSouthLakeAlliance;
-            case "Arlington": return Location.Arlington;
-            case "Mansfield": return Location.Mansfield;
-        }
-        return null;
-    }
 }

@@ -73,7 +73,9 @@ public class Doctor {
     }
 
     public void setAvailabilities(String availabilities) {
+
         this.availabilities = availabilities;
+        setNumberOfDaysAvail();
     }
 
 

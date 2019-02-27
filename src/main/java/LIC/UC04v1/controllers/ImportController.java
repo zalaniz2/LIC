@@ -36,10 +36,13 @@ public class ImportController {
     private StudentRepository studentRepository;
     private String currentDocFile = null;
     private String currentStuFile = null;
+    private MiscMethods misc;
+
 
     public ImportController(DoctorRepository doctorRepository, StudentRepository studentRepository){
         this.doctorRepository = doctorRepository;
         this.studentRepository = studentRepository;
+        misc = new MiscMethods();
     }
 
     @GetMapping(path = "/import-Data")
@@ -227,9 +230,8 @@ public class ImportController {
                 //!!!!!!!! FOR THE DEMO - DELETE AFTER
                 doc.setAvailabilities(values[4]);
                 doc.setLocation((values[5]));
-                doc.setNumberOfDaysAvail();
-                doc.setSpecialtyInText(convertSpecialty(values[3]));
-                doc.setLocationInText(convertLocation(values[5]));
+                doc.setSpecialtyInText(misc.convertSpecialty(values[3]));
+                doc.setLocationInText(misc.convertLocation(values[5]));
                 doctorRepository.save(doc);
             }
         }
@@ -247,28 +249,5 @@ public class ImportController {
         }
         return "";
     }
-    private Specialty convertSpecialty(String specialty) {
-        switch (specialty) {
-            case "Neurology": return Specialty.Neurology;
-            case "Family Medicine": return Specialty.FamilyMedicine;
-            case "Internal Medicine": return Specialty.InternalMedicine;
-            case "Surgery": return Specialty.Surgery;
-            case "OBGYN": return Specialty.OBGYN;
-            case "Pediatrics": return Specialty.Pediatrics;
-            case "Psychiatry": return Specialty.Psychiatry;
-        }
-        return null;
-    }
 
-    private Location convertLocation(String location) {
-        switch (location) {
-            case "Fort Worth": return Location.FortWorth;
-            case "Denton": return Location.Denton;
-            case "Dallas": return Location.Dallas;
-            case "Keller/South Lake/Alliance": return Location.KellerSouthLakeAlliance;
-            case "Arlington": return Location.Arlington;
-            case "Mansfield": return Location.Mansfield;
-        }
-        return null;
-    }
 }
