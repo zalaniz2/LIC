@@ -187,13 +187,15 @@ public class indexController {
 
 
 
-    /*
+/*
+
     @RequestMapping(path = "/")
     public String home() {
 
         return "index";
     }
     */
+
 
 
 

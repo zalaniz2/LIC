@@ -368,6 +368,16 @@ public class ExportController{
             CellReference SatAM2 = new CellReference("H12");
             CellReference SatPM2 = new CellReference("H13");
 
+          /* Row r8 = sheet.getRow(ThursPM.getRow());
+            Cell c8 = r8.getCell(ThursPM.getCol());
+            c8.setCellValue("LEAPS");
+            c8.setCellStyle(dataStyle);
+
+            Row r20 = sheet.getRow(ThursPM2.getRow());
+            Cell c20 = r20.getCell(ThursPM2.getCol());
+            c20.setCellValue("LEAPS");
+            c20.setCellStyle(dataStyle); */
+
             //Iterates through all clerkships a student has and place info in correct cell 
             for(String key: clerkships.keySet()){
                 Clerkship clerk = clerkships.get(key);

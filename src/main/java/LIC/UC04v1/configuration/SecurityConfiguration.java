@@ -62,13 +62,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()
                 .accessDeniedPage("/access-denied");
+
+       //DELETE BOTH OF THESE
+        http.authorizeRequests().antMatchers("/").permitAll().and()
+                .authorizeRequests().antMatchers("/h2-console/**").permitAll();
+
+        //DELETE BOTH OF THESE
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/h2-console/**"); //allows access to these folders (will show login image even though not ADMIN)
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**"); //allows access to these folders (will show login image even though not ADMIN)
     }
+
 
 }
