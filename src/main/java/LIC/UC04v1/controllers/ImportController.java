@@ -221,9 +221,15 @@ public class ImportController {
                     return "CSV File incorrectly formatted. Not enough columns.";
                 }
                 Doctor doc = new Doctor();
-                doc.setName(values[0]);
-                doc.setEmail(values[1]);
-                doc.setSpecialty(values[2]);
+                doc.setName(values[0]+ " " +values[1]);
+                doc.setEmail(values[2]);
+                doc.setSpecialty(values[3]);
+                //!!!!!!!! FOR THE DEMO - DELETE AFTER
+                doc.setAvailabilities(values[4]);
+                doc.setLocation((values[5]));
+                doc.setNumberOfDaysAvail();
+                doc.setSpecialtyInText(convertSpecialty(values[3]));
+                doc.setLocationInText(convertLocation(values[5]));
                 doctorRepository.save(doc);
             }
         }
@@ -240,5 +246,29 @@ public class ImportController {
             }
         }
         return "";
+    }
+    private Specialty convertSpecialty(String specialty) {
+        switch (specialty) {
+            case "Neurology": return Specialty.Neurology;
+            case "Family Medicine": return Specialty.FamilyMedicine;
+            case "Internal Medicine": return Specialty.InternalMedicine;
+            case "Surgery": return Specialty.Surgery;
+            case "OBGYN": return Specialty.OBGYN;
+            case "Pediatrics": return Specialty.Pediatrics;
+            case "Psychiatry": return Specialty.Psychiatry;
+        }
+        return null;
+    }
+
+    private Location convertLocation(String location) {
+        switch (location) {
+            case "Fort Worth": return Location.FortWorth;
+            case "Denton": return Location.Denton;
+            case "Dallas": return Location.Dallas;
+            case "Keller/South Lake/Alliance": return Location.KellerSouthLakeAlliance;
+            case "Arlington": return Location.Arlington;
+            case "Mansfield": return Location.Mansfield;
+        }
+        return null;
     }
 }

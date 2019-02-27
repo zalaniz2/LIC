@@ -54,8 +54,8 @@ public class EmailsController {
 
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         sender.setHost("smtp.gmail.com");
-        sender.setUsername("kortstadt");
-        sender.setPassword("**");
+        sender.setUsername("no.reply.lic.tcu");
+        sender.setPassword("clifbar123");
         sender.setPort(587);
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -72,7 +72,7 @@ public class EmailsController {
                 //We will un-comment this. I don't want to accidentally send emails to all the doctors!!
                 //helper.setTo(doc.getEmail());
                 //For now, send emails to a junk account
-                helper.setTo("kortstuff@yahoo.com");
+                helper.setTo("no.reply.lic.tcu@gmail.com");
                 helper.setText(doc.getName() + ", \n " +
                         "Thank you for offering to teach a medical school student. The next step is to indicate " +
                         "your availabilities. Please follow the unique link below and complete the form. Do not " +
@@ -93,7 +93,7 @@ public class EmailsController {
                 //We will un-comment this. I don't want to accidentally send emails to all the students!!
                 //helper.setTo(doc.getEmail());
                 //For now, send emails to a junk account
-                helper.setTo("kortstuff@yahoo.com");
+                helper.setTo("no.reply.lic.tcu@gmail.com");
                 helper.setText(stu.getName() + ", \n " +
                         "It's time to request your clerkships. Please follow the unique link below to complete " +
                         "the process. Please do not share the link with others, as it is linked to your name. \n" +

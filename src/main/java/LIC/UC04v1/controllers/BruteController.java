@@ -76,7 +76,8 @@ public class BruteController {
                             clerk.setStudent(students.get(i));
                             clerk.setTime(time);
                             clerk.setSpecialty(specialty);
-
+                            clerk.setDay(time.ordinal());
+                            clerk.setTitle(specialty.name2());
                             clerks.put(clerk.getSpecialty().name(),clerk);
 
                             clerkshipRepository.save(clerk);
@@ -96,6 +97,9 @@ public class BruteController {
                             clerk.setTime(time);
                             clerk.setTime2(misc.getOtherTime(time));
                             clerk.setSpecialty(specialty);
+                            clerk.setDay(time.ordinal());
+                            clerk.setTitle(specialty.name());
+
 
                             clerks.put(clerk.getSpecialty().name(),clerk);
                             clerkshipRepository.save(clerk);

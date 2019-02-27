@@ -261,15 +261,18 @@ public class indexController {
                     Clerkship clerk = new Clerkship();
                     clerk.setStudent(stu);
                     clerk.setDoctor(doc);
-                    clerk.setDay(getClerkshipDay(i,s));
+                    clerk.setTitle(spe);
                     clerk.setTime(misc.toTimeSlot(getClerkshipDay(i,s)));
                     clerk.setTimeInt1(getClerkshipDay(i,s));
                     clerk.setSpecialty(specialty);
+                    clerk.setLocation(doc.getLocation());
                     if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
                         clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
                         clerk.setTimeInt2(getClerkshipDay(i,s)-12);
+                        clerk.setDay(getClerkshipDay(i,s)-12);
+                    } else {
+                        clerk.setDay(getClerkshipDay(i,s));
                     }
-
                     clerkshipRepository.save(clerk);
                     doc.setClerkship(clerk);
                     doc.setAvailable(false);
@@ -286,6 +289,11 @@ public class indexController {
         if (stuSched.size()!=7) {
             System.out.println("fail at student # of specialty: "+stuSched.size());
         }
+        else{
+            System.out.println("student scehdule success");
+
+        }
+
 
 
         //createStudent();

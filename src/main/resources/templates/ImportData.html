@@ -35,6 +35,14 @@
             border-radius: 5px;
             margin: 0 auto;
         }*/
+        span{
+            margin-left: auto;
+            margin-right: auto;
+            padding-right: 425px;
+            font-size: x-large;
+            font-weight: bold;
+            justify-self: center;
+        }
         table{
             height: 100px;
             width: 100%;
@@ -57,51 +65,82 @@
         td:hover{
             background:grey;
         }
+        #logout{
+            padding-top: 10px;
+            text-align: center;
+        }
+        .wrapper{
+            display: flex;
+            justify-content: left;
+            /*align-items: center;*/
+            overflow: hidden;
+        }
+        .wrapper .anything img{
+            flex-shrink: 0;
+            min-width: 100%;
+            min-height: 100%
+        }
     </style>
 </head>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div style="position: relative">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1">
     <a class="navbar-brand" href="#">
-        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
     </a>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
-        </form>
+        <span class="admin-name align-content-center">Import Data</span>
+        <div class="right-logo">
+            <form class="form-inline my-2 my-lg-0">
+                <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+            </form>
+            <form th:action="@{/logout}" id="logout" method="get">
+                <button class="btn btn-md btn-danger" name="registration"
+                        type="Submit">Logout
+                </button>
+            </form>
+        </div>
     </div>
 </nav>
-
+</div>
 <body>
 <!-- <div class= "container" id="main-container"> -->
 <div class="wrapper" id="body-wrapper">
+    <div class="anything" style="position: absolute; z-index: -1; width: 100%; height: 100%">
+        <img th:src="@{img/health_center_copy1.jpg}" src="../static/img/health_center_copy1.jpg" alt="" style="width: 100%">
+    </div>
+    <div class="align-content-left">
+        <p style="padding-top: 20px; padding-left: 20px">
+            <span style="font-size: larger; font-weight: bold">Upload Doctor Data Excel File</span>
+            <br>Note: Only .xls, .xlsx, and .csv files accepted.
+            <br>Expected format: Names in Column 1 and Emails in Column 2</p>
+        <c:url value="/import-Data/doctors" var="import-Data/doctors" />
+        <form method="post" enctype="multipart/form-data"
+              action="/import-Data/doctors/${uploadFileUrl}">
+            <input type="file" name="file" accept=".xls,.xlsx, .csv" />
+            <input type="submit" value="Upload file" class="btn btn-dark" />
+            <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
+            <p th:text="${docImportMsg}"></p>
+        </form>
 
-    <p>Upload Doctor Data Excel File - Note: Only .xls, .xlsx, and .csv files accepted.
-        <br>Expected format: Names in Column 1 and Emails in Column 2</p>
-    <c:url value="/import-Data/doctors" var="import-Data/doctors" />
-    <form method="post" enctype="multipart/form-data"
-          action="/import-Data/doctors/${uploadFileUrl}">
-        <input type="file" name="file" accept=".xls,.xlsx, .csv" /> <input
-            type="submit" value="Upload file" />
-        <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
-        <p th:text="${docImportMsg}"></p>
-    </form>
+        <p style="padding-top: 20px; padding-left: 20px">
+            <span style="font-size: larger; font-weight: bold">Upload Student Data Excel File</span>
+            <br>Note: Only .xls, .xlsx, and .csv files accepted.
+            <br>Expected format: Names in Column 1 and Emails in Column 2</p>
+        <c:url value="/import-Data/students" var="import-Data/students" />
+        <form method="post" enctype="multipart/form-data"
+              action="/import-Data/students/${uploadFileUrl}">
+            <input type="file" name="file" accept=".xls,.xlsx, .csv"/>
+            <input type="submit" value="Upload file" class="btn btn-dark" />
+            <p th:if="${studentsError != null}" style="color:red" th:text="${studentsError}"></p>
+            <p th:text="${stuImportMsg}"></p>
+        </form>
+    </div>
 
-    <p>Upload Student Data Excel File - Note: Only .xls, .xlsx, and .csv files accepted.
-        <br>Expected format: Names in Column 1 and Emails in Column 2</p>
-    <c:url value="/import-Data/students" var="import-Data/students" />
-    <form method="post" enctype="multipart/form-data"
-          action="/import-Data/students/${uploadFileUrl}">
-        <input type="file" name="file" accept=".xls,.xlsx, .csv" /> <input
-            type="submit" value="Upload file" />
-        <p th:if="${studentsError != null}" style="color:red" th:text="${studentsError}"></p>
-        <p th:text="${stuImportMsg}"></p>
-    </form>
 </div>
 </body>
 
