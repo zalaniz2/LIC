@@ -1,5 +1,6 @@
 package LIC.UC04v1.model;
 
+import LIC.UC04v1.controllers.Location;
 import LIC.UC04v1.controllers.Specialty;
 import LIC.UC04v1.controllers.TimeSlot;
 
@@ -21,19 +22,15 @@ public class Clerkship {
     @OneToOne
     private Doctor doctor;
     private String Title;
-    private String Location;
+    private Location Location;
     private Date date;
     private String startTime;
     private String endTime;
-    private String studentName;
     private String Description;
     private TimeSlot time;
     private TimeSlot time2;
-    private int timeInt1=-1;
-    private int timeInt2=-1;
     private Specialty specialty;
     private int day;
-    private String week;
     private String eventType = "Clinic";
 
     public String getEventType() {
@@ -54,21 +51,14 @@ public class Clerkship {
 
     public void setDate(Date date) { this.date = date; }
 
-    //public java.sql.Time getStartTime() { return startTime; }
 
-    //public void setStartTime(java.sql.Time startTime) { this.startTime = startTime; }
-
-    //public java.sql.Time getEndTime() { return endTime; }
-
-    //public void setEndTime(java.sql.Time endTime) { this.endTime = endTime; }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public LIC.UC04v1.controllers.Location getLocation() {
+        return Location;
     }
 
-    public String getLocation() { return Location; }
-
-    public void setLocation(String location) { Location = location; }
+    public void setLocation(LIC.UC04v1.controllers.Location location) {
+        Location = location;
+    }
 
     public String getTitle() {
         return Title;
@@ -80,17 +70,6 @@ public class Clerkship {
 
     public int getId() {
         return id;
-    }
-
-
-    public int getTimeInt1() { return timeInt1; }
-
-    public void setTimeInt1(int timeInt1) { this.timeInt1 = timeInt1; }
-
-    public int getTimeInt2() { return timeInt2; }
-
-    public void setTimeInt2(int timeInt2) {
-        this.timeInt2 = timeInt2;
     }
 
     public int getDay() {
@@ -178,15 +157,6 @@ public class Clerkship {
             case 23: return "Saturday";
         }
         return "false";
-    }
-
-    public String getWeek(){
-        if(timeInt1<=11){
-            this.week = "Week_1";
-        }else{
-            this.week = "Week_2";
-        }
-        return this.week;
     }
 
     public String getStartTime(){

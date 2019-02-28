@@ -19,6 +19,25 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade=CascadeType.ALL) //cascade makes sure clerkships are saved in db when student is saved
     private Map<String, Clerkship> clerkships = new HashMap<>();
     private String Name;
+    private boolean hasSchedule = false;
+    @OneToOne
+    private Doctor phase1Doc;
+
+    public Doctor getPhase1Doc() {
+        return phase1Doc;
+    }
+
+    public void setPhase1Doc(Doctor phase1Doc) {
+        this.phase1Doc = phase1Doc;
+    }
+
+    public boolean isHasSchedule() {
+        return hasSchedule;
+    }
+
+    public void setHasSchedule(boolean hasSchedule) {
+        this.hasSchedule = hasSchedule;
+    }
 
     public Student(){}
 

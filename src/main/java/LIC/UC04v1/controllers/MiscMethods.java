@@ -133,7 +133,7 @@ public class MiscMethods {
             case "Fort Worth": return Location.FortWorth;
             case "Denton": return Location.Denton;
             case "Dallas": return Location.Dallas;
-            case "Keller/South Lake/Alliance": return Location.KellerSouthLakeAlliance;
+            case "Keller/Southlake/Alliance": return Location.KellerSouthLakeAlliance;
             case "Arlington": return Location.Arlington;
             case "Mansfield": return Location.Mansfield;
         }

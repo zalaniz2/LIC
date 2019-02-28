@@ -5,6 +5,7 @@ import LIC.UC04v1.controllers.Specialty;
 import LIC.UC04v1.controllers.TimeSlot;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,33 +15,41 @@ import java.util.Comparator;
 @Entity
 public class Doctor {
 
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(columnDefinition = "CHAR(32)")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
     //maybe change to a collection of clerkships so they can change it in the future
     //have a restraint that kayla can edit the number of clerkships a doctor can have
     @OneToOne
     private Clerkship clerkship;
     private String name;
     private String email;
-    private String specialty;
+    //private String specialty;
     private boolean available = true;
     private String availabilities;
     private int numberOfDaysAvail;
-    private Specialty specialtyInText;
-    private String location;
-    private Location locationInText;
+    private Specialty specialty;
+    //private String location;
+    private Location location;
+    private int numStu = 1;
 
-    public Doctor() {}
-    public String getLocation() {
-        return location;
+    public int getNumStu() {
+        return numStu;
     }
 
-    public String getSpecialty() {
+    public void setNumStu(int numStu) {
+        this.numStu = numStu;
+    }
+
+    public Doctor() {}
+
+    public Specialty getSpecialty() {
         return specialty;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
 
@@ -52,16 +61,12 @@ public class Doctor {
         this.numberOfDaysAvail = numberOfDaysAvail;
     }
 
-    public void setLocation(String location) {
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public Location getLocationInText() {
-        return locationInText;
-    }
-
-    public void setLocationInText(Location locationInText) {
-        this.locationInText = locationInText;
     }
 
     public void setAvailable(boolean available) {
@@ -78,12 +83,11 @@ public class Doctor {
         setNumberOfDaysAvail();
     }
 
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -111,20 +115,8 @@ public class Doctor {
         this.email = email;
     }
 
-    public Specialty getSpecialtyInText() {
-        return specialtyInText;
-    }
-
-    public void setSpecialtyInText(Specialty specialtyInText) {
-        this.specialtyInText = specialtyInText;
-    }
-
     public Doctor(String name){
         this.name = name;
-    }
-
-    public Doctor(int id) {
-        this.id = id;
     }
 
     public int getNumberOfDaysAvail() {

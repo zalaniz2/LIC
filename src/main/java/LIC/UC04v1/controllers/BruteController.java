@@ -60,7 +60,7 @@ public class BruteController {
                 }
                 else need =1;
 
-                List<Doctor> docs = doctorRepository.findBySpecialtyInTextAndAvailable(specialty,true);
+                List<Doctor> docs = doctorRepository.findBySpecialtyAndAvailable(specialty,true);
                 Collections.sort(docs, new sortDoctorByAvailDates());
 
                 for (Doctor doc: docs) {

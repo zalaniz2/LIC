@@ -18,7 +18,7 @@ public enum Location {
     },
     KellerSouthLakeAlliance{
         public String toString(){
-            return ("Keller/South Lake/Alliance");
+            return ("Keller/Southlake/Alliance");
         }
     },
     Arlington {
@@ -30,6 +30,6 @@ public enum Location {
         public String toString(){
             return ("Mansfield");
         }
-    }
+    };
 
 }
