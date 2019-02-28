@@ -3,17 +3,19 @@ spring:
     url: jdbc:mysql://localhost:3306/lic_dev
     username: lic_dev_user
     password: guru
+    platform: mysql
   jpa:
     hibernate:
       ddl-auto: validate
-      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-      database: mysql
-      show-sql: true
-      properties:
-        javax:
-          persistence:
-            schema-generation:
-              create-source: metadata
-              scripts:
-                action: create
-                create-target: guru_database_reate.sql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    show-sql: true
+#    properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            create-source: metadata
+#            scripts:
+#              action: create
+#              create-target: lic_database_reate.sql
+
