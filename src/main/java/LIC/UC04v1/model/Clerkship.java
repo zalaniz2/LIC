@@ -82,7 +82,6 @@ public class Clerkship {
         return id;
     }
 
-
     public int getTimeInt1() { return timeInt1; }
 
     public void setTimeInt1(int timeInt1) { this.timeInt1 = timeInt1; }
@@ -108,6 +107,7 @@ public class Clerkship {
     public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
+
     public Student getStudent() {
         return student;
     }
