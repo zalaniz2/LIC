@@ -51,8 +51,6 @@ public class BruteController {
             for (int z = 0; z< 7; z++) {
                 int randomIndex = rand.nextInt(specialties.size());
                 Specialty specialty = specialties.get(randomIndex);
-                //test
-                System.out.println(specialty.toString());
 
                 short need;
                 if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
@@ -81,7 +79,7 @@ public class BruteController {
                             clerk.setSpecialty(specialty);
                             clerk.setDay(time.ordinal());
                             clerk.setTitle(specialty.toString());
-
+                            clerk.setLocation(doc.getLocation());
 
                             clerks.put(clerk.getSpecialty().toString(),clerk);
 
@@ -104,7 +102,7 @@ public class BruteController {
                             clerk.setSpecialty(specialty);
                             clerk.setDay(time.ordinal());
                             clerk.setTitle(specialty.toString());
-
+                            clerk.setLocation(doc.getLocation());
 
                             clerks.put(clerk.getSpecialty().toString(),clerk);
                             clerkshipRepository.save(clerk);
