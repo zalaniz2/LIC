@@ -29,8 +29,6 @@ public class OutputController {
         String fileName = "schedule.csv";
         try {
 
-//            InputStream is = ;
-//            org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
             response.flushBuffer();
         } catch (IOException ex) {
             System.out.println("Error writing file to output stream. Filename was "+ fileName);

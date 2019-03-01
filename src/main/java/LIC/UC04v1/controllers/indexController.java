@@ -37,7 +37,7 @@ public class indexController {
 
         for (Doctor doc : doctorRepository.findAll()) {
 
-            if ((doc.getSpecialty().equals(profession)) && doc.getLocation().equals(location)) {
+            if ((doc.getSpecialty()==misc.convertSpecialty(profession)) && doc.getLocation()==misc.convertLocation(location)) {
 
                 for (int i = 0; i < 24; i++) {
 
@@ -246,13 +246,11 @@ public class indexController {
         for( int i = 0; i<7; i++){
             String spe = getSpecialty(i);
             Specialty specialty = misc.toSpecialty(spe);
-            String loc = getClerkshipLocation(i, s);
-            docs = doctorRepository.findBySpecialtyInTextAndAvailableAndLocation(specialty, true, loc);
+            Location loc = misc.convertLocation(getClerkshipLocation(i, s));
+            docs = doctorRepository.findBySpecialtyAndAvailableAndLocation(specialty, true, loc);
 
             //sorting stuffs
-            for (Doctor doc: docs) {
-                doc.setNumberOfDaysAvail();
-            }
+
             Collections.sort(docs, new sortDoctorByAvailDates());
             //end sorting stuffs
 
@@ -265,12 +263,10 @@ public class indexController {
                     clerk.setDoctor(doc);
                     clerk.setTitle(spe);
                     clerk.setTime(misc.toTimeSlot(getClerkshipDay(i,s)));
-                    clerk.setTimeInt1(getClerkshipDay(i,s));
                     clerk.setSpecialty(specialty);
                     clerk.setLocation(doc.getLocation());
                     if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
                         clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
-                        clerk.setTimeInt2(getClerkshipDay(i,s)-12);
                         clerk.setDay(getClerkshipDay(i,s)-12);
                     } else {
                         clerk.setDay(getClerkshipDay(i,s));

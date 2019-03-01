@@ -1,9 +1,9 @@
 package LIC.UC04v1.controllers;
 
 public class doctorForm {
-    public int id;
+    public String id;
     public String name;
-    public Location Location;
+    public Location location;
     public boolean MM;
     public boolean MA;
     public boolean TM;
@@ -21,20 +21,20 @@ public class doctorForm {
 
     public doctorForm(){}
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     public Location getLocation() {
-        return Location;
+        return location;
     }
 
     public void setLocation(Location location) {
-        Location = location;
+        this.location = location;
     }
 
     public boolean isMM() {

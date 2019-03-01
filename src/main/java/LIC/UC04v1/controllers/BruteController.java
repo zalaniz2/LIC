@@ -51,13 +51,16 @@ public class BruteController {
             for (int z = 0; z< 7; z++) {
                 int randomIndex = rand.nextInt(specialties.size());
                 Specialty specialty = specialties.get(randomIndex);
+                //test
+                System.out.println(specialty.toString());
+
                 short need;
                 if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
                     need = 2;
                 }
                 else need =1;
 
-                List<Doctor> docs = doctorRepository.findBySpecialtyInTextAndAvailable(specialty,true);
+                List<Doctor> docs = doctorRepository.findBySpecialtyAndAvailable(specialty,true);
                 Collections.sort(docs, new sortDoctorByAvailDates());
 
                 for (Doctor doc: docs) {
@@ -77,8 +80,10 @@ public class BruteController {
                             clerk.setTime(time);
                             clerk.setSpecialty(specialty);
                             clerk.setDay(time.ordinal());
-                            clerk.setTitle(specialty.name2());
-                            clerks.put(clerk.getSpecialty().name(),clerk);
+                            clerk.setTitle(specialty.toString());
+
+
+                            clerks.put(clerk.getSpecialty().toString(),clerk);
 
                             clerkshipRepository.save(clerk);
                             doc.setClerkship(clerk);
@@ -98,10 +103,10 @@ public class BruteController {
                             clerk.setTime2(misc.getOtherTime(time));
                             clerk.setSpecialty(specialty);
                             clerk.setDay(time.ordinal());
-                            clerk.setTitle(specialty.name());
+                            clerk.setTitle(specialty.toString());
 
 
-                            clerks.put(clerk.getSpecialty().name(),clerk);
+                            clerks.put(clerk.getSpecialty().toString(),clerk);
                             clerkshipRepository.save(clerk);
                             doc.setClerkship(clerk);
                             doctorRepository.save(doc);
