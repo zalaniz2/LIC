@@ -227,10 +227,9 @@ public class ImportController {
                 doc.setName(values[0]+ " " +values[1]);
                 doc.setEmail(values[2]);
                 //!!!!!!!! FOR THE DEMO - DELETE AFTER
-                doc.setAvailabilities("000000000000000000000000");
-                //doc.setLocation((values[5]));
+                doc.setAvailabilities(values[4]);
                 doc.setSpecialty(misc.convertSpecialty(values[3]));
-                //doc.setLocation(misc.convertLocation(values[5]));
+                doc.setLocation(misc.convertLocation(values[5]));
                 doctorRepository.save(doc);
             }
         }
@@ -241,8 +240,8 @@ public class ImportController {
                     return "CSV File incorrectly formatted. Not enough columns.";
                 }
                 Student stu = new Student();
-                stu.setName(values[0]);
-                stu.setEmail(values[1]);
+                stu.setName(values[0] +" "+ values[1]);
+                stu.setEmail(values[2]);
                 studentRepository.save(stu);
             }
         }
