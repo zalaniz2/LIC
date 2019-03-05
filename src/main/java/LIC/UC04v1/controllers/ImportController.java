@@ -230,6 +230,7 @@ public class ImportController {
                 doc.setAvailabilities(values[4]);
                 doc.setSpecialty(misc.convertSpecialty(values[3]));
                 doc.setLocation(misc.convertLocation(values[5]));
+                doc.setNumStu(Integer.parseInt(values[6]));
                 doctorRepository.save(doc);
             }
         }

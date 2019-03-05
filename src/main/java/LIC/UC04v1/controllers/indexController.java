@@ -272,8 +272,13 @@ public class indexController {
                         clerk.setDay(getClerkshipDay(i,s));
                     }
                     clerkshipRepository.save(clerk);
-                    doc.setClerkship(clerk);
-                    doc.setAvailable(false);
+                    doc.addClerkship(clerk);
+
+                    doc.setHasStu(doc.getHasStu() + 1);
+                    if (doc.getNumStu()==doc.getHasStu()){
+                        doc.setAvailable(false);
+                    }
+
                     doctorRepository.save(doc);
                     stuSched.put(spe,clerk);
                     break;
@@ -282,6 +287,7 @@ public class indexController {
 
         }
         stu.setClerkships(stuSched);
+        stu.setHasSchedule(true);
         studentRepository.save(stu);
 
         if (stuSched.size()!=7) {
