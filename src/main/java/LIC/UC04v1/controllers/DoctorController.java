@@ -29,12 +29,12 @@ public class DoctorController {
     }
 
     @RequestMapping("/doctor/{id}")
-    public String docForm(Model model, @PathVariable int id){
+    public String docForm(Model model, @PathVariable String id){
         doctorForm docF = new doctorForm();
         docF.id = id;
         Doctor doc = doctorService.findById(id);
         docF.name = doc.getName();
-        docF.Location = doc.getLocationInText();
+        docF.location = doc.getLocation();
         if(doc.getAvailabilities().charAt(0)=='1') docF.MM = true;
         else  docF.MM = false;
         if(doc.getAvailabilities().charAt(1)=='1') docF.MA = true;

@@ -6,6 +6,6 @@ import java.util.Set;
 
 public interface DoctorService {
     Set<Doctor> getDoctors();
-    Doctor findById(int l);
+    Doctor findById(String l);
     doctorForm saveDoctorForm(doctorForm docForm);
 }

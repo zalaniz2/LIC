@@ -68,9 +68,9 @@ class StudentSchedules{
     private String name;
     private String id;
     private String email;
-    //private List<Doctor> docList = new ArrayList<>();
-    //private List<String> profList = new ArrayList<>();
-    //private List<> dayList = new ArrayList<>();
+    private List<Doctor> docList = new ArrayList<>();
+    private List<String> profList = new ArrayList<>();
+    private List<String> dayList = new ArrayList<>();
 
 
 
