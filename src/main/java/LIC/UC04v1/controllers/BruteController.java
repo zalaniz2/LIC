@@ -67,6 +67,9 @@ public class BruteController {
 
                     TimeSlot time;
                     if ((time = compareSchedule(studentSched, docAvail, need))!=null){
+                        int day1 = time.ordinal();
+                        int day2 = misc.getOtherTime(time).ordinal();
+                        String availabilities = doc.getAvailabilities();
                         if (need ==1){
                             studentSched.add(time);
 
@@ -89,6 +92,8 @@ public class BruteController {
 
                             clerkshipRepository.save(clerk);
                             doc.addClerkship(clerk);
+                            availabilities = availabilities.substring(0,day1)+"0"+availabilities.substring(day1);
+
                             doctorRepository.save(doc);
                             break;
                         }
@@ -114,6 +119,9 @@ public class BruteController {
                             clerks.put(clerk.getSpecialty().toString(),clerk);
                             clerkshipRepository.save(clerk);
                             doc.addClerkship(clerk);
+                            availabilities = availabilities.substring(0,day1)+"0"+availabilities.substring(day1);
+                            availabilities = availabilities.substring(0,day2)+"0"+availabilities.substring(day2);
+
                             doctorRepository.save(doc);
 
                             break;
