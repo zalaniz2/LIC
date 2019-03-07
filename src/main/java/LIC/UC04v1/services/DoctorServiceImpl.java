@@ -72,6 +72,7 @@ public class DoctorServiceImpl implements DoctorService{
         else availStr += "0";
         if(docForm.AA) availStr += "1";
         else availStr += "0";
+        availStr = availStr + availStr;
 //        if(docForm.UM) availStr += "1";
 //        else availStr += "0";
 //        if(docForm.UA) availStr += "1";

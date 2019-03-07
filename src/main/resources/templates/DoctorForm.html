@@ -67,8 +67,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">
-        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
-    </a>
+        <img src="../static/img/logo.png" height="50" width="50"/></a>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -77,7 +76,7 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+            <img src="../static/img/main-logo.png" height="45" width="150"/>
         </form>
     </div>
 </nav>
@@ -160,21 +159,12 @@
         </form>
     </div>
 <script>
-    function check(selId){
-        var sel = document.getElementById(selId);
-        var dropDown_sel = sel.options[sel.selectedIndex].text;
-        if(dropDown_sel != "none"){
-            document.getElementById("sub").disabled = false;
-        }
-        else{
-            document.getElementById("sub").disabled = true;
-        }
-    }
+    document.onload = count();
 
     function count(){
         bool = false;
         var ct = 0;
-        if(document.getElementById("id").checked) ct++;
+        if(document.getElementById("i1").checked) ct++;
         if(document.getElementById("i2").checked) ct++;
         if(document.getElementById("i3").checked) ct++;
         if(document.getElementById("i4").checked) ct++;
