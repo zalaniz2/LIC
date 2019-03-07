@@ -32,11 +32,11 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        try {
-//            initData();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            initData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Autowired
     public Bootstrap(ClerkshipRepository clerkshipRepository, DoctorRepository doctorRepository, StudentRepository studentRepository,UserRepository userRepository,
@@ -75,6 +75,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             doc.setAvailabilities(values[4]);
             doc.setSpecialty(misc.convertSpecialty(values[3]));
             doc.setLocation(misc.convertLocation(values[5]));
+            doc.setNumStu(Integer.parseInt(values[6]));
 
             doctorRepository.save(doc);
         }

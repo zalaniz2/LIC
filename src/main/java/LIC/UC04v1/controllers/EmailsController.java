@@ -25,10 +25,9 @@ import java.util.Properties;
 
 /*
     SOME NOTES ON THIS CLASS
-        This class pulls in data from an excel file. It saves the first column as a doctor/student name
-        and the second column as the doctor/student email. There are currently no checks in place to
-        make sure the excel file is formatted correctly. Additionally, blank rows may be added to the
-        database. We'll have to fix this and do extensive testing, but it works at a low fidelity!
+        This class sends emails to all the doctors and students in the database. Doctors receive a
+        unique link to the availabilities form, and students receive a unique link to build their
+        schedule. Emails are currently sent from our no.reply.lic.tcu@gmail.com address.
     If you have questions about anything, let me (Katie) know. I'll come back and clean up/comment better soon.
  */
 
