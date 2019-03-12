@@ -41,8 +41,6 @@ public class Clerkship {
         this.eventType = eventType;
     }
 
-
-
     public String getDescription() { return Description; }
 
     public void setDescription(String description) { Description = description; }
@@ -128,6 +126,8 @@ public class Clerkship {
     public String getStudentName(){
         return this.student.getName();
     }
+
+    public String getDoctorName() { return this.doctor.getName();}
 
     public String getTime(){
         switch (day){

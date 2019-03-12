@@ -7,6 +7,7 @@ import LIC.UC04v1.model.Student;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
+import com.opencsv.CSVWriter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -16,6 +17,8 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -56,6 +59,7 @@ public class ExportController{
     }
 
 
+    @RequestMapping(value = "/downloadDoctorScheduleCSV")
     public void downloadDoctorCSV(HttpServletResponse response1) throws IOException {
 
         String csvFileName = "doctorsSchedule.csv";
@@ -70,18 +74,42 @@ public class ExportController{
         ArrayList<Doctor> listDoctors = new ArrayList<>();
 
         for(Doctor doc: doctorRepository.findAll()) { listDoctors.add(doc); } //list of doctors
+        
 
+        try{
+            CSVWriter writer = new CSVWriter (response1.getWriter());
 
-        // uses the Super CSV API to generate CSV data from the model data
-        try(ICsvBeanWriter csvWriter = new CsvBeanWriter(response1.getWriter(), CsvPreference.STANDARD_PREFERENCE)){ //try-with-resource management (writer closes automatically)
+            String[] header = {"Doctor Name", "Title", "Student", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"};
+            writer.writeNext(header);
 
-            String[] header = {"ID", "Clerkship", "Name", "Email", "Profession", "Available"}; //must match field names in model (model must have getters for field)
-            csvWriter.writeHeader(header);
+            for(Doctor doc: listDoctors){
+                String docName = doc.getName();
+                String title = doc.getClerkship().getTitle();
+                String stuName = doc.getClerkship().getStudent().getName();
+                String description = "";
+                String day = doc.getClerkship().getTime();
+                String week = "";
+                String week2 = "week 2";
+                String startT = doc.getClerkship().getStartTime();
+                String endT = doc.getClerkship().getEndTime();
+                String loc = "";
+                String event = "Clinic";
+                if(doc.getClerkship().getDay()<12){
+                    week = "week 1";
+                }else{ week = "week 2";}
 
-            for (Doctor aDoc : listDoctors) {
-                csvWriter.write(aDoc, header);
+                String[] data = {docName,title,stuName,description,day,week,startT,endT,loc,event};
+                writer.writeNext(data);
+
+                if(title.equals("Surgery") || title.equals("Pediatrics") || title.equals("Family Medicine") || title.equals("Internal Medicine")){
+                    String[] data1 = {docName,title,stuName,description,day,week2,startT,endT,loc,event};
+                    writer.writeNext(data1);
+                }
             }
-        }
+            writer.close();
+        }catch (IOException e){
+                e.printStackTrace();
+            }
     }
 
     @RequestMapping(value = "/downloadStudentScheduleCSV")
@@ -109,9 +137,11 @@ public class ExportController{
         // uses the Super CSV API to generate CSV data from the model data
         try(ICsvBeanWriter csvWriter = new CsvBeanWriter(response2.getWriter(), CsvPreference.STANDARD_PREFERENCE);){ //try-with-resource management (writer closes automatically)
 
-            String[] header = {"Student Name", "Title", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"}; //csv headers
-            String[] fieldHead = {"studentName", "Title", "Description", "Time", "timeWeek1", "startTime", "endTime",  "Location", "eventType"}; //getters in clerkship model
-            String[] fieldHead2 = {"studentName", "Title","Description", "Time", "timeWeek2", "startTime", "endTime",  "Location", "eventType"};
+            String[] header = {"Student Name", "Title", "Doctor", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"}; //csv headers
+
+            //timeWeek1/2 is not correct. (It will always output week 1 unless it is one of the four reoccuring clerkships which is not correct)
+            String[] fieldHead = {"studentName", "Title", "doctorName", "Description", "Time", "timeWeek1", "startTime", "endTime",  "Location", "eventType"}; //getters in clerkship model
+            String[] fieldHead2 = {"studentName", "Title", "doctorName", "Description", "Time", "timeWeek2", "startTime", "endTime",  "Location", "eventType"};
             final CellProcessor[] processors = getProcessors();
 
             csvWriter.writeHeader(header);
@@ -119,7 +149,7 @@ public class ExportController{
             for (Clerkship clerk : clerkList) {
                 String s = clerk.getTitle();
                 //clerkships that occur both weeks
-                if(s.equals("Surgery") || s.equals("Pediatrics") || s.equals("FamilyMedicine") || s.equals("InternalMedicine")){
+                if(s.equals("Surgery") || s.equals("Pediatrics") || s.equals("Family Medicine") || s.equals("Internal Medicine")){
                     csvWriter.write(clerk, fieldHead, processors); //write all clerkships to csv file
                     csvWriter.write(clerk,fieldHead2,processors);
                 }else{
@@ -529,6 +559,7 @@ public class ExportController{
         final CellProcessor[] PROCESSORS = new CellProcessor[]{
                 new NotNull(), //Student Name
                 new Optional(), //Clerkship Title
+                new Optional(), //Doctor Name
                 new Optional(), //Description
                 new NotNull(), //"Time" (day) remove
                 new Optional(), //Date
