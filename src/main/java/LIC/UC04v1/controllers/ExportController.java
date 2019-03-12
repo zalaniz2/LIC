@@ -74,7 +74,7 @@ public class ExportController{
         ArrayList<Doctor> listDoctors = new ArrayList<>();
 
         for(Doctor doc: doctorRepository.findAll()) { listDoctors.add(doc); } //list of doctors
-        
+
 
         try{
             CSVWriter writer = new CSVWriter (response1.getWriter());

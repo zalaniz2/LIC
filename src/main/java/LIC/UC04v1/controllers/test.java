@@ -33,34 +33,46 @@ public class test{
     @RequestMapping(path = "/adminView")
     public String admin() {
 
-        return "test";
+        return "zachView";
     }
 
-    @RequestMapping(path = "/grabStudents")
+    @RequestMapping(path = "/grabStudents", method = RequestMethod.POST)
     public @ResponseBody
-    List<Clerkship> getStudents(@RequestBody LoadView lv) {
+    List<StudentSchedules> getStudents(@RequestBody LoadView lv) {
 
        Map<String, Clerkship> x = new HashMap<>();
-       List<Clerkship> clerkList = new ArrayList<>();
+       List<String> clerkList = new ArrayList<>();
+        List<String> docList = new ArrayList<>();
+        List<String> dayList = new ArrayList<>();
 
+       List<StudentSchedules> stuScheds = new ArrayList<>();
+
+       System.out.println(lv.getGrab());
 
         for( Student stu : studentRepository.findAll() ){
            x = stu.getClerkships();
 
-           for(String key: x.keySet()){
+           StudentSchedules sched =  new StudentSchedules();
+           sched.setName(stu.getName());
+           sched.setId(stu.getId());
+           sched.setEmail(stu.getEmail());
+
+           stuScheds.add(sched);
+
+            for(String key: x.keySet()){
                Clerkship clerk = x.get(key);
-               clerkList.add(clerk);
+               clerkList.add(clerk.getTitle());
+               docList.add(clerk.getDoctorName());
+               dayList.add(clerk.getTime());
            }
-           break;
+
+            sched.setDocList(docList);
+            sched.setDayList(dayList);
+            sched.setProfList(clerkList);
        }
 
-
-        return clerkList;
-
+        return stuScheds;
     }
-
-
-
 }
 
 class StudentSchedules{
@@ -68,10 +80,61 @@ class StudentSchedules{
     private String name;
     private String id;
     private String email;
-    private List<Doctor> docList = new ArrayList<>();
+    private List<String> docList = new ArrayList<>();
     private List<String> profList = new ArrayList<>();
     private List<String> dayList = new ArrayList<>();
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<String> getDocList() {
+        return docList;
+    }
+
+    public void setDocList(List<String> docList) {
+        this.docList = docList;
+    }
+
+    public List<String> getProfList() {
+        return profList;
+    }
+
+    public void setProfList(List<String> profList) {
+        this.profList = profList;
+    }
+
+    public List<String> getDayList() {
+        return dayList;
+    }
+
+    public void setDayList(List<String> dayList) {
+        this.dayList = dayList;
+    }
 
 
 
