@@ -1,28 +1,23 @@
 package LIC.UC04v1.controllers;
 
-import LIC.UC04v1.model.Doctor;
-import LIC.UC04v1.model.Clerkship;
-import LIC.UC04v1.model.Student;
-import LIC.UC04v1.model.sortDoctorByAvailDates;
+import LIC.UC04v1.model.*;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.StudentRepository;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import java.util.*;
 
 @Controller
-public class test{
+public class ViewSchedules{
 
     private DoctorRepository doctorRepository;
     private ClerkshipRepository clerkshipRepository;
     private StudentRepository studentRepository;
 
-    public test(DoctorRepository doctorRepository, ClerkshipRepository clerkshipRepository, StudentRepository studentRepository) {
+    public ViewSchedules(DoctorRepository doctorRepository, ClerkshipRepository clerkshipRepository, StudentRepository studentRepository) {
         this.doctorRepository = doctorRepository;
         this.clerkshipRepository = clerkshipRepository;
         this.studentRepository = studentRepository;
@@ -33,23 +28,31 @@ public class test{
     @RequestMapping(path = "/adminView")
     public String admin() {
 
-        return "zachView";
+        return "viewSchedules";
     }
 
     @RequestMapping(path = "/grabStudents", method = RequestMethod.POST)
     public @ResponseBody
     List<StudentSchedules> getStudents(@RequestBody LoadView lv) {
 
-       Map<String, Clerkship> x = new HashMap<>();
-       List<String> clerkList = new ArrayList<>();
-        List<String> docList = new ArrayList<>();
-        List<String> dayList = new ArrayList<>();
 
-       List<StudentSchedules> stuScheds = new ArrayList<>();
-
+        List<StudentSchedules> stuScheds = new ArrayList<>();
        System.out.println(lv.getGrab());
 
-        for( Student stu : studentRepository.findAll() ){
+       List<Student> stuSort = new ArrayList<>();
+       for (Student stu: studentRepository.findAll()){
+           stuSort.add(stu);
+       }
+       Collections.sort(stuSort,new StudentNameComparator());
+
+        for( Student stu : stuSort ){
+            Map<String, Clerkship> x = new HashMap<>();
+            List<String> clerkList = new ArrayList<>();
+            List<String> docList = new ArrayList<>();
+            List<String> dayList = new ArrayList<>();
+
+
+
            x = stu.getClerkships();
 
            StudentSchedules sched =  new StudentSchedules();
@@ -57,7 +60,7 @@ public class test{
            sched.setId(stu.getId());
            sched.setEmail(stu.getEmail());
 
-           stuScheds.add(sched);
+
 
             for(String key: x.keySet()){
                Clerkship clerk = x.get(key);
@@ -69,6 +72,8 @@ public class test{
             sched.setDocList(docList);
             sched.setDayList(dayList);
             sched.setProfList(clerkList);
+
+            stuScheds.add(sched);
        }
 
         return stuScheds;
