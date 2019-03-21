@@ -139,7 +139,6 @@ public class ImportController {
     public String getPhase1Doc(String email, Student stu){
         for (Doctor doc : doctorRepository.findAll()) {
             if (doc.getEmail().equals(email)) {
-                doc.setHasStu(doc.getHasStu()+1);
                 stu.setPhase1Doc(doc);
                 return "";
             }
