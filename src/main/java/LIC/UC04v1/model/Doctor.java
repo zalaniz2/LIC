@@ -2,16 +2,14 @@ package LIC.UC04v1.model;
 
 import LIC.UC04v1.controllers.Location;
 import LIC.UC04v1.controllers.Specialty;
-import LIC.UC04v1.controllers.TimeSlot;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.List;
 
-@Data
 @Entity
 public class Doctor {
 
@@ -22,18 +20,26 @@ public class Doctor {
     private String id;
     //maybe change to a collection of clerkships so they can change it in the future
     //have a restraint that kayla can edit the number of clerkships a doctor can have
-    @OneToOne
-    private Clerkship clerkship;
+    @OneToMany(mappedBy = "doctor", cascade=CascadeType.ALL)
+    private List<Clerkship> clerkship = new ArrayList<Clerkship>();
+
     private String name;
     private String email;
-    //private String specialty;
     private boolean available = true;
     private String availabilities;
     private int numberOfDaysAvail;
     private Specialty specialty;
-    //private String location;
     private Location location;
     private int numStu = 1;
+    private int hasStu = 0;
+
+    public int getHasStu() {
+        return hasStu;
+    }
+
+    public void setHasStu(int hasStu) {
+        this.hasStu = hasStu;
+    }
 
     public int getNumStu() {
         return numStu;
@@ -69,6 +75,10 @@ public class Doctor {
         this.location = location;
     }
 
+    public void addClerkship(Clerkship clerk) {
+        clerkship.add(clerk);
+    }
+
     public void setAvailable(boolean available) {
         this.available = available;
     }
@@ -91,11 +101,11 @@ public class Doctor {
         this.id = id;
     }
 
-    public Clerkship getClerkship() {
+    public List<Clerkship> getClerkship() {
         return clerkship;
     }
 
-    public void setClerkship(Clerkship clerkship) {
+    public void setClerkship(List<Clerkship> clerkship) {
         this.clerkship = clerkship;
     }
 

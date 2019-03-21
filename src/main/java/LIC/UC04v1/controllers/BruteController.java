@@ -67,9 +67,16 @@ public class BruteController {
 
                     TimeSlot time;
                     if ((time = compareSchedule(studentSched, docAvail, need))!=null){
+                        int day1 = time.ordinal();
+                        int day2 = misc.getOtherTime(time).ordinal();
+                        String availabilities = doc.getAvailabilities();
                         if (need ==1){
                             studentSched.add(time);
-                            doc.setAvailable(false);
+
+                            doc.setHasStu(doc.getHasStu() + 1);
+                            if (doc.getNumStu()==doc.getHasStu()){
+                                doc.setAvailable(false);
+                            }
 
                             Clerkship clerk = new Clerkship();
 
@@ -84,7 +91,9 @@ public class BruteController {
                             clerks.put(clerk.getSpecialty().toString(),clerk);
 
                             clerkshipRepository.save(clerk);
-                            doc.setClerkship(clerk);
+                            doc.addClerkship(clerk);
+                            availabilities = availabilities.substring(0,day1)+"0"+availabilities.substring(day1);
+
                             doctorRepository.save(doc);
                             break;
                         }
@@ -92,7 +101,10 @@ public class BruteController {
                             studentSched.add(time);
                             studentSched.add(misc.getOtherTime(time));
 
-                            doc.setAvailable(false);
+                            doc.setHasStu(doc.getHasStu() + 1);
+                            if (doc.getNumStu()==doc.getHasStu()){
+                                doc.setAvailable(false);
+                            }
 
                             Clerkship clerk = new Clerkship();
                             clerk.setDoctor(doc);
@@ -106,7 +118,10 @@ public class BruteController {
 
                             clerks.put(clerk.getSpecialty().toString(),clerk);
                             clerkshipRepository.save(clerk);
-                            doc.setClerkship(clerk);
+                            doc.addClerkship(clerk);
+                            availabilities = availabilities.substring(0,day1)+"0"+availabilities.substring(day1);
+                            availabilities = availabilities.substring(0,day2)+"0"+availabilities.substring(day2);
+
                             doctorRepository.save(doc);
 
                             break;
@@ -123,6 +138,7 @@ public class BruteController {
                 return "brute";
             }
             students.get(i).setClerkships(clerks);
+            students.get(i).setHasSchedule(true);
             studentRepository.save(students.get(i));
         }
 

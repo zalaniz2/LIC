@@ -38,7 +38,6 @@ public class ImportController {
     private String currentStuFile = null;
     private MiscMethods misc;
 
-
     public ImportController(DoctorRepository doctorRepository, StudentRepository studentRepository){
         this.doctorRepository = doctorRepository;
         this.studentRepository = studentRepository;
@@ -103,7 +102,10 @@ public class ImportController {
 
         //Check for any errors
         if (!errorMsg.equals("")) {
-            model.addAttribute(type+"Error", errorMsg);
+            if (type.equals("doctors"))
+                model.addAttribute("doctorsError", errorMsg);
+            else
+                model.addAttribute("studentsError", errorMsg);
             updateThymeleaf(model,currentDocFile,currentStuFile);
             return "ImportData";
         }
@@ -118,10 +120,10 @@ public class ImportController {
         return "ImportData";
     }
 
-    /*******************************************
+    /*******************************************************************************************************************
      * public void updateThymeleaf
-     * Sends success messages to Thymeleaf frontend.
-     */
+     * Send data to the frontend
+     ******************************************************************************************************************/
     public void updateThymeleaf(Model model, String currentDocFile, String currentStuFile){
         if (currentDocFile != null) {
             model.addAttribute("docImportMsg", "File: " + currentDocFile
@@ -134,19 +136,27 @@ public class ImportController {
         return;
     }
 
+    public String getPhase1Doc(String email, Student stu){
+        for (Doctor doc : doctorRepository.findAll()) {
+            if (doc.getEmail().equals(email)) {
+                doc.setHasStu(doc.getHasStu()+1);
+                stu.setPhase1Doc(doc);
+                return "";
+            }
+        }
+        return "WARNING: No doctor found with email " + email + " for student " + stu.getName() + "\n\n";
+    }
+
     /*******************************************************************************************************************
      * public void xlsxFile
      * Reads in a modern excel file with .xlsx extension. The first row is assumed to be a header row and is ignored.
      * The first column holds the student or doctor name. The second column holds the student or doctor email.
      * In the doctor information file, the third column holds the doctor's profession.
-     * @param type
-     * @param file
-     * @throws IOException
      ******************************************************************************************************************/
-
     public String xlsxFile(String type, MultipartFile file, Model model) throws IOException{
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
+        String errorStr = "";
 
         //Start at i=1 to skip the header row
         for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
@@ -162,10 +172,11 @@ public class ImportController {
                 Student stu = new Student();
                 stu.setName(row.getCell(0).getStringCellValue());
                 stu.setEmail(row.getCell(1).getStringCellValue());
+                errorStr = errorStr + getPhase1Doc(row.getCell(2).getStringCellValue(),stu);
                 studentRepository.save(stu);
             }
         }
-        return "";
+        return errorStr;
     }
 
     /*******************************************************************************************************************
@@ -173,13 +184,11 @@ public class ImportController {
      * Reads in an older excel file with .xls extension. The first row is assumed to be a header row and is ignored.
      * The first column holds the student or doctor name. The second column holds the student or doctor email.
      * In the doctor information file, the third column holds the doctor's profession.
-     * @param type
-     * @param file
-     * @throws IOException
      ******************************************************************************************************************/
     public String xlsFile(String type, MultipartFile file, Model model) throws IOException{
         HSSFWorkbook workbookXLS = new HSSFWorkbook(file.getInputStream());
         HSSFSheet worksheetXLS = workbookXLS.getSheetAt(0);
+        String errorStr = "";
 
         //Start at i=1 to skip the header row
         for (int i = 1; i < worksheetXLS.getPhysicalNumberOfRows(); i++) {
@@ -196,10 +205,11 @@ public class ImportController {
                 Student stuXLS = new Student();
                 stuXLS.setName(rowXLS.getCell(0).getStringCellValue());
                 stuXLS.setEmail(rowXLS.getCell(1).getStringCellValue());
+                errorStr = errorStr + getPhase1Doc(rowXLS.getCell(2).getStringCellValue(),stuXLS);
                 studentRepository.save(stuXLS);
             }
         }
-        return "";
+        return errorStr;
     }
 
     /*******************************************************************************************************************
@@ -207,13 +217,11 @@ public class ImportController {
      * Reads in an csv file (data file) with .csv extension. The first row is assumed to be a header row and is ignored.
      * The first column holds the student or doctor name. The second column holds the student or doctor email.
      * In the doctor information file, the third column holds the doctor's profession.
-     * @param type
-     * @param file
-     * @throws IOException
      ******************************************************************************************************************/
     public String csvFile(String type, MultipartFile file, Model model) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));//read file
 
+        String errorStr = "";
         String line;//read file into database on instance of doctor at a time.
         br.readLine(); //Don't read in the header
         String[] values;
@@ -230,22 +238,24 @@ public class ImportController {
                 doc.setAvailabilities(values[4]);
                 doc.setSpecialty(misc.convertSpecialty(values[3]));
                 doc.setLocation(misc.convertLocation(values[5]));
+                doc.setNumStu(Integer.parseInt(values[6]));
                 doctorRepository.save(doc);
             }
         }
         else if (type.equals("students")) {
             while ((line = br.readLine()) != null) {
                 values = line.split(",");
-                if (values.length < 2){
+                if (values.length < 3){
                     return "CSV File incorrectly formatted. Not enough columns.";
                 }
                 Student stu = new Student();
                 stu.setName(values[0] +" "+ values[1]);
                 stu.setEmail(values[2]);
+                errorStr = errorStr + getPhase1Doc(values[3],stu);
                 studentRepository.save(stu);
             }
         }
-        return "";
+        return errorStr;
     }
 
 }

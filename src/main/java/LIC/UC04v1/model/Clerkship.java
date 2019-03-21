@@ -19,8 +19,9 @@ public class Clerkship {
     @ManyToOne//(cascade = CascadeType.ALL)
     //@JoinColumn(name = "Student_ID123", referencedColumnName = "ID")
     private Student student;
-    @OneToOne
+    @ManyToOne
     private Doctor doctor;
+
     private String Title;
     private Location Location;
     private Date date;

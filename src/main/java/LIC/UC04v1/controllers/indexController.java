@@ -259,21 +259,34 @@ public class indexController {
             for (Doctor doc: docs) {
                 if (doc.getAvailabilities().charAt(getClerkshipDay(i,s ))=='1'){
                     Clerkship clerk = new Clerkship();
+                    String availabilities = doc.getAvailabilities();
+                    int day = getClerkshipDay(i,s);
                     clerk.setStudent(stu);
                     clerk.setDoctor(doc);
                     clerk.setTitle(spe);
-                    clerk.setTime(misc.toTimeSlot(getClerkshipDay(i,s)));
+                    clerk.setTime(misc.toTimeSlot(day));
                     clerk.setSpecialty(specialty);
                     clerk.setLocation(doc.getLocation());
                     if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
                         clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
-                        clerk.setDay(getClerkshipDay(i,s)-12);
+                        clerk.setDay(day-12);
+                        availabilities = availabilities.substring(0,day-12)+"0"+availabilities.substring(day-12);
+                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day);
                     } else {
-                        clerk.setDay(getClerkshipDay(i,s));
+                        clerk.setDay(day);
+                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day);
+
                     }
                     clerkshipRepository.save(clerk);
-                    doc.setClerkship(clerk);
-                    doc.setAvailable(false);
+                    doc.addClerkship(clerk);
+                    doc.setAvailabilities(availabilities);
+                    doc.setAvailabilities(doc.getAvailabilities());
+
+                    doc.setHasStu(doc.getHasStu() + 1);
+                    if (doc.getNumStu()==doc.getHasStu()){
+                        doc.setAvailable(false);
+                    }
+
                     doctorRepository.save(doc);
                     stuSched.put(spe,clerk);
                     break;
@@ -282,6 +295,7 @@ public class indexController {
 
         }
         stu.setClerkships(stuSched);
+        stu.setHasSchedule(true);
         studentRepository.save(stu);
 
         if (stuSched.size()!=7) {
