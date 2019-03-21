@@ -139,7 +139,6 @@ public class ImportController {
     public String getPhase1Doc(String email, Student stu){
         for (Doctor doc : doctorRepository.findAll()) {
             if (doc.getEmail().equals(email)) {
-                doc.setHasStu(doc.getHasStu()+1);
                 stu.setPhase1Doc(doc);
                 return "";
             }
@@ -232,13 +231,13 @@ public class ImportController {
                     return "CSV File incorrectly formatted. Not enough columns.";
                 }
                 Doctor doc = new Doctor();
-                doc.setName(values[0]+ " " +values[1]);
-                doc.setEmail(values[2]);
+                doc.setName(values[0]);
+                doc.setEmail(values[1]);
                 //!!!!!!!! FOR THE DEMO - DELETE AFTER
-                doc.setAvailabilities(values[4]);
-                doc.setSpecialty(misc.convertSpecialty(values[3]));
-                doc.setLocation(misc.convertLocation(values[5]));
-                doc.setNumStu(Integer.parseInt(values[6]));
+                doc.setAvailabilities(values[3]);
+                doc.setSpecialty(misc.convertSpecialty(values[2]));
+                doc.setLocation(misc.convertLocation(values[4]));
+                doc.setNumStu(Integer.parseInt(values[5]));
                 doctorRepository.save(doc);
             }
         }
@@ -249,9 +248,9 @@ public class ImportController {
                     return "CSV File incorrectly formatted. Not enough columns.";
                 }
                 Student stu = new Student();
-                stu.setName(values[0] +" "+ values[1]);
-                stu.setEmail(values[2]);
-                errorStr = errorStr + getPhase1Doc(values[3],stu);
+                stu.setName(values[0]);
+                stu.setEmail(values[1]);
+                errorStr = errorStr + getPhase1Doc(values[2],stu);
                 studentRepository.save(stu);
             }
         }
