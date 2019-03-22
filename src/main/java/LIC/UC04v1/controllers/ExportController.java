@@ -82,28 +82,33 @@ public class ExportController{
             String[] header = {"Doctor Name", "Title", "Student", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"};
             writer.writeNext(header);
 
-            for(Doctor doc: listDoctors){
-                String docName = doc.getName();
-                String title = doc.getClerkship().getTitle();
-                String stuName = doc.getClerkship().getStudent().getName();
-                String description = "";
-                String day = doc.getClerkship().getTime();
-                String week = "";
-                String week2 = "week 2";
-                String startT = doc.getClerkship().getStartTime();
-                String endT = doc.getClerkship().getEndTime();
-                String loc = "";
-                String event = "Clinic";
-                if(doc.getClerkship().getDay()<12){
-                    week = "week 1";
-                }else{ week = "week 2";}
+            for(Doctor doc: listDoctors) {
+                List<Clerkship> clerkships = doc.getClerkship();
+                for (Clerkship clerk : clerkships) {
+                    String docName = doc.getName();
+                    String title = clerk.getTitle();
+                    String stuName = clerk.getStudent().getName();
+                    String description = "";
+                    String day = clerk.getTime();
+                    String week = "";
+                    String week2 = "week 2";
+                    String startT = clerk.getStartTime();
+                    String endT = clerk.getEndTime();
+                    String loc = "";
+                    String event = "Clinic";
+                    if (clerk.getDay() < 12) {
+                        week = "week 1";
+                    } else {
+                        week = "week 2";
+                    }
 
-                String[] data = {docName,title,stuName,description,day,week,startT,endT,loc,event};
-                writer.writeNext(data);
+                    String[] data = {docName, title, stuName, description, day, week, startT, endT, loc, event};
+                    writer.writeNext(data);
 
-                if(title.equals("Surgery") || title.equals("Pediatrics") || title.equals("Family Medicine") || title.equals("Internal Medicine")){
-                    String[] data1 = {docName,title,stuName,description,day,week2,startT,endT,loc,event};
-                    writer.writeNext(data1);
+                    if (title.equals("Surgery") || title.equals("Pediatrics") || title.equals("Family Medicine") || title.equals("Internal Medicine")) {
+                        String[] data1 = {docName, title, stuName, description, day, week2, startT, endT, loc, event};
+                        writer.writeNext(data1);
+                    }
                 }
             }
             writer.close();
@@ -463,9 +468,6 @@ public class ExportController{
                     case 18:
                         writeToCell(sheet, ThursAM2,dataStyle,clerk);
                         break;
-                    /*case 19:
-                        writeToCell(sheet, ThursPM2,dataStyle,clerk);
-                        break;*/
                     case 20:
                         writeToCell(sheet, FriAM2,dataStyle,clerk);
                         break;
@@ -507,9 +509,6 @@ public class ExportController{
                         case 18:
                             writeToCell(sheet, ThursAM2,dataStyle,clerk);
                             break;
-                        /*case 19:
-                            writeToCell(sheet, ThursPM2,dataStyle,clerk);
-                            break;*/
                         case 20:
                             writeToCell(sheet, FriAM2,dataStyle,clerk);
                             break;

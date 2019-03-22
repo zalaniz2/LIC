@@ -50,7 +50,6 @@ public class Clerkship {
 
     public void setDate(Date date) { this.date = date; }
 
-
     public LIC.UC04v1.controllers.Location getLocation() {
         return Location;
     }

@@ -50,6 +50,8 @@ public class ViewSchedules{
             List<String> clerkList = new ArrayList<>();
             List<String> docList = new ArrayList<>();
             List<String> dayList = new ArrayList<>();
+            List<String> timeList = new ArrayList<>();
+            List<String> weekList = new ArrayList<>();
 
 
 
@@ -63,15 +65,32 @@ public class ViewSchedules{
 
 
             for(String key: x.keySet()){
+                String week = "";
+                String week2 = "Week 2";
                Clerkship clerk = x.get(key);
                clerkList.add(clerk.getTitle());
                docList.add(clerk.getDoctorName());
                dayList.add(clerk.getTime());
+               timeList.add(clerk.getStartTime());
+                if(clerk.getDay()<12){
+                    week = "Week 1";
+                }else{ week = "Week 2";}
+               weekList.add(week);
+
+                if(clerk.getTitle().equals("Surgery") || clerk.getTitle().equals("Pediatrics") || clerk.getTitle().equals("Family Medicine") || clerk.getTitle().equals("Internal Medicine")){
+                    clerkList.add(clerk.getTitle());
+                    docList.add(clerk.getDoctorName());
+                    dayList.add(clerk.getTime());
+                    timeList.add(clerk.getStartTime());
+                    weekList.add(week2);
+                }
            }
 
             sched.setDocList(docList);
             sched.setDayList(dayList);
             sched.setProfList(clerkList);
+            sched.setTimeList(timeList);
+            sched.setWeekList(weekList);
 
             stuScheds.add(sched);
        }
@@ -88,6 +107,26 @@ class StudentSchedules{
     private List<String> docList = new ArrayList<>();
     private List<String> profList = new ArrayList<>();
     private List<String> dayList = new ArrayList<>();
+    private List<String> timeList = new ArrayList<>();
+    private List<String> weekList = new ArrayList<>();
+
+    public List<String> getTimeList() {
+        return timeList;
+    }
+
+    public void setTimeList(List<String> timeList) {
+        this.timeList = timeList;
+    }
+
+    public List<String> getWeekList() {
+        return weekList;
+    }
+
+    public void setWeekList(List<String> weekList) {
+        this.weekList = weekList;
+    }
+
+
 
     public String getName() {
         return name;
