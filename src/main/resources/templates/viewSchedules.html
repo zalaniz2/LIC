@@ -89,7 +89,9 @@
     </div>
 
     <!-- div that holds all doctor panels, seperated by 60 per div within -->
-    <div id="doctors" class="hidden"></div>
+    <div id="doctors" class="hidden">
+        <div class="panel-group" id="accordionDoc" role="tablist" aria-multiselectable="true"></div>
+    </div>
 
 </div>
 
@@ -129,7 +131,8 @@
     // pages holds the amount of pages for pagination creation
     var pages;
     var stuScheds;
-    var arg = "students";
+    var docScheds;
+    var arg = "";
     var caller = {
         "grab": arg
     }
@@ -143,23 +146,52 @@
 
     });
 
-    function getData(){
+    $("#show-docs").click(function(){
+        caller["grab"] = "docs";
+        getData();
+        $("#students").removeClass("hidden");
+        $("#doctors").addClass("hidden");
+
+    });
+
+    function getData() {
         console.log("here 1")
-        $.ajax({
 
-            type: "POST",
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            url: "/grabStudents", // route to hit
-            data: JSON.stringify(caller), // IMPORTANT
+        if (caller.grab === "students") {
+            console.log(caller.grab);
+            $.ajax({
 
-            success: function (result) {
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/grabStudents", // route to hit
+                data: JSON.stringify(caller), // IMPORTANT
 
-                stuScheds = result;
-                populateStudent();
-            },
-            error: console.log("Error")
-        });
+                success: function (result) {
+
+                    stuScheds = result;
+                    populateStudent();
+                },
+                error: console.log("Error")
+            });
+        }else if(caller.grab === "docs"){
+            console.log(caller.grab);
+            $.ajax({
+
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/grabDocs", // route to hit
+                data: JSON.stringify(caller), // IMPORTANT
+
+                success: function (result) {
+
+                    docScheds = result;
+                    populateDoc();
+                },
+                error: console.log("Error")
+            });
+        }
     }
 
     // createData populates student, doctor, and clerkship data with random data to use
@@ -274,88 +306,110 @@
                         "<th>DOCTOR</th>"+
                         "<th>DAY</th>"+
                         "<th>TIME</th>"+
-                        "<th>WEEK</th>"+
+                        "<th>WEEK 1</th>"+
+                        "<th>WEEK 1</th>"+
                     "</tr>"+
                     "<tr>"+
                         "<td id='clerk1'>"+stuScheds[i].profList[0]+"</td>"+
                         "<td id='doc1'>"+stuScheds[i].docList[0]+"</td>"+
                         "<td id='day1'>"+stuScheds[i].dayList[0]+"</td>"+
                         "<td id='time1'>"+stuScheds[i].timeList[0]+"</td>"+
-                        "<td id='week1'>"+stuScheds[i].weekList[0] +"</td>"+
+                        "<td>"+stuScheds[i].week1List[0] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[0] +"</td>"+
                     "</tr>"+
                     "<tr>"+
                         "<td id='clerk2'>"+stuScheds[i].profList[1]+"</td>"+
                         "<td id='doc2'>"+stuScheds[i].docList[1]+"</td>"+
                         "<td id='day2'>"+stuScheds[i].dayList[1]+"</td>"+
                         "<td id='time2'>"+stuScheds[i].timeList[1]+"</td>"+
-                        "<td id='week2'>"+stuScheds[i].weekList[1] +"</td>"+
+                        "<td>"+stuScheds[i].week1List[1] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[1] +"</td>"+
                     "</tr>"+
                     "<tr>"+
                         "<td id='clerk3'>"+stuScheds[i].profList[2]+"</td>"+
                         "<td id='doc3'>"+stuScheds[i].docList[2]+"</td>"+
                         "<td id='day3'>"+stuScheds[i].dayList[2]+"</td>"+
                         "<td id='time3'>"+stuScheds[i].timeList[2]+"</td>"+
-                        "<td id='week3'>"+stuScheds[i].weekList[2] +"</td>"+
+                        "<td>"+stuScheds[i].week1List[2] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[2] +"</td>"+
                     "</tr>"+
                     "<tr>"+
                         "<td id='clerk4'>"+stuScheds[i].profList[3]+"</td>"+
                         "<td id='doc4'>"+stuScheds[i].docList[3]+"</td>"+
                         "<td id='day4'>"+stuScheds[i].dayList[3]+"</td>"+
                         "<td id='time4'>"+stuScheds[i].timeList[3]+"</td>"+
-                        "<td id='week4'>"+stuScheds[i].weekList[3] +"</td>"+
+                        "<td>"+stuScheds[i].week1List[3] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[3] +"</td>"+
                     "</tr>"+
                     "<tr>"+
                         "<td id='clerk5'>"+stuScheds[i].profList[4]+"</td>"+
                         "<td id='doc5'>"+stuScheds[i].docList[4]+"</td>"+
                         "<td id='day5'>"+stuScheds[i].dayList[4]+"</td>"+
                         "<td id='time5'>"+stuScheds[i].timeList[4]+"</td>"+
-                        "<td id='week5'>"+stuScheds[i].weekList[4] +"</td>"+
+                        "<td>"+stuScheds[i].week1List[4] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[4] +"</td>"+
                     "</tr>"+
                     "<tr>"+
                         "<td id='clerk6'>"+stuScheds[i].profList[5]+"</td>"+
                         "<td id='doc6'>"+stuScheds[i].docList[5]+"</td>"+
                         "<td id='day6'>"+stuScheds[i].dayList[5]+"</td>"+
                         "<td id='time6'>"+stuScheds[i].timeList[5]+"</td>"+
-                        "<td id='week6'>"+stuScheds[i].weekList[5] +"</td>"+
+                        "<td>"+stuScheds[i].week1List[5] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[5] +"</td>"+
                     "</tr>"+
                     "<tr>"+
                         "<td id='clerk7'>"+stuScheds[i].profList[6]+"</td>"+
                         "<td id='doc7'>"+stuScheds[i].docList[6]+"</td>"+
                         "<td id='day7'>"+stuScheds[i].dayList[6]+"</td>"+
                         "<td id='time7'>"+stuScheds[i].timeList[6]+"</td>"+
-                        "<td id='week7'>"+stuScheds[i].weekList[6] +"</td>"+
-                    "</tr>"+
-                    "<tr>"+
-                        "<td id='clerk8'>"+stuScheds[i].profList[7]+"</td>"+
-                        "<td id='doc8'>"+stuScheds[i].docList[7]+"</td>"+
-                        "<td id='day8'>"+stuScheds[i].dayList[7]+"</td>"+
-                        "<td id='time8'>"+stuScheds[i].timeList[7]+"</td>"+
-                        "<td id='week8'>"+stuScheds[i].weekList[7] +"</td>"+
-                    "</tr>"+
-                    "<tr>"+
-                        "<td id='clerk9'>"+stuScheds[i].profList[8]+"</td>"+
-                        "<td id='doc9'>"+stuScheds[i].docList[8]+"</td>"+
-                        "<td id='day9'>"+stuScheds[i].dayList[8]+"</td>"+
-                        "<td id='time9'>"+stuScheds[i].timeList[8]+"</td>"+
-                        "<td id='week9'>"+stuScheds[i].weekList[8] +"</td>"+
-                    "</tr>"+
-                    "<tr>"+
-                        "<td id='clerk10'>"+stuScheds[i].profList[9]+"</td>"+
-                        "<td id='doc10'>"+stuScheds[i].docList[9]+"</td>"+
-                        "<td id='day10'>"+stuScheds[i].dayList[9]+"</td>"+
-                        "<td id='time10'>"+stuScheds[i].timeList[9]+"</td>"+
-                        "<td id='week10'>"+stuScheds[i].weekList[9] +"</td>"+
-                    "</tr>"+
-                    "<tr>"+
-                        "<td id='clerk11'>"+stuScheds[i].profList[10]+"</td>"+
-                        "<td id='doc11'>"+stuScheds[i].docList[10]+"</td>"+
-                        "<td id='day11'>"+stuScheds[i].dayList[10]+"</td>"+
-                        "<td id='time11'>"+stuScheds[i].timeList[10]+"</td>"+
-                        "<td id='week11'>"+stuScheds[i].weekList[10] +"</td>"+
+                        "<td>"+stuScheds[i].week1List[6] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[6] +"</td>"+
                     "</tr>"+
                 "</table>"+
                         "<button class=\"btn btn-default\"> Edit  </button>" +
                     "<\/div>" +
+                "<\/div>");
+        }
+    }
+
+    function populateDoc(){
+        for(var i =0; i<docScheds.length; i++){
+            $("#accordionDoc").append(
+                "<\div class=\"card\">" +
+                "<\div class=\"card-header\" id=\"heading" + docScheds[i].id + "\">" +
+                "<\h5 class=\"mb-0\">" +
+                "<\a class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"#" + docScheds[i].id + "\" aria-expanded=\"false\" aria-controls=\"collapseOne\">" + docScheds[i].name + "<\/a>" +
+                "<\/h5>" +
+                "<\/div>" +
+
+                "<\div id=\"" + docScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + docScheds[i].id + "\" data-parent=\"#accordionStu\">" +
+                "<\div class=\"card-body\">" +
+                "ID: " + docScheds[i].id +  "<\/br> Email: " + docScheds[i].email + "<\/br>" + "Speciality: "+ docScheds[i].speciality + "<\/br>" +
+                "<table class='table table-dark table-striped text-center' id='myTable' style='border:1px solid black'>" +
+                "<tr>"+
+                "<th>STUDENT</th>"+
+                "<th>DAY</th>"+
+                "<th>TIME</th>"+
+                "<th>WEEK 1</th>"+
+                "<th>WEEK 2</th>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='doc1'>"+docScheds[i].stuNameList[0]+"</td>"+
+                "<td id='day1'>"+docScheds[i].dayList[0]+"</td>"+
+                "<td id='time1'>"+docScheds[i].timeList[0]+"</td>"+
+                "<td id='week11'>"+docScheds[i].week1List[0] +"</td>"+
+                "<td id='week21'>"+docScheds[i].week2List[0] +"</td>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='doc2'>"+docScheds[i].stuNameList[1]+"</td>"+
+                "<td id='day2'>"+docScheds[i].dayList[1]+"</td>"+
+                "<td id='time2'>"+docScheds[i].timeList[1]+"</td>"+
+                "<td id='week12'>"+docScheds[i].week1List[0] +"</td>"+
+                "<td id='week22'>"+docScheds[i].week2List[0] +"</td>"+
+                "</tr>"+
+                "</table>"+
+                "<button class=\"btn btn-default\"> Edit  </button>" +
+                "<\/div>" +
                 "<\/div>");
         }
     }
