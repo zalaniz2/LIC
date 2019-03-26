@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.File;
 import java.io.IOException;
 import java.io.*;
@@ -136,6 +139,25 @@ public class ImportController {
         return;
     }
 
+    /*******************************************************************************************************************
+     * public String checkEmail
+     * Validate each email to make sure it's a valid email address
+     ******************************************************************************************************************/
+    public String checkEmail(String email, String name){
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            return "WARNING: Invalid email for " + name + " : " + email + "\n\n";
+        }
+        return "";
+    }
+
+    /*******************************************************************************************************************
+     * public String getPhase1Doc
+     * Match each student to their phase one doctor
+     * Return a warning if a valid phase 1 doctor was not found
+     ******************************************************************************************************************/
     public String getPhase1Doc(String email, Student stu){
         for (Doctor doc : doctorRepository.findAll()) {
             if (doc.getEmail().equals(email)) {
@@ -163,6 +185,7 @@ public class ImportController {
             if(type.equals("doctors")) {
                 Doctor doc = new Doctor();
                 doc.setName(row.getCell(0).getStringCellValue());
+                errorStr = errorStr + checkEmail(row.getCell(1).getStringCellValue(), doc.getName());
                 doc.setEmail(row.getCell(1).getStringCellValue());
                 doc.setSpecialty(misc.convertSpecialty(row.getCell(2).getStringCellValue()));
                 doctorRepository.save(doc);
@@ -170,6 +193,7 @@ public class ImportController {
             else if(type.equals("students")) {
                 Student stu = new Student();
                 stu.setName(row.getCell(0).getStringCellValue());
+                errorStr = errorStr + checkEmail(row.getCell(1).getStringCellValue(), stu.getName());
                 stu.setEmail(row.getCell(1).getStringCellValue());
                 errorStr = errorStr + getPhase1Doc(row.getCell(2).getStringCellValue(),stu);
                 studentRepository.save(stu);
@@ -196,6 +220,7 @@ public class ImportController {
             if(type.equals("doctors")) {
                 Doctor docXLS = new Doctor();
                 docXLS.setName(rowXLS.getCell(0).getStringCellValue());
+                errorStr = errorStr + checkEmail(rowXLS.getCell(1).getStringCellValue(), docXLS.getName());
                 docXLS.setEmail(rowXLS.getCell(1).getStringCellValue());
                 docXLS.setSpecialty(misc.convertSpecialty(rowXLS.getCell(2).getStringCellValue()));
                 doctorRepository.save(docXLS);
@@ -203,6 +228,7 @@ public class ImportController {
             else if(type.equals("students")) {
                 Student stuXLS = new Student();
                 stuXLS.setName(rowXLS.getCell(0).getStringCellValue());
+                errorStr = errorStr + checkEmail(rowXLS.getCell(1).getStringCellValue(), stuXLS.getName());
                 stuXLS.setEmail(rowXLS.getCell(1).getStringCellValue());
                 errorStr = errorStr + getPhase1Doc(rowXLS.getCell(2).getStringCellValue(),stuXLS);
                 studentRepository.save(stuXLS);
@@ -232,6 +258,7 @@ public class ImportController {
                 }
                 Doctor doc = new Doctor();
                 doc.setName(values[0]);
+                errorStr = errorStr + checkEmail(values[1], doc.getName());
                 doc.setEmail(values[1]);
                 //!!!!!!!! FOR THE DEMO - DELETE AFTER
                 doc.setAvailabilities(values[3]);
@@ -249,6 +276,7 @@ public class ImportController {
                 }
                 Student stu = new Student();
                 stu.setName(values[0]);
+                errorStr = errorStr + checkEmail(values[1], stu.getName());
                 stu.setEmail(values[1]);
                 errorStr = errorStr + getPhase1Doc(values[2],stu);
                 studentRepository.save(stu);
