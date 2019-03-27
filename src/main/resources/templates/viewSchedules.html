@@ -84,19 +84,17 @@
     <br><br>
 
     <!-- div that holds the student panels, hidden at first until user selects students button -->
-    <div id="students" class="hidden">
+    <div id="students" class="d-none">
         <div class="panel-group" id="accordionStu" role="tablist" aria-multiselectable="true"></div>
     </div>
 
     <!-- div that holds all doctor panels, seperated by 60 per div within -->
-    <div id="doctors" class="hidden">
+    <div id="doctors" class="d-none">
         <div class="panel-group" id="accordionDoc" role="tablist" aria-multiselectable="true"></div>
     </div>
 
 </div>
 
-
-<!-- Custom javascript used for this page, should make it its own file later -->
 
 
 <script>
@@ -104,26 +102,7 @@
         The following three functions create objects for student, doctor, and clerkship, similar to what is currently in the database.
         This page currently doesn't talk to the database, so these were created for testing/making the page like it is.
      */
-    function Student(){
-        this.id = Math.floor((Math.random() * 100000) + 1); //random ID's
-        this.Name = "John Doe" + Math.floor((Math.random() * 100) + 1);
-        this.email = "jdoe" + this.id + "@something.com";
-        this.clerkships = [];
-    }
-    function Clerkship(std, doc, time){
-        this.id = Math.floor((Math.random() * 100000) + 1);
-        this.std = std;
-        this.doc = doc;
-        this.time = time;
-    }
-    // Doctor's should have a location field in database*
-    function Doctor(){
-        this.id = Math.floor((Math.random() * 100000) + 1);
-        this.name = "Doctor Smith" + Math.floor((Math.random() * 1000) + 1);
-        this.email = "dsmith" + this.id + "@doctor.com" ;
-        this.clerkship;
-        this.profession = "some profession";
-    }
+
     //These arrays hold all of the current doctors,students, and clerkships everytime page is loaded.
     var students = [];
     var doctors = [];
@@ -140,22 +119,23 @@
 
     $("#show-students").click(function(){
         caller["grab"] = "students";
-        getData();
-        $("#students").removeClass("hidden");
-        $("#doctors").addClass("hidden");
+        $("#accordionStu").html("");
+        $("#students").removeClass("d-none");
+        $("#doctors").addClass("d-none");
 
+        getData();
     });
 
     $("#show-docs").click(function(){
         caller["grab"] = "docs";
-        getData();
-        $("#students").removeClass("hidden");
-        $("#doctors").addClass("hidden");
+        $("#accordionDoc").html("");
+        $("#doctors").removeClass("d-none");
+        $("#students").addClass("d-none");
 
+        getData();
     });
 
     function getData() {
-        console.log("here 1")
 
         if (caller.grab === "students") {
             console.log(caller.grab);
@@ -193,98 +173,6 @@
             });
         }
     }
-
-    // createData populates student, doctor, and clerkship data with random data to use
-    function createData(){
-        for( var i = 0; i<60; i++){ // i<60 = amount of students being made
-            var std = new Student();
-            for( var j = 0; j<8; j++){ // j<8 = 8 doctors made for each student.
-                var doc = new Doctor();
-                var clerk = new Clerkship(std, doc, "some day and time");
-                std.clerkships.push(clerk);
-                doc.clerkship = clerk;
-                doctors.push(doc); // push to doctor list
-                clerkships.push(clerk); // push to clerkship list
-            }
-            students.push(std); // push to students list
-        }
-    }
-
-
-   /* function populateStudents(){
-        for( var i = 0; i<students.length; i++){
-            console.log(students[i]); // print student information for debugging
-            $("#accordionStu").append( //append to accordion that holds the panels for students in html
-                // the following string is turning the students into their separate panels
-                // the "\" are used to separate ""
-                "<\div class=\"panel panel-default\">" + "<\div class=\"panel-heading\" role=\"tab\" id=\"heading" + students[i].id + "\">" +
-                "<\h4 class=\"panel-title\">" +
-                "<\a role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordionStu\" href=\"#" + students[i].id + "\" aria-expanded=\"true\" aria-controls=\"collapseOne\">" + students[i].Name + "<\/a>" +
-                "<\/h4>" +
-                "<\/div>" +
-                "<\div id=\"" + students[i].id + "\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"heading" + students[i].id + "\">" +
-                "<\div class=\"panel-body\">" +
-                "<table id='myTable' style='border:1px solid black'>" +
-                "<tr>"+
-                    "<th>Clerkships</th>"+
-                    "<th>Day</th>"+
-                    "<th>Time</th>"+
-                "</tr>"+
-                "<tr>"+
-                    "<td id='clerk1'>"+students[i].id+"</td>"+
-                    "<td id='day1'></td>"+
-                    "<td id='time1'></td>"+
-                "</tr>"+
-                "<tr>"+
-                    "<td id='clerk2'></td>"+
-                    "<td id='day2'></td>"+
-                    "<td id='time2'></td>"+
-                "</tr>"+
-                "<tr>"+
-                    "<td id='clerk3'></td>"+
-                    "<td id='day3'></td>"+
-                    "<td id='time3'></td>"+
-                "</tr>"+
-                "<tr>"+
-                    "<td id='clerk4'></td>"+
-                    "<td id='day4'></td>"+
-                    "<td id='time4'></td>"+
-                "</tr>"+
-                "</table>"+
-                "ID: " + students[i].id +  "<\/br> Email: " + students[i].email + "<\/br>" +
-                "<button class=\"btn btn-default\"> Edit  </button>" +
-                "<\/div>" +
-                "<\/div>" +
-                "<\/div>");
-        }
-    }*/
-
-    //uncomment this
-    // populateStudents takes the list of students created and puts them on the page for viewing, meant to mimick how they would be pulled from db
-   /* function populateStudents(){
-        //caller["grab"] = "students";
-        //getData();
-        console.log("here");
-        console.log(stuScheds);
-        for( var i = 0; i<stuScheds.length; i++){
-            console.log(stuScheds[i]); // print student information for debugging
-            $("#accordionStu").append( //append to accordion that holds the panels for students in html
-                // the following string is turning the students into their separate panels
-                // the "\" are used to separate ""
-                "<\div class=\"panel panel-default\">" + "<\div class=\"panel-heading\" role=\"tab\" id=\"heading" + stuScheds[i].id + "\">" +
-                "<\h4 class=\"panel-title\">" +
-                "<\a role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordionStu\" href=\"#" + stuScheds[i].id + "\" aria-expanded=\"true\" aria-controls=\"collapseOne\">" + stuScheds[i].name + "<\/a>" +
-                "<\/h4>" +
-                "<\/div>" +
-                "<\div id=\"" + stuScheds[i].id + "\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"heading" + stuScheds[i].id + "\">" +
-                "<\div class=\"panel-body\">" +
-                "ID: " + stuScheds[i].id +  "<\/br> Email: " + stuScheds[i].email + "<\/br>" + clerksToString(stuScheds[i]) +
-                "<button class=\"btn btn-default\"> Edit  </button>" +
-                "<\/div>" +
-                "<\/div>" +
-                "<\/div>");
-        }
-    }*/
 
     function populateStudent(){
 
@@ -381,142 +269,44 @@
                 "<\a class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"#" + docScheds[i].id + "\" aria-expanded=\"false\" aria-controls=\"collapseOne\">" + docScheds[i].name + "<\/a>" +
                 "<\/h5>" +
                 "<\/div>" +
-
                 "<\div id=\"" + docScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + docScheds[i].id + "\" data-parent=\"#accordionStu\">" +
                 "<\div class=\"card-body\">" +
                 "ID: " + docScheds[i].id +  "<\/br> Email: " + docScheds[i].email + "<\/br>" + "Speciality: "+ docScheds[i].speciality + "<\/br>" +
-                "<table class='table table-dark table-striped text-center' id='myTable' style='border:1px solid black'>" +
-                "<tr>"+
-                "<th>STUDENT</th>"+
-                "<th>DAY</th>"+
-                "<th>TIME</th>"+
-                "<th>WEEK 1</th>"+
-                "<th>WEEK 2</th>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='doc1'>"+docScheds[i].stuNameList[0]+"</td>"+
-                "<td id='day1'>"+docScheds[i].dayList[0]+"</td>"+
-                "<td id='time1'>"+docScheds[i].timeList[0]+"</td>"+
-                "<td id='week11'>"+docScheds[i].week1List[0] +"</td>"+
-                "<td id='week21'>"+docScheds[i].week2List[0] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='doc2'>"+docScheds[i].stuNameList[1]+"</td>"+
-                "<td id='day2'>"+docScheds[i].dayList[1]+"</td>"+
-                "<td id='time2'>"+docScheds[i].timeList[1]+"</td>"+
-                "<td id='week12'>"+docScheds[i].week1List[0] +"</td>"+
-                "<td id='week22'>"+docScheds[i].week2List[0] +"</td>"+
-                "</tr>"+
-                "</table>"+
+                "<\div class=\"container\" id=\"container"+i+"\">" +
+                "<\/div>"+
                 "<button class=\"btn btn-default\"> Edit  </button>" +
                 "<\/div>" +
                 "<\/div>");
+            createDocTable(docScheds[i],i);
         }
     }
 
-   /* function populateStudent(){
-        var myTable = "<table><tr><td style='width: 100px; color: red;'>Col Head 1</td>";
-        for(var i =0; i<stuScheds.length; i++){
-            $("#accordionStu").append(
-                "<\div class=\"panel panel-default\">" + "<\div class=\"panel-heading\" role=\"tab\" id=\"heading" + stuScheds[i].id + "\">" +
-                "<\h4 class=\"panel-title\">" +
-                "<\a role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordionStu\" href=\"#" + stuScheds[i].id + "\" aria-expanded=\"true\" aria-controls=\"collapseOne\">" + stuScheds[i].name + "<\/a>" +
-                "<\/h4>" +
-                "<\/div>" +
-                "<\div id=\"" + stuScheds[i].id + "\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"heading" + stuScheds[i].id + "\">" +
-                "<\div class=\"panel-body\">" +
-                "ID: " + stuScheds[i].id +  "<\/br> Email: " + stuScheds[i].email + "<\/br>" +
-                "<table class='table table-dark table-striped text-center' id='myTable' style='border:1px solid black'>" +
-                "<tr>"+
-                "<th>Clerkships</th>"+
-                "<th>Doctor</th>"+
-                "<th>Day</th>"+
-                "<th>Time</th>"+
-                "<th>Week</th>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk1'>"+stuScheds[i].profList[0]+"</td>"+
-                "<td id='doc1'>"+stuScheds[i].docList[0]+"</td>"+
-                "<td id='day1'>"+stuScheds[i].dayList[0]+"</td>"+
-                "<td id='time1'>"+stuScheds[i].timeList[0]+"</td>"+
-                "<td id='week1'>"+stuScheds[i].weekList[0] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk2'>"+stuScheds[i].profList[1]+"</td>"+
-                "<td id='doc2'>"+stuScheds[i].docList[1]+"</td>"+
-                "<td id='day2'>"+stuScheds[i].dayList[1]+"</td>"+
-                "<td id='time2'>"+stuScheds[i].timeList[1]+"</td>"+
-                "<td id='week2'>"+stuScheds[i].weekList[1] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk3'>"+stuScheds[i].profList[2]+"</td>"+
-                "<td id='doc3'>"+stuScheds[i].docList[2]+"</td>"+
-                "<td id='day3'>"+stuScheds[i].dayList[2]+"</td>"+
-                "<td id='time3'>"+stuScheds[i].timeList[2]+"</td>"+
-                "<td id='week3'>"+stuScheds[i].weekList[2] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk4'>"+stuScheds[i].profList[3]+"</td>"+
-                "<td id='doc4'>"+stuScheds[i].docList[3]+"</td>"+
-                "<td id='day4'>"+stuScheds[i].dayList[3]+"</td>"+
-                "<td id='time4'>"+stuScheds[i].timeList[3]+"</td>"+
-                "<td id='week4'>"+stuScheds[i].weekList[3] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk5'>"+stuScheds[i].profList[4]+"</td>"+
-                "<td id='doc5'>"+stuScheds[i].docList[4]+"</td>"+
-                "<td id='day5'>"+stuScheds[i].dayList[4]+"</td>"+
-                "<td id='time5'>"+stuScheds[i].timeList[4]+"</td>"+
-                "<td id='week5'>"+stuScheds[i].weekList[4] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk6'>"+stuScheds[i].profList[5]+"</td>"+
-                "<td id='doc6'>"+stuScheds[i].docList[5]+"</td>"+
-                "<td id='day6'>"+stuScheds[i].dayList[5]+"</td>"+
-                "<td id='time6'>"+stuScheds[i].timeList[5]+"</td>"+
-                "<td id='week6'>"+stuScheds[i].weekList[5] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk7'>"+stuScheds[i].profList[6]+"</td>"+
-                "<td id='doc7'>"+stuScheds[i].docList[6]+"</td>"+
-                "<td id='day7'>"+stuScheds[i].dayList[6]+"</td>"+
-                "<td id='time7'>"+stuScheds[i].timeList[6]+"</td>"+
-                "<td id='week7'>"+stuScheds[i].weekList[6] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk8'>"+stuScheds[i].profList[7]+"</td>"+
-                "<td id='doc8'>"+stuScheds[i].docList[7]+"</td>"+
-                "<td id='day8'>"+stuScheds[i].dayList[7]+"</td>"+
-                "<td id='time8'>"+stuScheds[i].timeList[7]+"</td>"+
-                "<td id='week8'>"+stuScheds[i].weekList[7] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk9'>"+stuScheds[i].profList[8]+"</td>"+
-                "<td id='doc9'>"+stuScheds[i].docList[8]+"</td>"+
-                "<td id='day9'>"+stuScheds[i].dayList[8]+"</td>"+
-                "<td id='time9'>"+stuScheds[i].timeList[8]+"</td>"+
-                "<td id='week9'>"+stuScheds[i].weekList[8] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk10'>"+stuScheds[i].profList[9]+"</td>"+
-                "<td id='doc10'>"+stuScheds[i].docList[9]+"</td>"+
-                "<td id='day10'>"+stuScheds[i].dayList[9]+"</td>"+
-                "<td id='time10'>"+stuScheds[i].timeList[9]+"</td>"+
-                "<td id='week10'>"+stuScheds[i].weekList[9] +"</td>"+
-                "</tr>"+
-                "<tr>"+
-                "<td id='clerk11'>"+stuScheds[i].profList[10]+"</td>"+
-                "<td id='doc11'>"+stuScheds[i].docList[10]+"</td>"+
-                "<td id='day11'>"+stuScheds[i].dayList[10]+"</td>"+
-                "<td id='time11'>"+stuScheds[i].timeList[10]+"</td>"+
-                "<td id='week11'>"+stuScheds[i].weekList[10] +"</td>"+
-                "</tr>"+
-                "</table>"+
-                "<button class=\"btn btn-default\"> Edit  </button>" +
-                "<\/div>" +
-                "<\/div>");
+    function createDocTable(docSched,index){
+
+            $("#container"+index).append(
+            "<table class='table table-dark table-striped text-center' id=\"myTable"+index+"\" style='border:1px solid black'>" +
+            "<tr>"+
+            "<th>STUDENT</th>"+
+            "<th>DAY</th>"+
+            "<th>TIME</th>"+
+            "<th>WEEK 1</th>"+
+            "<th>WEEK 2</th>"+
+            "</tr>"+
+            "</table>");
+        for(var i =0;i<docSched.stuNameList.length;i++){
+
+            $("#myTable"+index).append(
+            "<tr>"+
+            "<td id='doc1'>"+docSched.stuNameList[i]+"</td>"+
+            "<td id='day1'>"+docSched.dayList[i]+"</td>"+
+            "<td id='time1'>"+docSched.timeList[i]+"</td>"+
+            "<td id='week11'>"+docSched.week1List[i] +"</td>"+
+            "<td id='week21'>"+docSched.week2List[i] +"</td>"+
+            "</tr>");
         }
-    }*/
+    }
+
+
 
     // createPagination finds out how many pages are needed for the doctor's within the database and creates the needed html.
     function createPagination(){
@@ -532,88 +322,7 @@
         }
         $("#doctors").append("</div>");
     }
-    //populateDoctors is similar to populateStudents, puts doctors into corresponding pages to be viewed on the page.
-    function populateDoctors(){
-        var count = 0; //count to see which page the doctor is going on.
-        for( var i = 0; i<doctors.length; i++){
-            console.log(doctors[i]);
-            $("#accordion" + count).append(
-                "<\div class=\"panel panel-default\">" + "<\div class=\"panel-heading\" role=\"tab\" id=\"heading" + doctors[i].id + "\">" +
-                "<\h4 class=\"panel-title\">" +
-                "<\a role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion" + count + "\" href=\"#" + doctors[i].id + "\" aria-expanded=\"true\" aria-controls=\"collapseOne\">" +
-                doctors[i].name +
-                "<\/a>" +
-                "<\/h4>" +
-                "<\/div>" +
-                "<\div id=\"" + doctors[i].id + "\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"heading" + doctors[i].id + "\">" +
-                "<\div class=\"panel-body\">" +
-                "ID: " + doctors[i].id +  "<\/br> Email: " + doctors[i].email + "<\/br>" + "Profession: " + doctors[i].profession + " <br> Student: " + doctors[i].clerkship.std.Name + "<br>" +
-                "<button class=\"btn btn-default\"> Edit  </button>" +
-                "<\/div>" +
-                "<\/div>" +
-                "<\/div>");
-            if( (i % 60) == 0 && i != 0){ //once there is 60 doctors on a page, move to the next
-                count++;
-            }
-        }
-    }
 
-    //uncomment this
-    // clerksToString is used to reference Student's clerkships and the doctors they are with.
-   /* function clerksToString(stuScheds){
-        var clerks = "";
-        for( var i = 0; i<8; i++){
-            clerks = clerks + "" + stuScheds.profList[i] + " with " + stuScheds.docList[i] + " on " + stuScheds.dayList[i] + "<\/br>";
-        }
-        return clerks;
-    };*/
-
-
-    function clerksToString(std){
-        var clerks = "";
-        for( var i = 0; i<8; i++){
-            clerks = clerks + "" + std.clerkships[i].doc.profession + " with " + std.clerkships[i].doc.name + " at " + std.clerkships[i].time + "<\/br>";
-        }
-        return clerks;
-    };
-
-    //startPage runs all methods and begins page
-    function startPage(){
-        //createData();
-        getData();
-        populateStudent();
-        //populateStudents();
-        createPagination();
-        //populateDoctors();
-    }
-    //startPage();
-    // this click function checks the page for the given button clicks and hides/views accordingly
-    /*$("button").click(function(){
-        // print to console for debugging
-        console.log("got a button click, check");
-        var buttonClicked = this.id;
-        console.log(buttonClicked);
-        if( buttonClicked == "show-students"){
-            $("#students").removeClass("hidden");
-            $("#doctors").addClass("hidden");
-
-        }
-        else if( buttonClicked == "show-docs"){
-            $("#students").addClass("hidden");
-            $("#doctors").removeClass("hidden");
-        }
-        else {
-            for( var i = 0; i<pages; i++) {
-                if (buttonClicked == ("pag" + i)) {
-                    console.log("found this" + buttonClicked);
-                    $("#page"+i).removeClass("hidden");
-                }
-                else{
-                    $("#page"+i).addClass("hidden");
-                }
-            }
-        }
-    });*/
 </script>
 
 </body>
