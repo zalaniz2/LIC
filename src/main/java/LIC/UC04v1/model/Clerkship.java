@@ -21,7 +21,6 @@ public class Clerkship {
     private Student student;
     @ManyToOne
     private Doctor doctor;
-
     private String Title;
     private Location Location;
     private Date date;

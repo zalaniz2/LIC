@@ -129,44 +129,59 @@ public class ExportController{
         response2.setHeader(headerKey, headerValue);
 
 
-        ArrayList<Clerkship> clerkList = new ArrayList<>();
-
-        for(Student stu: studentRepository.findAll()) {
-            Map<String, Clerkship> clerkships = stu.getClerkships(); //students list of clerkships
-            for(String key: clerkships.keySet()){
-                clerkList.add(clerkships.get(key)); //add stu's clerkships to list of all clerkships
-            }
-        }
 
 
-        // uses the Super CSV API to generate CSV data from the model data
-        try(ICsvBeanWriter csvWriter = new CsvBeanWriter(response2.getWriter(), CsvPreference.STANDARD_PREFERENCE);){ //try-with-resource management (writer closes automatically)
+        ArrayList<Student> listStudents = new ArrayList<>();
 
-            String[] header = {"Student Name", "Title", "Doctor", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"}; //csv headers
+        for(Student stu: studentRepository.findAll()) { listStudents.add(stu); } //list of doctors
 
-            //timeWeek1/2 is not correct. (It will always output week 1 unless it is one of the four reoccuring clerkships which is not correct)
-            String[] fieldHead = {"studentName", "Title", "doctorName", "Description", "Time", "timeWeek1", "startTime", "endTime",  "Location", "eventType"}; //getters in clerkship model
-            String[] fieldHead2 = {"studentName", "Title", "doctorName", "Description", "Time", "timeWeek2", "startTime", "endTime",  "Location", "eventType"};
-            final CellProcessor[] processors = getProcessors();
 
-            csvWriter.writeHeader(header);
+        try{
+            CSVWriter writer = new CSVWriter (response2.getWriter());
 
-            for (Clerkship clerk : clerkList) {
-                String s = clerk.getTitle();
-                //clerkships that occur both weeks
-                if(s.equals("Surgery") || s.equals("Pediatrics") || s.equals("Family Medicine") || s.equals("Internal Medicine")){
-                    csvWriter.write(clerk, fieldHead, processors); //write all clerkships to csv file
-                    csvWriter.write(clerk,fieldHead2,processors);
-                }else{
-                    csvWriter.write(clerk, fieldHead, processors);
+            String[] header = {"Student Name", "Title", "Doctor", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"};
+            writer.writeNext(header);
+
+            for(Student stu: listStudents) {
+                ArrayList<Clerkship> clerkList = new ArrayList<>();
+                Map<String,Clerkship> clerkships = stu.getClerkships();
+                for(String key: clerkships.keySet()){
+                    clerkList.add(clerkships.get(key)); //add stu's clerkships to list of all clerkships
                 }
 
-            }
+                for (Clerkship clerk : clerkList) {
+                    String stuName = clerk.getStudent().getName();
+                    String title = clerk.getTitle();
+                    String doctor = clerk.getDoctor().getName();
+                    String description = "";
+                    String day = clerk.getTime();
+                    String week = "";
+                    String week2 = "Week 2";
+                    String startT = clerk.getStartTime();
+                    String endT = clerk.getEndTime();
+                    String loc = clerk.getLocation().name();
+                    String event = "clinic";
+                    if (clerk.getDay() < 12) {
+                        week = "week 1";
+                    } else {
+                        week = "week 2";
+                    }
+                    String[] data = {stuName, title, doctor, description, day, week, startT, endT, loc, event};
+                    writer.writeNext(data);
+                    if (title.equals("Surgery") || title.equals("Pediatrics") || title.equals("Family Medicine") || title.equals("Internal Medicine")) {
+                        String[] data1 = {stuName, title, doctor, description, day, week, startT, endT, loc, event};
+                        writer.writeNext(data1);
+                    }
+                }
+                }
+            writer.close();
+        }catch (IOException e){
+            e.printStackTrace();
         }
 
     }
 
-    @RequestMapping(value = "/downloadExcel")
+    @RequestMapping(value = "/downloadStudentExcel")
     public void downloadExcel(HttpServletResponse response2) throws IOException{
 
         int yr = Calendar.getInstance().get(Calendar.YEAR);
@@ -182,89 +197,45 @@ public class ExportController{
 
         //Header Cell style formatting
         XSSFFont headerFont = (XSSFFont) workbook.createFont();
-        headerFont.setBold(true);
-        headerFont.setUnderline(XSSFFont.U_DOUBLE);
-        headerFont.setFontHeightInPoints((short)30);
-        headerFont.setColor(new XSSFColor(new java.awt.Color(77,25,121)));
         CellStyle headerCellStyle = workbook.createCellStyle();
-        headerCellStyle.setFont(headerFont);
+
 
         //Header Cell style formatting
         XSSFFont headerFont1 = (XSSFFont) workbook.createFont();
-        headerFont1.setBold(true);
-        headerFont1.setFontHeightInPoints((short)15);
-        headerFont1.setColor(new XSSFColor(new java.awt.Color(77,25,121)));
         CellStyle headerCellStyle1 = workbook.createCellStyle();
-        headerCellStyle1.setFont(headerFont1);
+
 
         //2nd Header Cell Style formatting
         XSSFFont headerFont2 = (XSSFFont) workbook.createFont();
-        headerFont2.setBold(true);
-        headerFont2.setFontHeightInPoints((short)17);
         XSSFCellStyle headerCellStyle2 = (XSSFCellStyle) workbook.createCellStyle();
-        headerCellStyle2.setFont(headerFont2);
-        headerCellStyle2.setFillForegroundColor(new XSSFColor(new java.awt.Color(47,86,41)));
-        headerCellStyle2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headerCellStyle2.setBorderBottom(BorderStyle.MEDIUM);
-        headerCellStyle2.setBorderTop(BorderStyle.MEDIUM);
-        headerCellStyle2.setBorderRight(BorderStyle.MEDIUM);
-        headerCellStyle2.setBorderLeft(BorderStyle.MEDIUM);
+
 
         //Style for "Morning" and "Afternoon" header cells
         XSSFFont font = (XSSFFont) workbook.createFont();
-        font.setBold(false);
-        font.setItalic(true);
-        font.setFontHeightInPoints((short)17);
         XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
-        style.setFont(font);
-        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(72,130,63)));
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
+
 
 
         //Style for data cells
         XSSFFont dataFont = (XSSFFont) workbook.createFont();
-        dataFont.setFontHeightInPoints((short)12);
         XSSFCellStyle dataStyle = (XSSFCellStyle) workbook.createCellStyle();
-        dataStyle.setFont(dataFont);
-        dataStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(193,224,184)));
-        dataStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        dataStyle.setBorderBottom(BorderStyle.THIN);
-        dataStyle.setBorderTop(BorderStyle.THIN);
-        dataStyle.setBorderRight(BorderStyle.THIN);
-        dataStyle.setBorderLeft(BorderStyle.THIN);
-        dataStyle.setWrapText(true);
+
 
         //LEAPS cell style
         XSSFCellStyle leapsStyle = (XSSFCellStyle) workbook.createCellStyle();
-        leapsStyle.setFont(font);
-        leapsStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(136, 132, 132)));
-        leapsStyle.setAlignment(CellStyle.ALIGN_CENTER);
-        leapsStyle.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
-        leapsStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        leapsStyle.setBorderBottom(BorderStyle.THIN);
-        leapsStyle.setBorderTop(BorderStyle.THIN);
-        leapsStyle.setBorderRight(BorderStyle.THIN);
-        leapsStyle.setBorderLeft(BorderStyle.THIN);
-        leapsStyle.setWrapText(true);
 
         //Style for WEEK header cell
         XSSFFont weekHeaderFont = (XSSFFont) workbook.createFont();
-        weekHeaderFont.setFontHeightInPoints((short)20);
-        weekHeaderFont.setBold(true);
         CellStyle weekHeaderStyle = workbook.createCellStyle();
-        weekHeaderStyle.setFont(weekHeaderFont);
 
-        //Style for Stu Info Cell
+
+        //Font and Style for Stu Info Cell
         XSSFFont stuInfoFont = (XSSFFont) workbook.createFont();
-        stuInfoFont.setFontHeightInPoints((short)15);
-        stuInfoFont.setBold(true);
         CellStyle stuInfoStyle = workbook.createCellStyle();
-        stuInfoStyle.setFont(stuInfoFont);
-        stuInfoStyle.setWrapText(true);
+
+        //edit styles for cells and fonts
+        createStyle(workbook,headerFont,headerCellStyle,headerFont1,headerCellStyle1,headerFont2,headerCellStyle2,
+                font,style,dataFont,dataStyle,leapsStyle,weekHeaderFont,weekHeaderStyle,stuInfoFont,stuInfoStyle);
 
 
         //Creates a new sheet in the workbook for every student in repository
@@ -432,9 +403,6 @@ public class ExportController{
                     case 6:
                         writeToCell(sheet, ThursAM,dataStyle,clerk);
                         break;
-                    /*case 7:
-                        writeToCell(sheet, ThursPM,dataStyle,clerk);
-                        break;*/
                     case 8:
                         writeToCell(sheet, FriAM,dataStyle,clerk);
                         break;
@@ -544,7 +512,6 @@ public class ExportController{
     }
 
     public void writeToCell(Sheet sheet, CellReference weekDay, XSSFCellStyle dataStyle, Clerkship clerk){
-
         Row row = sheet.getRow(weekDay.getRow());
         Cell cell = row.getCell(weekDay.getCol());
         cell.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
@@ -607,7 +574,7 @@ public class ExportController{
         XSSFFont stuInfoFont = (XSSFFont) workbook.createFont();
         CellStyle stuInfoStyle = workbook.createCellStyle();
 
-        creatStyle(workbook,headerFont,headerCellStyle,headerFont1,headerCellStyle1,headerFont2,headerCellStyle2,
+        createStyle(workbook,headerFont,headerCellStyle,headerFont1,headerCellStyle1,headerFont2,headerCellStyle2,
                 font,style,dataFont,dataStyle,leapsStyle,weekHeaderFont,weekHeaderStyle,stuInfoFont,stuInfoStyle);
 
 
@@ -724,8 +691,7 @@ public class ExportController{
                 CellReference FriPM = new CellReference("G6");
                 CellReference SatAM = new CellReference("H5");
                 CellReference SatPM = new CellReference("H6");
-                //CellReference SunAM = new CellReference("I5");
-                //CellReference SunPM = new CellReference("I6");
+
 
                 CellReference MonAM2 = new CellReference("C12");
                 CellReference MonPM2 = new CellReference("C13");
@@ -874,6 +840,7 @@ public class ExportController{
                 }
             }
         }
+        //writing to workbook
         OutputStream outputStream = null;
         try {
             outputStream = response1.getOutputStream();
@@ -890,7 +857,7 @@ public class ExportController{
     }
 
 
-    public void creatStyle(Workbook workbook,XSSFFont headerFont,CellStyle headerCellStyle, XSSFFont headerFont1,
+    public void createStyle(Workbook workbook,XSSFFont headerFont,CellStyle headerCellStyle, XSSFFont headerFont1,
                             CellStyle headerCellStyle1,XSSFFont headerFont2,XSSFCellStyle headerCellStyle2,
                            XSSFFont font,XSSFCellStyle style,XSSFFont dataFont,XSSFCellStyle dataStyle,XSSFCellStyle leapsStyle,
                            XSSFFont weekHeaderFont,CellStyle weekHeaderStyle,XSSFFont stuInfoFont,CellStyle stuInfoStyle){

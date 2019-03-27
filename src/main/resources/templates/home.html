@@ -26,7 +26,7 @@
     span{
         margin-left: auto;
         margin-right: auto;
-        padding-right: 425px;
+        padding-right: 25%;
         font-size: x-large;
         font-weight: bold;
         justify-self: center;
@@ -66,8 +66,8 @@
 <body>
 <div style="position: relative">
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1">
-    <a class="navbar-brand" href="#">
-        <img th:src="@{img/logo.png}" action="/home" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
+    <a class="navbar-brand" href="/home">
+        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -99,20 +99,23 @@
         </div>
     </div>-->
     <div class = "btn-group-vertical align-content-center" role="group" id="options" style="position: relative; padding-top: 7%">
+        <form action="/import-Data">
+            <input type="submit" class= "btn btn-dark" value="Import Data"/>
+        </form>
+        <form action="/send-emails">
+            <input type="submit" class= "btn btn-dark" value="Send Emails"/>
+        </form>
         <form action="/brute">
             <input type="submit" class= "btn btn-dark" value="Schedule Students"/>
         </form>
         <form action="/adminView">
             <input type="submit" class= "btn btn-dark" value="View Student Schedules"/>
         </form>
-        <form action="/import-Data">
-            <input type="submit" class= "btn btn-dark" value="Import Data"/>
+        <form action="/export">
+            <input type="submit" class= "btn btn-dark" value="Export Schedules"/>
         </form>
         <form action="/registration">
             <input type="submit" class= "btn btn-dark" value="Add Admin"/>
-        </form>
-        <form action="/export">
-            <input type="submit" class= "btn btn-dark" value="Export Schedules"/>
         </form>
     </div>
 
