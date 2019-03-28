@@ -1,15 +1,329 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    table, td, th{
+        border: 1px solid black
+    }
+    span{
+        margin-left: auto;
+        margin-right: auto;
+        padding-right: 25%;
+        font-size: x-large;
+        font-weight: bold;
+        justify-self: center;
+    }
+    #logout{
+        padding-top: 10px;
+        text-align: center;
+    }
+    #schedule-group p{
+        margin: 2px;
+    }
+    #schedule-group div{
+        margin-bottom: 5px;
+    }
+    .btn-group-vertical{
+        display: table;
+        width: 45%;
+
+
+    }
+
+</style>
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Student Schedule Download</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Latest compiled and minified CSS for Bootstrap framework -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
-<div align="center">
-    <h1>Student Schedule Download</h1>
-    <p><a href="/downloadStudentScheduleCSV">Download Student Schedules CSV Format</a></p>
-    <p><a href="/downloadExcel">Download Student Schedules Excel Format</a></p>
+<div style="position: relative">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1">
+        <a class="navbar-brand" href="/home">
+            <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <span class="admin-name align-content-center">View Schedules</span>
+            <div class="right-logo">
+                <form class="form-inline my-2 my-lg-0">
+                    <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+                </form>
+                <form th:action="@{/logout}" id="logout" method="get">
+                    <button class="btn btn-md btn-danger" name="registration"
+                            type="Submit">Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
 </div>
+
+<div class="container">
+    <!-- breaks to make the page look a bit nicer -->
+    <br><br>
+
+    <!-- two buttons for displaying either the students or doctors. -->
+    <div class = "text-center">
+        <div class="btn-group-vertical justify-content-center" id="view-select">
+            <button class="btn btn-dark" id="show-students" style="margin-bottom: 10px;">Students</button>
+            <button class="btn btn-dark" id="show-docs" style="margin-bottom: 10px;">Doctors</button>
+        </div>
+    </div>
+
+    <br><br>
+
+    <!-- div that holds the student panels, hidden at first until user selects students button -->
+    <div id="students" class="d-none">
+        <div class="panel-group" id="accordionStu" role="tablist" aria-multiselectable="true"></div>
+    </div>
+
+    <!-- div that holds all doctor panels, seperated by 60 per div within -->
+    <div id="doctors" class="d-none">
+        <div class="panel-group" id="accordionDoc" role="tablist" aria-multiselectable="true"></div>
+    </div>
+
+</div>
+
+
+
+<script>
+    /*
+        The following three functions create objects for student, doctor, and clerkship, similar to what is currently in the database.
+        This page currently doesn't talk to the database, so these were created for testing/making the page like it is.
+     */
+
+    //These arrays hold all of the current doctors,students, and clerkships everytime page is loaded.
+    var students = [];
+    var doctors = [];
+    var clerkships = [];
+    // pages holds the amount of pages for pagination creation
+    var pages;
+    var stuScheds;
+    var docScheds;
+    var arg = "";
+    var caller = {
+        "grab": arg
+    }
+
+
+    $("#show-students").click(function(){
+        caller["grab"] = "students";
+        $("#accordionStu").html("");
+        $("#students").removeClass("d-none");
+        $("#doctors").addClass("d-none");
+
+        getData();
+    });
+
+    $("#show-docs").click(function(){
+        caller["grab"] = "docs";
+        $("#accordionDoc").html("");
+        $("#doctors").removeClass("d-none");
+        $("#students").addClass("d-none");
+
+        getData();
+    });
+
+    function getData() {
+
+        if (caller.grab === "students") {
+            console.log(caller.grab);
+            $.ajax({
+
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/grabStudents", // route to hit
+                data: JSON.stringify(caller), // IMPORTANT
+
+                success: function (result) {
+
+                    stuScheds = result;
+                    populateStudent();
+                },
+                error: console.log("Error")
+            });
+        }else if(caller.grab === "docs"){
+            console.log(caller.grab);
+            $.ajax({
+
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/grabDocs", // route to hit
+                data: JSON.stringify(caller), // IMPORTANT
+
+                success: function (result) {
+
+                    docScheds = result;
+                    populateDoc();
+                },
+                error: console.log("Error")
+            });
+        }
+    }
+
+    function populateStudent(){
+
+        for(var i =0; i<stuScheds.length; i++){
+            $("#accordionStu").append(
+                "<\div class=\"card\">" +
+                    "<\div class=\"card-header\" id=\"heading" + stuScheds[i].id + "\">" +
+                        "<\h5 class=\"mb-0\">" +
+                            "<\a class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"#" + stuScheds[i].id + "\" aria-expanded=\"false\" aria-controls=\"collapseOne\">" + stuScheds[i].name + "<\/a>" +
+                        "<\/h5>" +
+                "<\/div>" +
+
+                "<\div id=\"" + stuScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + stuScheds[i].id + "\" data-parent=\"#accordionStu\">" +
+                    "<\div class=\"card-body\">" +
+                        "ID: " + stuScheds[i].id +  "<\/br> Email: " + stuScheds[i].email + "<\/br>" +
+                "<table class='table table-dark table-striped text-center' id='myTable' style='border:1px solid black'>" +
+                    "<tr>"+
+                        "<th>CLERKSHIP</th>"+
+                        "<th>DOCTOR</th>"+
+                        "<th>DAY</th>"+
+                        "<th>TIME</th>"+
+                        "<th>WEEK 1</th>"+
+                        "<th>WEEK 1</th>"+
+                    "</tr>"+
+                    "<tr>"+
+                        "<td id='clerk1'>"+stuScheds[i].profList[0]+"</td>"+
+                        "<td id='doc1'>"+stuScheds[i].docList[0]+"</td>"+
+                        "<td id='day1'>"+stuScheds[i].dayList[0]+"</td>"+
+                        "<td id='time1'>"+stuScheds[i].timeList[0]+"</td>"+
+                        "<td>"+stuScheds[i].week1List[0] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[0] +"</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                        "<td id='clerk2'>"+stuScheds[i].profList[1]+"</td>"+
+                        "<td id='doc2'>"+stuScheds[i].docList[1]+"</td>"+
+                        "<td id='day2'>"+stuScheds[i].dayList[1]+"</td>"+
+                        "<td id='time2'>"+stuScheds[i].timeList[1]+"</td>"+
+                        "<td>"+stuScheds[i].week1List[1] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[1] +"</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                        "<td id='clerk3'>"+stuScheds[i].profList[2]+"</td>"+
+                        "<td id='doc3'>"+stuScheds[i].docList[2]+"</td>"+
+                        "<td id='day3'>"+stuScheds[i].dayList[2]+"</td>"+
+                        "<td id='time3'>"+stuScheds[i].timeList[2]+"</td>"+
+                        "<td>"+stuScheds[i].week1List[2] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[2] +"</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                        "<td id='clerk4'>"+stuScheds[i].profList[3]+"</td>"+
+                        "<td id='doc4'>"+stuScheds[i].docList[3]+"</td>"+
+                        "<td id='day4'>"+stuScheds[i].dayList[3]+"</td>"+
+                        "<td id='time4'>"+stuScheds[i].timeList[3]+"</td>"+
+                        "<td>"+stuScheds[i].week1List[3] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[3] +"</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                        "<td id='clerk5'>"+stuScheds[i].profList[4]+"</td>"+
+                        "<td id='doc5'>"+stuScheds[i].docList[4]+"</td>"+
+                        "<td id='day5'>"+stuScheds[i].dayList[4]+"</td>"+
+                        "<td id='time5'>"+stuScheds[i].timeList[4]+"</td>"+
+                        "<td>"+stuScheds[i].week1List[4] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[4] +"</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                        "<td id='clerk6'>"+stuScheds[i].profList[5]+"</td>"+
+                        "<td id='doc6'>"+stuScheds[i].docList[5]+"</td>"+
+                        "<td id='day6'>"+stuScheds[i].dayList[5]+"</td>"+
+                        "<td id='time6'>"+stuScheds[i].timeList[5]+"</td>"+
+                        "<td>"+stuScheds[i].week1List[5] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[5] +"</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                        "<td id='clerk7'>"+stuScheds[i].profList[6]+"</td>"+
+                        "<td id='doc7'>"+stuScheds[i].docList[6]+"</td>"+
+                        "<td id='day7'>"+stuScheds[i].dayList[6]+"</td>"+
+                        "<td id='time7'>"+stuScheds[i].timeList[6]+"</td>"+
+                        "<td>"+stuScheds[i].week1List[6] +"</td>"+
+                        "<td>"+stuScheds[i].week2List[6] +"</td>"+
+                    "</tr>"+
+                "</table>"+
+                        "<button class=\"btn btn-default\"> Edit  </button>" +
+                    "<\/div>" +
+                "<\/div>");
+        }
+    }
+
+    function populateDoc(){
+        for(var i =0; i<docScheds.length; i++){
+            $("#accordionDoc").append(
+                "<\div class=\"card\">" +
+                "<\div class=\"card-header\" id=\"heading" + docScheds[i].id + "\">" +
+                "<\h5 class=\"mb-0\">" +
+                "<\a class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"#" + docScheds[i].id + "\" aria-expanded=\"false\" aria-controls=\"collapseOne\">" + docScheds[i].name + "<\/a>" +
+                "<\/h5>" +
+                "<\/div>" +
+                "<\div id=\"" + docScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + docScheds[i].id + "\" data-parent=\"#accordionStu\">" +
+                "<\div class=\"card-body\">" +
+                "ID: " + docScheds[i].id +  "<\/br> Email: " + docScheds[i].email + "<\/br>" + "Speciality: "+ docScheds[i].speciality + "<\/br>" +
+                "<\div class=\"container\" id=\"container"+i+"\">" +
+                "<\/div>"+
+                "<button class=\"btn btn-default\"> Edit  </button>" +
+                "<\/div>" +
+                "<\/div>");
+            createDocTable(docScheds[i],i);
+        }
+    }
+
+    function createDocTable(docSched,index){
+
+            $("#container"+index).append(
+            "<table class='table table-dark table-striped text-center' id=\"myTable"+index+"\" style='border:1px solid black'>" +
+            "<tr>"+
+            "<th>STUDENT</th>"+
+            "<th>DAY</th>"+
+            "<th>TIME</th>"+
+            "<th>WEEK 1</th>"+
+            "<th>WEEK 2</th>"+
+            "</tr>"+
+            "</table>");
+        for(var i =0;i<docSched.stuNameList.length;i++){
+
+            $("#myTable"+index).append(
+            "<tr>"+
+            "<td id='doc1'>"+docSched.stuNameList[i]+"</td>"+
+            "<td id='day1'>"+docSched.dayList[i]+"</td>"+
+            "<td id='time1'>"+docSched.timeList[i]+"</td>"+
+            "<td id='week11'>"+docSched.week1List[i] +"</td>"+
+            "<td id='week21'>"+docSched.week2List[i] +"</td>"+
+            "</tr>");
+        }
+    }
+
+
+
+    // createPagination finds out how many pages are needed for the doctor's within the database and creates the needed html.
+    function createPagination(){
+        pages = doctors.length/60; // finds how many pages are needed. Each page holds 60 doctors.
+        for( var i = 0; i<pages; i++){
+            // this string creates the seperate page html to be hidden/shown on pagination
+            $("#doctors").append("<\div id=\"page"+i+"\" class=\"hidden pagination-check\">" + "<div class=\"panel-group\" id=\"accordion" + i + "\" role=\"tablist\" aria-multiselectable=\"true\"></div>" + "</div>");
+        }
+        $("#doctors").append("<div class=\"btn-group\" id=\"pag-group\">");
+        for( var i = 0; i<pages; i++){
+            // this loop adds the pagination buttons.
+            $("#pag-group").append("<button type=\"button\" class=\"btn btn-primary\" id=pag" + i + ">" + (i+1) + "</button>");
+        }
+        $("#doctors").append("</div>");
+    }
+
+</script>
+
 </body>
 </html>

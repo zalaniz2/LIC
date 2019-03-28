@@ -23,6 +23,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+
+
+    //SQL query (manually authenticating)
     @Value("${spring.queries.users-query}")
     private String usersQuery;
 
@@ -32,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
+        //not persisted (just in memory) placed in memory every time program is run
         auth.inMemoryAuthentication()
                 .withUser("admin").password(bCryptPasswordEncoder.encode("adminPass")).roles("ADMIN");
 

@@ -34,11 +34,11 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        try {
-            initData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            initData();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
     @Autowired
     public Bootstrap(ClerkshipRepository clerkshipRepository, DoctorRepository doctorRepository, StudentRepository studentRepository,UserRepository userRepository,
@@ -73,12 +73,12 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         while ((st = br.readLine()) != null){
             values = st.split(",");
             Doctor doc = new Doctor();
-            doc.setName(values[0]+" "+values[1]);
-            doc.setEmail(values[2]);
-            doc.setAvailabilities(values[4]);
-            doc.setSpecialty(misc.convertSpecialty(values[3]));
-            doc.setLocation(misc.convertLocation(values[5]));
-            doc.setNumStu(Integer.parseInt(values[6]));
+            doc.setName(values[0]);
+            doc.setEmail(values[1]);
+            doc.setAvailabilities(values[3]);
+            doc.setSpecialty(misc.convertSpecialty(values[2]));
+            doc.setLocation(misc.convertLocation(values[4]));
+            doc.setNumStu(Integer.parseInt(values[5]));
 
             doctorRepository.save(doc);
         }
@@ -99,8 +99,8 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         while ((st = br.readLine()) != null){
             values = st.split(",");
             Student stu = new Student();
-            stu.setName(values[0]+" "+values[1]);
-            stu.setEmail(values[2]);
+            stu.setName(values[0]);
+            stu.setEmail(values[1]);
 
 
             studentRepository.save(stu);
