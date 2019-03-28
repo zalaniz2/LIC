@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="css/FormStyle.css" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Pre-scheduling Form</title>
 </head>
 <style>
@@ -14,77 +18,82 @@
         list-style-type: none;
         padding: 0;
     }
-    th{
-        width: 80px !important;
-    }
-    .table tbody tr > td.avail {
-        background-color: cornflowerblue !important;
-    }
-    .table tbody tr > td.avail:hover {
-        background-color: royalblue !important;
-    }
-    .table tbody tr > td.chosen {
-        background-color: seagreen !important;
-        color: #f2f2f2;
-        font-weight: bold;
-        font-size: 13px;
-    }
-    .table tbody tr > td.chosen:hover {
-        background-color: forestgreen !important;
-    }
-    .vbucks{
-        margin-left: 50px;
-    }
-    label{
-        font-family: Chalkboard;
-    }
-    th{
-        width: 80px !important;
-    }
-    .table tbody tr > td.avail {
-        background-color: cornflowerblue !important;
-    }
-    .table tbody tr > td.avail:hover {
-        background-color: royalblue !important;
-    }
-    .table tbody tr > td.chosen {
-        background-color: seagreen !important;
-        color: #f2f2f2;
-        font-weight: bold;
-        font-size: 13px;
-    }
-    .table tbody tr > td.chosen:hover {
-        background-color: forestgreen !important;
-    }
+     th{
+         width: 80px !important;
+     }
     #schedule-group p{
         margin: 2px;
     }
     #schedule-group div{
         margin-bottom: 5px;
     }
-
+    span{
+        margin-left: auto;
+        margin-right: auto;
+        padding-right: 425px;
+        font-size: x-large;
+        font-weight: bold;
+        justify-self: center;
+    }
+    input{
+        margin-bottom: 10px;
+        text-align: center;
+        border-radius: 5px;
+    }
+    #options{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .btn-group-vertical{
+        display: table;
+        width: 45%;
+    }
+    .fill{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+    .fill .anything img{
+        flex-shrink: 0;
+        min-width: 100%;
+        min-height: 100%;
+        margin-top: 10%;
+    }
+    .botmod{
+        padding-bottom: 10px;
+    }
+    #logout{
+        padding-top: 10px;
+        text-align: center;
+    }
 </style>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-        <img src="../static/img/logo.png" height="50" width="50"/></a>
+<body style="margin-left: 30px">
+<div style="position: relative">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1">
+        <a class="navbar-brand" href="#">
+             </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <span class="admin-name align-content-center">Pre-Schedule Form</span>
+            <div class="right-logo">
+                <form class="form-inline my-2 my-lg-0">
+                    </form>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <img src="../static/img/main-logo.png" height="45" width="150"/>
-        </form>
-    </div>
-</nav>
+            </div>
+        </div>
+
+    </nav>
+</div>
     <div class="vbucks">
         <!--/*@thymesVar id="doctor" type="LIC.UC04v1.domain.doctorForm.java"*/-->
         <form action="#" th:action="@{/thankDoctor}" th:object="${doctor}" method="post">
             <input type="hidden" th:field="*{id}">
-            <label th:text="*{name}">DrDr</label><br>
+            <label class="botmod" th:text="*{name}">DrDr</label><br>
         <label>Please select at least three times you are available to partake in a clerkship.</label>
         <ul>
             <li>
@@ -148,13 +157,26 @@
                 <label>Saturday 1PM - 5PM</label>
             </li>
         </ul>
-            <select th:field="*{Location}" id="loc" onchange='count()'>
-                <option value="none">none</option>
-                <option th:each="value : ${T(LIC.UC04v1.controllers.Location).values()}"
-                        th:value="${value.name()}"
-                        th:text="${value.name()}"
-                >val</option>
-            </select><br><br>
+            <div class="botmod">
+                <label>How many Students would you like to mentor?</label>
+                <select th:field="*{stuCount}" >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+            <div class="botmod">
+            <label>What area are you located?</label>
+                <select th:field="*{Location}" id="loc" onchange='count()'>
+                    <option th:each="value : ${T(LIC.UC04v1.controllers.Location).values()}"
+                            th:value="${value.name()}"
+                            th:text="${value.name()}"
+                    >val</option>
+                </select>
+            </div>
+            <div class="botmod">
+                <label>What address would you like them go to?</label><br>
+                <input size="30" th:type="text" th:value="${address}" th:field="*{address}"  id="addressTF"><br>
+            </div>
             <input type="submit" value="Submit" id="sub" disabled/>
         </form>
     </div>
@@ -186,7 +208,10 @@
                 document.getElementById("sub").disabled = false;
             }
             else {
-                document.getElementById("sub").disabled = true;
+                    if(document.getElementById("addressTF").value == "")
+                        document.getElementById("sub").disabled = true;
+                    else
+                        document.getElementById("sub").disabled = true;
             }
         }
     }

@@ -17,5 +17,5 @@ spring:
 #            create-source: metadata
 #            scripts:
 #              action: create
-#              create-target: lic_database_reate.sql
+#              create-target: lic_database_create.sql
 

@@ -4,6 +4,8 @@ public class doctorForm {
     public String id;
     public String name;
     public Location location;
+    public String stuCount;
+    public String address;
     public boolean MM;
     public boolean MA;
     public boolean TM;
@@ -19,6 +21,21 @@ public class doctorForm {
     public boolean UM;
     public boolean UA;
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getStuCount() {
+        return stuCount;
+    }
+
+    public void setStuCount(String stuCount) {
+        this.stuCount = stuCount;
+    }
     public doctorForm(){}
 
     public String getId() {

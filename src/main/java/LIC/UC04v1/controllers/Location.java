@@ -4,6 +4,11 @@ package LIC.UC04v1.controllers;
     Altering this list will change the locations available across the board.
  */
 public enum Location {
+    None{
+        public String toString(){
+            return ("None");
+        }
+    },
     FortWorth{
         public String toString(){
             return ("Fort Worth");

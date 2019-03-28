@@ -72,12 +72,11 @@ public class DoctorServiceImpl implements DoctorService{
         else availStr += "0";
         if(docForm.AA) availStr += "1";
         else availStr += "0";
+        String a = docForm.address;
+        detachedDoctor.setNumStu(Integer.parseInt(docForm.stuCount));
         availStr = availStr + availStr;
-//        if(docForm.UM) availStr += "1";
-//        else availStr += "0";
-//        if(docForm.UA) availStr += "1";
-//        else availStr += "0";
         availStr += availStr;
+        detachedDoctor.setAddress(a);
         detachedDoctor.setLocation(docForm.location);
         detachedDoctor.setAvailabilities(availStr);
         doctorRepository.save(detachedDoctor);
