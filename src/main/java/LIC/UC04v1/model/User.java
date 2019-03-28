@@ -11,7 +11,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "user")
-public class User {
+public class User extends AbstractDomainObject{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,17 +25,27 @@ public class User {
     @Length(min = 5, message = "*Your password must have at least 5 characters")
     @NotEmpty(message = "*Please provide your password")
     private String password;
+    private String encryptedPassword;
+    private Boolean enabled = true;
+    private Integer failedLoginAttemptes = 0;
     @Column(name = "name")
     @NotEmpty(message = "*Please provide your name")
     private String name;
     @Column(name = "last_name")
     @NotEmpty(message = "*Please provide your last name")
     private String lastName;
-    @Column(name = "active")
-    private int active;
+    //@Column(name = "active")
+    //private int active;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    public Integer getFailedLoginAttemptes() {
+        return failedLoginAttemptes;
+    }
+
+    public void setFailedLoginAttemptes(Integer failedLoginAttemptes) {
+        this.failedLoginAttemptes = failedLoginAttemptes;
+    }
 }
 

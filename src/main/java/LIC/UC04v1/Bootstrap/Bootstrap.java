@@ -108,7 +108,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         User admin = new User();
         admin.setName("Super");
         admin.setLastName("Admin");
-        admin.setActive(1);
+        //admin.setActive(1);
         admin.setEmail("admin@superadmin.tcu");
         Role adminRole = roleRepository.findByRole("ADMIN");
       //  admin.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
