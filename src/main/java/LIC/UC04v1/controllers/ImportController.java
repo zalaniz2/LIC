@@ -269,18 +269,31 @@ public class ImportController {
             }
         }
         else if (type.equals("students")) {
-            while ((line = br.readLine()) != null) {
-                values = line.split(",");
-                if (values.length < 3){
-                    return "CSV File incorrectly formatted. Not enough columns.";
-                }
+
+            String st;
+            br.readLine();
+            while ((st = br.readLine()) != null){
+                values = st.split(",");
                 Student stu = new Student();
+
                 stu.setName(values[0]);
                 errorStr = errorStr + checkEmail(values[1], stu.getName());
                 stu.setEmail(values[1]);
                 errorStr = errorStr + getPhase1Doc(values[2],stu);
+
                 studentRepository.save(stu);
             }
+//            while ((line = br.readLine()) != null) {
+//                values = line.split(",");
+//                if (values.length < 3){
+//                    return "CSV File incorrectly formatted. Not enough columns.";
+//                }
+//                Student stu = new Student();
+//                stu.setName(values[0] +" "+ values[1]);
+//                stu.setEmail(values[2]);
+//                errorStr = errorStr + getPhase1Doc(values[3],stu);
+//                studentRepository.save(stu);
+//            }
         }
         return errorStr;
     }

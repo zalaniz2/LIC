@@ -29,8 +29,17 @@ public class Doctor {
     private int numberOfDaysAvail;
     private Specialty specialty;
     private Location location;
+    private String Address;
     private int numStu = 1;
     private int hasStu = 0;
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
 
     public int getHasStu() {
         return hasStu;
