@@ -72,6 +72,7 @@ public class EmailsController {
                 //helper.setTo(doc.getEmail());
                 //For now, send emails to a junk account
                 helper.setTo("no.reply.lic.tcu@gmail.com");
+              
                 helper.setText(doc.getName() + ", \n " +
                         "Thank you for offering to teach a medical school student. The next step is to indicate " +
                         "your availabilities. Please follow the unique link below and complete the form. Do not " +
@@ -81,7 +82,12 @@ public class EmailsController {
                 );
                 helper.setSubject("Information Required");
 
-                sender.send(message);
+                try {
+                    sender.send(message);
+                }
+                catch(Exception e){
+
+                }
             }
         }
         else{
