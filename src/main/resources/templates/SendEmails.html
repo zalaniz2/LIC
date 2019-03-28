@@ -61,8 +61,8 @@
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-     <!--   <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">-->
+    <a class="navbar-brand" href="/home">
+     <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
     </a>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -72,7 +72,7 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-       <!--     <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;"> -->
+       <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
         </form>
     </div>
 </nav>
@@ -82,14 +82,14 @@
 <div class="wrapper" id="body-wrapper">
 
     <p>Send out emails with the link to the availability forms to the doctors:</p>
-    <c:url value="/send-emails/doctors" var="send-emails/doctors" />
+    <!--<c:url value="/send-emails/doctors" var="send-emails/doctors" />-->
         <form method="post" enctype="multipart/form-data"
               action="/send-emails/doctors" id="send-emails-doctors">
             <input type ="submit" class= "btn btn-dark" value="Send Doctor Emails" id="emailsdoc">
         </form>
 
     <p>Send out emails with the link to the scheduling pages to the students:</p>
-    <c:url value="/send-emails/students" var="send-emails/students" />
+    <!--<c:url value="/send-emails/students" var="send-emails/students" />-->
     <form method="post" enctype="multipart/form-data"
           action="/send-emails/students" id="send-emails-students">
         <input type ="submit" class= "btn btn-dark" value="Send Student Emails" id="emailsstu">

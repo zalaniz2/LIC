@@ -21,7 +21,6 @@ public class Clerkship {
     private Student student;
     @ManyToOne
     private Doctor doctor;
-
     private String Title;
     private Location Location;
     private Date date;
@@ -42,8 +41,6 @@ public class Clerkship {
         this.eventType = eventType;
     }
 
-
-
     public String getDescription() { return Description; }
 
     public void setDescription(String description) { Description = description; }
@@ -51,7 +48,6 @@ public class Clerkship {
     public Date getDate() { return date; }
 
     public void setDate(Date date) { this.date = date; }
-
 
     public LIC.UC04v1.controllers.Location getLocation() {
         return Location;
@@ -129,6 +125,8 @@ public class Clerkship {
     public String getStudentName(){
         return this.student.getName();
     }
+
+    public String getDoctorName() { return this.doctor.getName();}
 
     public String getTime(){
         switch (day){
