@@ -30,7 +30,7 @@ public class LoginSuccessEventHandler implements ApplicationListener<LoginSucces
 
     public void updateUserAccount(Authentication authentication){
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User user = userService.findUserByEmail(userDetails.getUsername());
+        User user = userService.findByUserName(userDetails.getUsername());
 
         if(user != null){//user found
             user.setFailedLoginAttemptes(0);

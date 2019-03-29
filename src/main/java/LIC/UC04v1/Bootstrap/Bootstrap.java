@@ -26,12 +26,19 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private DoctorRepository doctorRepository;
     private StudentRepository studentRepository;
     private UserRepository userRepository;
+    private UserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private RoleRepository roleRepository;
     private MiscMethods misc;
 
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        createAdmin();
 //        try {
 //            initData();
 //        } catch (IOException e) {
@@ -51,6 +58,8 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         misc = new MiscMethods();
     }
     private void initData() throws IOException {
+        createAdmin();
+
         String fileName = "doctors.csv";
 
         ClassLoader classLoader = super.getClass().getClassLoader();
@@ -105,15 +114,25 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private void createAdmin(){
+
+        User user2 = new User();
+        user2.setUsername("admin");
+        user2.setPassword("password");
+        userService.saveOrUpdate(user2);
+    }
+
+
+
+    /*private void createAdmin(){
         User admin = new User();
-        admin.setName("Super");
-        admin.setLastName("Admin");
+        //admin.setName("Super");
+        //admin.setLastName("Admin");
         //admin.setActive(1);
-        admin.setEmail("admin@superadmin.tcu");
+        //admin.setEmail("admin@superadmin.tcu");
         Role adminRole = roleRepository.findByRole("ADMIN");
       //  admin.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
         admin.setPassword(bCryptPasswordEncoder.encode("Admin123"));
         userRepository.save(admin);
-    }
+    }*/
 
 }

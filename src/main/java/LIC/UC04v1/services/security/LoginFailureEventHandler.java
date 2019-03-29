@@ -28,7 +28,7 @@ public class LoginFailureEventHandler implements ApplicationListener<LoginFailur
     }
 
     public void updateUserAccount(Authentication authentication){
-        User user = userService.findUserByEmail((String) authentication.getPrincipal());
+        User user = userService.findByUserName((String) authentication.getPrincipal());
 
         if(user != null){//user found
             user.setFailedLoginAttemptes(user.getFailedLoginAttemptes() + 1);

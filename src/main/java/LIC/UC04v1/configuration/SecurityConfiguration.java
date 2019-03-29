@@ -1,5 +1,6 @@
 package LIC.UC04v1.configuration;
 
+import LIC.UC04v1.services.security.SecUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,7 @@ import javax.sql.DataSource;
  */
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private AuthenticationProvider authenticationProvider; //daoAuthenticationProvider
@@ -46,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     //1st
     //Spring firsts creates daoAuthenticationProvider (places it in spring context)
-    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService){
+    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder, SecUserDetailsService userDetailsService){ //changed this to SecUserDetailService from UserDetailService
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
@@ -64,16 +65,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable(); //WHAT DOES THIS DO??
         http.csrf().ignoringAntMatchers("h2-console").disable()
+                /*.authorizeRequests().antMatchers("/login").permitAll()
+                .and().authorizeRequests().antMatchers("/static/css").permitAll()
+                .and().authorizeRequests().antMatchers("/js").permitAll()
+                .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/home")
+                .and().authorizeRequests().antMatchers("/home").authenticated()
+                .and().exceptionHandling().accessDeniedPage("/access_denied");*/
+
+
+
+
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/export").permitAll()
+                .antMatchers("/export").permitAll()//Remove this????????
                 .antMatchers("/login").permitAll()
                 //.antMatchers("/registration").hasAuthority("ADMIN")
-                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+                .antMatchers("/**").hasAuthority("ADMIN").anyRequest()
+                //.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/home",true)
-                .usernameParameter("email")
+                .usernameParameter("username")
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

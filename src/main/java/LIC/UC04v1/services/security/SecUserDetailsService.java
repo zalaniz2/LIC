@@ -34,7 +34,7 @@ public class SecUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         //
-        return userUserDetailsConverter.convert(userService.findUserByEmail(s)); //findUserByEmail method defined in user service
+        return userUserDetailsConverter.convert(userService.findByUserName(s)); //findUserByEmail method defined in user service
     }
 
 }
