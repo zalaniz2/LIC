@@ -94,7 +94,7 @@ public class ExportController{
                     String week2 = "week 2";
                     String startT = clerk.getStartTime();
                     String endT = clerk.getEndTime();
-                    String loc = "";
+                    String loc = ""; //THIS NEEDS TO BE CHANGED
                     String event = "Clinic";
                     if (clerk.getDay() < 12) {
                         week = "week 1";
