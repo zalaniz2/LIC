@@ -24,7 +24,7 @@ public class User extends AbstractDomainObject{
     @JoinTable
     private List<Role> roles = new ArrayList<>();
     private Integer failedLoginAttemptes = 0;
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 

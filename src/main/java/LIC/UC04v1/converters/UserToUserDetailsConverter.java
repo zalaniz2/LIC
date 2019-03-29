@@ -22,7 +22,7 @@ public class UserToUserDetailsConverter implements Converter<User, UserDetails>{
 
         if(user != null) {
 
-            userDetails.setUserName(user.getUserName());
+            userDetails.setUserName(user.getUsername());
 
             userDetails.setPassword(user.getEncryptedPassword());
 

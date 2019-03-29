@@ -25,7 +25,7 @@ public class ViewSchedules{
 
 
 
-    @RequestMapping(path = "/adminView")
+    @RequestMapping(path = "/admin/adminView")
     public String admin() {
 
         return "viewSchedules";

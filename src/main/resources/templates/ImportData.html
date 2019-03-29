@@ -84,9 +84,9 @@
 </head>
 <div style="position: relative">
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1">
-   <!-- <a class="navbar-brand" href="#">
-        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
-    </a> -->
+   <a class="navbar-brand" href="#">
+        <img th:src="@{../img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
+    </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -95,9 +95,9 @@
         </ul>
         <span class="admin-name align-content-center">Import Data</span>
         <div class="right-logo">
-           <!-- <form class="form-inline my-2 my-lg-0">
-                <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
-            </form> -->
+           <form class="form-inline my-2 my-lg-0">
+                <img th:src="@{../img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+            </form>
             <form th:action="@{/logout}" id="logout" method="get">
                 <button class="btn btn-md btn-danger" name="registration"
                         type="Submit">Logout
@@ -110,9 +110,9 @@
 <body>
 <!-- <div class= "container" id="main-container"> -->
 <div class="wrapper" id="body-wrapper">
-   <!-- <div class="anything" style="position: absolute; z-index: -1; width: 100%; height: 100%">
-        <img th:src="@{img/health_center_copy1.jpg}" src="../static/img/health_center_copy1.jpg" alt="" style="width: 100%">
-    </div> -->
+   <div class="anything" style="position: absolute; z-index: -1; width: 100%; height: 100%">
+        <img th:src="@{../img/health_center_copy1.jpg}" src="../static/img/health_center_copy1.jpg" alt="" style="width: 100%">
+    </div>
     <div class="align-content-left">
         <p style="padding-top: 20px; padding-left: 20px">
             <span style="font-size: larger; font-weight: bold">Upload Doctor Data Excel File</span>
@@ -120,7 +120,7 @@
             <br>Expected format: Names in Column 1, Emails in Column 2, Speciality in Column 3</p>
         <c:url value="/import-Data/doctors" var="import-Data/doctors" />
         <form method="post" enctype="multipart/form-data"
-              action="/import-Data/doctors/${uploadFileUrl}">
+              action="/admin/import-Data/doctors/${uploadFileUrl}">
             <input type="file" name="file" accept=".xls,.xlsx, .csv" />
             <input type="submit" value="Upload file" class="btn btn-dark" />
             <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
@@ -133,7 +133,7 @@
             <br>Expected format: Names in Column 1, Student Emails in Column 2, Phase 1 Doctor Emails in Column 3</p>
         <c:url value="/import-Data/students" var="import-Data/students" />
         <form method="post" enctype="multipart/form-data"
-              action="/import-Data/students/${uploadFileUrl}">
+              action="/admin/import-Data/students/${uploadFileUrl}">
             <input type="file" name="file" accept=".xls,.xlsx, .csv"/>
             <input type="submit" value="Upload file" class="btn btn-dark" />
             <p th:if="${studentsError != null}" style="color:red" th:text="${studentsError}"></p>

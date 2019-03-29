@@ -176,7 +176,7 @@ public class indexController {
 
 
 
-    @RequestMapping(path = "/{stuID}")
+    @RequestMapping(path = "/guest/{stuID}")
     public String neuro(Model model, @PathVariable String stuID){
         Student stu = studentRepository.findById(stuID).orElse(null);
         if (stu!=null) {

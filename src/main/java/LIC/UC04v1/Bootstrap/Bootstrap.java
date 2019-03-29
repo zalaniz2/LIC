@@ -6,6 +6,7 @@ import LIC.UC04v1.controllers.Specialty;
 import LIC.UC04v1.controllers.TimeSlot;
 import LIC.UC04v1.model.*;
 import LIC.UC04v1.repositories.*;
+import LIC.UC04v1.services.RoleService;
 import LIC.UC04v1.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -30,15 +32,23 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private RoleRepository roleRepository;
     private MiscMethods misc;
+    private RoleService roleService;
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         createAdmin();
+        loadRoles();
+        assignAdminToUser();
 //        try {
 //            initData();
 //        } catch (IOException e) {
@@ -121,18 +131,31 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         userService.saveOrUpdate(user2);
     }
 
+    private void assignAdminToUser(){
+        List<Role> roles = (List<Role>)roleService.listAll();
+        List<User> users = (List<User>)userService.listAll();
+        roles.forEach(role-> {
+            if (role.getRole().equalsIgnoreCase("ADMIN")) {
+                users.forEach(user -> {
+                    if (user.getUsername().equals("admin")) {
+                        user.addRole(role);
+                        userService.saveOrUpdate(user);
+                    }
+                });
+            }
+        });
+    }
 
+    private void loadRoles(){
+        Role role = new Role();
+        role.setRole("CUSTOMER");
+        roleService.saveOrUpdate(role);
 
-    /*private void createAdmin(){
-        User admin = new User();
-        //admin.setName("Super");
-        //admin.setLastName("Admin");
-        //admin.setActive(1);
-        //admin.setEmail("admin@superadmin.tcu");
-        Role adminRole = roleRepository.findByRole("ADMIN");
-      //  admin.setRoles(new HashSet<Role>(Arrays.asList(adminRole)));
-        admin.setPassword(bCryptPasswordEncoder.encode("Admin123"));
-        userRepository.save(admin);
-    }*/
+        Role adminRole = new Role();
+        adminRole.setRole("ADMIN");
+        roleService.saveOrUpdate(adminRole);
+
+    }
+
 
 }

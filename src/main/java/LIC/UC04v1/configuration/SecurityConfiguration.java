@@ -77,20 +77,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/export").permitAll()//Remove this????????
+                //.antMatchers("/export").permitAll()//Remove this????????
                 .antMatchers("/login").permitAll()
                 //.antMatchers("/registration").hasAuthority("ADMIN")
-                .antMatchers("/**").hasAuthority("ADMIN").anyRequest()
+                //.and().authorizeRequests().antMatchers("/resources/**").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+                //.antMatchers("/**").hasAuthority("ADMIN").anyRequest()
                 //.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/home",true)
+                .defaultSuccessUrl("/admin/home",true)
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
+                .logoutSuccessUrl("/")
+                .and().exceptionHandling().accessDeniedPage("/access-denied");
 
     }
 

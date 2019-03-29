@@ -72,7 +72,7 @@
 <div style="position: relative">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">
-        <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
+        <img th:src="@{../img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -87,7 +87,7 @@
         </head>
         <div class="right-logo">
             <form class="form-inline my-2 my-lg-0">
-                <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
+                <img th:src="@{../img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
             </form>
             <form th:action="@{/logout}" id="logout" method="get">
                 <button class="btn btn-md btn-danger" name="registration"
@@ -101,7 +101,7 @@
 </div>
 <div class="fill">
     <div class="anything" style="position: absolute; z-index: -1; width: 100%; height: 100%">
-        <img th:src="@{img/health_center_copy1.jpg}" src="../static/img/health_center_copy1.jpg" alt="" style="width: 100%">
+        <img th:src="@{../img/health_center_copy1.jpg}" src="../static/img/health_center_copy1.jpg" alt="" style="width: 100%">
     </div>
     <!--<div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
@@ -109,16 +109,16 @@
         </div>
     </div>-->
     <div class = "btn-group-vertical align-content-center" role="group" id="options" style="position: relative; padding-top: 7%">
-        <form action ="/downloadStudentScheduleCSV" >
+        <form action ="/admin/downloadStudentScheduleCSV" >
             <input class= "btn btn-dark" type="submit" value="Download Schedules (CSV)" id="button1"/>
         </form>
-        <form action ="/downloadDoctorScheduleCSV" >
+        <form action ="/admin/downloadDoctorScheduleCSV" >
             <input class= "btn btn-dark" type="submit" value="Download Doctor (CSV)" id="button2"/>
         </form>
-        <form action ="/downloadExcel">
+        <form action ="/admin/downloadExcel">
             <input class= "btn btn-dark" type="submit" value="Download Student Schedules (Excel)"/>
         </form>
-        <form action ="/downloadDoctorExcel">
+        <form action ="/admin/downloadDoctorExcel">
             <input class= "btn btn-dark" type="submit" value="Download Doctor Schedules (Excel)"/>
         </form>
     </div>
