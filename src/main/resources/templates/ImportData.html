@@ -38,7 +38,7 @@
         span{
             margin-left: auto;
             margin-right: auto;
-            padding-right: 425px;
+            padding-right: 25%;
             font-size: x-large;
             font-weight: bold;
             justify-self: center;
@@ -84,9 +84,9 @@
 </head>
 <div style="position: relative">
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1">
-   <!-- <a class="navbar-brand" href="#">
+   <a class="navbar-brand" href="/home">
         <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50" >
-    </a> -->
+    </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -95,9 +95,9 @@
         </ul>
         <span class="admin-name align-content-center">Import Data</span>
         <div class="right-logo">
-           <!-- <form class="form-inline my-2 my-lg-0">
+           <form class="form-inline my-2 my-lg-0">
                 <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
-            </form> -->
+            </form>
             <form th:action="@{/logout}" id="logout" method="get">
                 <button class="btn btn-md btn-danger" name="registration"
                         type="Submit">Logout
@@ -120,22 +120,19 @@
             <span style="font-size: larger; font-weight: bold">Upload Doctor Data Excel File</span>
             <br>Note: Only .xls, .xlsx, and .csv files accepted.
             <br>Expected format: Names in Column 1, Emails in Column 2, Speciality in Column 3</p>
-        <c:url value="/import-Data/doctors" var="import-Data/doctors" />
-        <form method="post" enctype="multipart/form-data"
-              action="/import-Data/doctors/${uploadFileUrl}">
+        <!--<c:url value="/import-Data/doctors" var="import-Data/doctors" />-->
+        <form method="post" enctype="multipart/form-data" action="/import-Data/doctors/${uploadFileUrl}">
             <input type="file" name="file" accept=".xls,.xlsx, .csv" />
             <input type="submit" value="Upload file" class="btn btn-dark" />
             <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
             <p th:text="${docImportMsg}"></p>
         </form>
-
         <p style="padding-top: 20px; padding-left: 20px">
             <span style="font-size: larger; font-weight: bold">Upload Student Data Excel File</span>
             <br>Note: Only .xls, .xlsx, and .csv files accepted.
             <br>Expected format: Names in Column 1, Student Emails in Column 2, Phase 1 Doctor Emails in Column 3</p>
-        <c:url value="/import-Data/students" var="import-Data/students" />
-        <form method="post" enctype="multipart/form-data"
-              action="/import-Data/students/${uploadFileUrl}">
+       <!-- <c:url value="/import-Data/students" var="import-Data/students" />-->
+        <form method="post" enctype="multipart/form-data" action="/import-Data/students/${uploadFileUrl}">
             <input type="file" name="file" accept=".xls,.xlsx, .csv"/>
             <input type="submit" value="Upload file" class="btn btn-dark" />
             <p th:if="${studentsError != null}" style="color:red" th:text="${studentsError}"></p>

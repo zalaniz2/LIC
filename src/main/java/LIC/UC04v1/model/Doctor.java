@@ -22,7 +22,6 @@ public class Doctor {
     //have a restraint that kayla can edit the number of clerkships a doctor can have
     @OneToMany(mappedBy = "doctor", cascade=CascadeType.ALL)
     private List<Clerkship> clerkship = new ArrayList<Clerkship>();
-
     private String name;
     private String email;
     private boolean available = true;
@@ -30,6 +29,7 @@ public class Doctor {
     private int numberOfDaysAvail;
     private Specialty specialty;
     private Location location;
+    private String Address;
     private int numStu = 1;
     private int hasStu = 0;
     @OneToOne
@@ -50,6 +50,14 @@ public class Doctor {
 
     public void setHasPhase1(Boolean hasPhase1) {
         this.hasPhase1 = hasPhase1;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
     }
 
     public int getHasStu() {

@@ -5,7 +5,7 @@
 
 	<groupId>LIC</groupId>
 	<artifactId>UC04v1</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>3.19.5</version>
 	<packaging>jar</packaging>
 
 	<name>UC04v1</name>
@@ -61,7 +61,12 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
+        </dependency>
+        <dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
@@ -163,5 +168,17 @@
 		</pluginRepository>
 	</pluginRepositories>
 
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>02dab2824e4a-releases</name>
+			<url>http://18.220.6.104:8081/artifactory/libs-release-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>02dab2824e4a-snapshots</name>
+			<url>http://18.220.6.104:8081/artifactory/libs-snapshot</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>

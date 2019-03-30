@@ -134,6 +134,7 @@ public class BruteController {
             }
             if (clerks.size()!=7) {
                 System.out.println("fail at student "+i);
+                System.out.println(clerks.size());
                 return "brute";
             }
             students.get(i).setClerkships(clerks);

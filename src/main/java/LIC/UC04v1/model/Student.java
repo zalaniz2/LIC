@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.*;
 
 @Entity
-public class Student {
+public class Student{
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(columnDefinition = "CHAR(32)")
@@ -77,4 +77,5 @@ public class Student {
     public void setName(String name) {
         Name = name;
     }
+
 }
