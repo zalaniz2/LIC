@@ -45,6 +45,7 @@ public class ImportController {
     private String currentDocFile = null;
     private String currentStuFile = null;
     private MiscMethods misc;
+    private Admin fileAdmin;
 
     public ImportController(DoctorRepository doctorRepository, StudentRepository studentRepository,
                             ClerkshipRepository clerkshipRepository, AdminRepository adminRepository){
@@ -57,6 +58,12 @@ public class ImportController {
 
     @GetMapping(path = "/import-Data")
     public String getImports(Model model){
+        //Get previous file names
+        if (adminRepository.count() == 0)
+            adminRepository.save(new Admin());
+        fileAdmin = adminRepository.findAll().iterator().next();
+        updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
+
         return "ImportData";
     }
 
@@ -68,7 +75,12 @@ public class ImportController {
         String path = currDir.getAbsolutePath();
         String[] fileName;
         String errorMsg="";
-        Admin fileAdmin;
+
+//        //Get previous file names
+//        if (adminRepository.count() == 0)
+//            adminRepository.save(new Admin());
+//
+//        fileAdmin = adminRepository.findAll().iterator().next();
 
         //Some browsers use the absolute filepath and some use just the filename.
         //Make sure we have the absolute filepath.
@@ -77,7 +89,7 @@ public class ImportController {
 
         if (!(fileLocation.endsWith(".xlsx")||fileLocation.endsWith(".xls")||fileLocation.endsWith(".csv"))){
            model.addAttribute(type+"Error", "Incorrect file format. Please upload a .xlsx, .xls, or .cvs file.");
-           updateThymeleaf(model,currentDocFile,currentStuFile);
+           updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
            return "ImportData";
         }
 
@@ -88,12 +100,6 @@ public class ImportController {
         }
         f.flush();
         f.close();
-
-        //Get previous file names
-        if (adminRepository.count() == 0)
-            adminRepository.save(new Admin());
-
-        fileAdmin = adminRepository.findAll().iterator().next();
 
         //Clear the appropriate table(s)
         if (type.equals("doctors")){
