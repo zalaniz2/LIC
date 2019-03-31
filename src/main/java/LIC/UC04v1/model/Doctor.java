@@ -32,6 +32,25 @@ public class Doctor {
     private String Address;
     private int numStu = 1;
     private int hasStu = 0;
+    @OneToOne
+    private Student phase1Stu;
+    private Boolean hasPhase1 = false;
+
+    public Student getPhase1Stu() {
+        return phase1Stu;
+    }
+
+    public void setPhase1Stu(Student phase1Stu) {
+        this.phase1Stu = phase1Stu;
+    }
+
+    public Boolean getHasPhase1() {
+        return hasPhase1;
+    }
+
+    public void setHasPhase1(Boolean hasPhase1) {
+        this.hasPhase1 = hasPhase1;
+    }
 
     public String getAddress() {
         return Address;
