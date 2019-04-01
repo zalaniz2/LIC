@@ -5,7 +5,7 @@
 
 	<groupId>LIC</groupId>
 	<artifactId>UC04v1</artifactId>
-	<version>3.19.5</version>
+	<version>3.31.1</version>
 	<packaging>jar</packaging>
 
 	<name>UC04v1</name>
@@ -62,11 +62,6 @@
 			<scope>runtime</scope>
 		</dependency>
         <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>4.1</version>
-        </dependency>
-        <dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
@@ -74,11 +69,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.15</version>
 		</dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -119,6 +109,12 @@
 			<artifactId>spring-boot-email-core</artifactId>
 			<version>0.6.3</version>
 		</dependency>
+        <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
+        </dependency>
 	</dependencies>
 
 	<build>

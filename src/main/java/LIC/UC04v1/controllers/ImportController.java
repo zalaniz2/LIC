@@ -290,7 +290,6 @@ public class ImportController {
      ******************************************************************************************************************/
     public String csvFile(String type, MultipartFile file, Model model) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));//read file
-
         String errorStr = "";
         String line;//read file into database on instance of doctor at a time.
         br.readLine(); //Don't read in the header
@@ -314,9 +313,7 @@ public class ImportController {
             }
         }
         else if (type.equals("students")) {
-
             String st;
-            br.readLine();
             while ((st = br.readLine()) != null){
                 values = st.split(",");
                 Student stu = new Student();
@@ -325,7 +322,6 @@ public class ImportController {
                 errorStr = errorStr + checkEmail(values[1], stu.getName());
                 stu.setEmail(values[1]);
                 errorStr = errorStr + getPhase1Doc(values[2],stu);
-
                 studentRepository.save(stu);
                 if (stu.getPhase1Doc()!=null) {
                     stu.getPhase1Doc().setHasPhase1(true);
