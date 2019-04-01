@@ -20,6 +20,7 @@ public class UserDetailsImpl implements UserDetails {
     private Collection<SimpleGrantedAuthority> authorities;
     private String userName;
     private String password;
+    private String email;
     private Boolean enabled = true;
 
     public void setAuthorities(Collection<SimpleGrantedAuthority> authorities) {
@@ -37,6 +38,10 @@ public class UserDetailsImpl implements UserDetails {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
+    public void setEmail(String email){this.email = email;}
+
+    public String getEmail(){return email;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

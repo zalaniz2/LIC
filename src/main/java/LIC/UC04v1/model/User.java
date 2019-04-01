@@ -13,6 +13,10 @@ public class User extends AbstractDomainObject{
 
     private String username;
 
+
+
+    private String email;
+
     @Transient
     private String password;
 
@@ -56,7 +60,13 @@ public class User extends AbstractDomainObject{
         this.enabled = enabled;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public List<Role> getRoles() {
         return roles;

@@ -128,6 +128,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         User user2 = new User();
         user2.setUsername("admin");
         user2.setPassword("password");
+        user2.setEmail("j.herold@tcu.edu");
         userService.saveOrUpdate(user2);
     }
 
