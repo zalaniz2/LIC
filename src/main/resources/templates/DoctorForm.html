@@ -6,161 +6,289 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/FormStyle.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+
+
     <title>Pre-scheduling Form</title>
 </head>
-<style>
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    th{
-        width: 80px !important;
-    }
-    .table tbody tr > td.avail {
-        background-color: cornflowerblue !important;
-    }
-    .table tbody tr > td.avail:hover {
-        background-color: royalblue !important;
-    }
-    .table tbody tr > td.chosen {
-        background-color: seagreen !important;
-        color: #f2f2f2;
-        font-weight: bold;
-        font-size: 13px;
-    }
-    .table tbody tr > td.chosen:hover {
-        background-color: forestgreen !important;
-    }
-    .vbucks{
-        margin-left: 50px;
-    }
-    label{
-        font-family: Chalkboard;
-    }
-    th{
-        width: 80px !important;
-    }
-    .table tbody tr > td.avail {
-        background-color: cornflowerblue !important;
-    }
-    .table tbody tr > td.avail:hover {
-        background-color: royalblue !important;
-    }
-    .table tbody tr > td.chosen {
-        background-color: seagreen !important;
-        color: #f2f2f2;
-        font-weight: bold;
-        font-size: 13px;
-    }
-    .table tbody tr > td.chosen:hover {
-        background-color: forestgreen !important;
-    }
-    #schedule-group p{
-        margin: 2px;
-    }
-    #schedule-group div{
-        margin-bottom: 5px;
-    }
-
-</style>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="#">
         <img th:src="@{img/logo.png}" src="UC04v1/src/main/resources/static/img/logo.png" width="50" height="50">
     </a>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#" id="brand-header">TCU Medical School Schedule Builder <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="https://mdschool.tcu.edu/">TCU and UNTHSC School of Medicine <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
+        <form class="form-inline mt-2 mt-md-0">
             <img th:src="@{img/main-logo.png}" src="UC04v1/src/main/resources/static/img/main-logo.png" width="150" height="45" style="margin-right: 20px;">
         </form>
     </div>
 </nav>
+
+<style>
+
+
+    #docForm{
+        margin-top: 12%;
+    }
+    h4{
+        margin: 20px;
+    }
+    select{
+        margin-top: 50px;
+    }
+    hr{
+        margin-top: 5%;
+    }
+    #start{
+        margin-top: 3%;
+    }
+    .form-control::-webkit-input-placeholder { color: white; }  /* WebKit, Blink, Edge */
+    .form-control:-moz-placeholder { color: white; }  /* Mozilla Firefox 4 to 18 */
+    .form-control::-moz-placeholder { color: white; }  /* Mozilla Firefox 19+ */
+    .form-control:-ms-input-placeholder { color: white; }  /* Internet Explorer 10-11 */
+    .form-control::-ms-input-placeholder { color: white; }  /* Microsoft Edge */
+
+
+</style>
+
+<div class="container">
+
     <div class="vbucks">
+
+        <div class="card bg-light mb-3" id="docForm">
+
+            <input type="hidden" th:field="*{id}">
+
+
+            <h5 class="card-header">Availability Form for <label th:text="*{name}"> </label> </h5>
+
+            <div class="card-body">
+
         <!--/*@thymesVar id="doctor" type="LIC.UC04v1.domain.doctorForm.java"*/-->
         <form action="#" th:action="@{/thankDoctor}" th:object="${doctor}" method="post">
-            <input type="hidden" th:field="*{id}">
-            <label th:text="*{name}">DrDr</label><br>
-        <label>Please select at least three times you are available to partake in a clerkship.</label>
-        <ul>
-            <li>
-                <input type="checkbox" id="i1" onclick="count()"
-                       th:field="*{MM}"/>
-                <label>Monday 8AM - 12PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i2" onclick="count()"
-                       th:field="*{MA}" />
-                <label>Monday 1PM - 5PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i3" onclick="count()"
-                       th:field="*{TM}" />
-                <label>Tuesday 8AM - 12PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i4" onclick="count()"
-                       th:field="*{TA}" />
-                <label>Tuesday 1PM - 5PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i5" onclick="count()"
-                       th:field="*{WM}" />
-                <label>Wednsday 8AM - 12PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i6" onclick="count()"
-                       th:field="*{WA}" />
-                <label>Wednsday 1PM - 5PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i7" onclick="count()"
-                       th:field="*{RM}" />
-                <label>Thursday 8AM - 12PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i8" onclick="count()"
-                       th:field="*{RA}" />
-                <label>Thursday 1PM - 5PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i9" onclick="count()"
-                       th:field="*{FM}" />
-                <label>Friday 8AM - 12PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i10" onclick="count()"
-                       th:field="*{FA}" />
-                <label>Friday 1PM - 5PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i11" onclick="count()"
-                       th:field="*{AM}" />
-                <label>Saturday 8AM - 12PM</label>
-            </li>
-            <li>
-                <input type="checkbox" id="i12" onclick="count()"
-                       th:field="*{AA}" />
-                <label>Saturday 1PM - 5PM</label>
-            </li>
-        </ul>
-            <select th:field="*{Location}" id="loc" onchange='count()'>
+
+            <br>
+
+            <input class="form-control bg-primary" type="text" placeholder="Please try to select at least three times (preferred) you are available to partake in a clerkship." readonly>
+
+                <!--<label>Please select at least three times you are available to partake in a clerkship.</label>-->
+
+            <hr>
+
+                <div class="form-row" id="start">
+
+                    <div class="col-md-12">
+
+                        <h4>Mornings (8 AM - 12 PM)</h4>
+
+                    </div>
+
+
+                    <div class="col-md-2">
+
+                        <div class="custom-control custom-checkbox">
+
+                            <input type="checkbox" id="i1" onclick="count()" class="custom-control-input" th:field="*{MM}" />
+                            <label class="custom-control-label" for="i1">Monday</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+
+                        <div class="custom-control custom-checkbox">
+
+
+                            <input type="checkbox" id="i3" onclick="count()" th:field="*{TM}" class="custom-control-input"/>
+                            <label class="custom-control-label" for="i3">Tuesday</label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-2">
+
+                        <div class="custom-control custom-checkbox">
+
+                            <input type="checkbox" id="i5" onclick="count()" th:field="*{WM}" class="custom-control-input" />
+                            <label class="custom-control-label" for="i5">Wednsday</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <div class="custom-control custom-checkbox">
+
+                            <input type="checkbox" id="i7" onclick="count()" th:field="*{RM}" class="custom-control-input"/>
+                            <label class="custom-control-label" for="i7">Thursday</label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <div class="custom-control custom-checkbox">
+
+                            <input type="checkbox" id="i9" onclick="count()" th:field="*{FM}" class="custom-control-input"/>
+                            <label class="custom-control-label" for="i9">Friday</label>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <div class="custom-control custom-checkbox">
+
+                            <input type="checkbox" id="i11" onclick="count()" th:field="*{AM}" class="custom-control-input"/>
+                            <label class="custom-control-label" for="i11">Saturday</label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <hr>
+
+            <div class="form-row">
+
+                <div class="col-md-12">
+
+                    <h4>Afternoons (1 PM - 5 PM)</h4>
+
+                </div>
+
+
+                <div class="col-md-2">
+
+                    <div class="custom-control custom-checkbox">
+
+
+                        <input type="checkbox" id="i2" onclick="count()" th:field="*{MA}" class="custom-control-input"/>
+                        <label class="custom-control-label" for="i2">Monday</label>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-2">
+
+
+                    <div class="custom-control custom-checkbox">
+
+
+                        <input type="checkbox" id="i4" onclick="count()" th:field="*{TA}" class="custom-control-input"/>
+                        <label class="custom-control-label" for="i4">Tuesday</label>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-2">
+
+                    <div class="custom-control custom-checkbox">
+
+
+
+                        <input type="checkbox" id="i6" onclick="count()" th:field="*{WA}" class="custom-control-input"/>
+                        <label class="custom-control-label" for="i6">Wednesday</label>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <div class="custom-control custom-checkbox">
+
+                        <input type="checkbox" id="i8" onclick="count()" th:field="*{RA}" class="custom-control-input"/>
+                        <label class="custom-control-label" for="i8">Thursday</label>
+
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <div class="custom-control custom-checkbox">
+
+
+                        <input type="checkbox" id="i10" onclick="count()" th:field="*{FA}" class="custom-control-input"/>
+                        <label class="custom-control-label" for="i10">Friday</label>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <div class="custom-control custom-checkbox">
+
+
+                        <input type="checkbox" id="i12" onclick="count()" th:field="*{AA}" class="custom-control-input"/>
+                        <label class="custom-control-label" for="i12">Saturday</label>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+
+            <select th:field="*{Location}" id="loc" onchange='count()' class="form-control">
                 <option value="none">none</option>
-                <option th:each="value : ${T(LIC.UC04v1.controllers.Location).values()}"
-                        th:value="${value.name()}"
-                        th:text="${value.name()}"
-                >val</option>
-            </select><br><br>
-            <input type="submit" value="Submit" id="sub" disabled/>
+                <option th:each="value : ${T(LIC.UC04v1.controllers.Location).values()}" th:value="${value.name()}" th:text="${value.name()}">val</option>
+            </select>
+
+            <br>
+
+            <input class="btn btn-success btn-md" style="width: 50%; margin-left: 25%;" type="submit" value="Submit" id="sub" disabled/>
+
+
         </form>
+
+            </div>
+
+
+        </div>
+
     </div>
+
+
+</div>
+
+
 <script>
+
     function check(selId){
+
         var sel = document.getElementById(selId);
         var dropDown_sel = sel.options[sel.selectedIndex].text;
         if(dropDown_sel != "none"){
@@ -174,7 +302,7 @@
     function count(){
         bool = false;
         var ct = 0;
-        if(document.getElementById("id").checked) ct++;
+        if(document.getElementById("i1").checked) ct++;
         if(document.getElementById("i2").checked) ct++;
         if(document.getElementById("i3").checked) ct++;
         if(document.getElementById("i4").checked) ct++;
@@ -202,9 +330,6 @@
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="../../Desktop/LIC/UC04v1/src/main/resources/templates/js/bootstrap.min.js"></script>
 </body>
 
 </html>

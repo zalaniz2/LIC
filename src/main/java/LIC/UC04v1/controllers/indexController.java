@@ -270,11 +270,11 @@ public class indexController {
                     if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
                         clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
                         clerk.setDay(day-12);
-                        availabilities = availabilities.substring(0,day-12)+"0"+availabilities.substring(day-12);
-                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day);
+                        availabilities = availabilities.substring(0,day-12)+"0"+availabilities.substring(day-11);
+                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day+1);
                     } else {
                         clerk.setDay(day);
-                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day);
+                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day+1);
 
                     }
                     clerkshipRepository.save(clerk);
