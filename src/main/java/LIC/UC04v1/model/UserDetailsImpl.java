@@ -1,4 +1,4 @@
-package LIC.UC04v1.services.security;
+package LIC.UC04v1.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +13,8 @@ import java.util.Collection;
  * Because it implements UserDetail interface Spring knows to look for user data here
  *
  * Converter will convert user to userDetails
+ *
+ * only for security related purposes
  */
 
 public class UserDetailsImpl implements UserDetails {
@@ -20,7 +22,7 @@ public class UserDetailsImpl implements UserDetails {
     private Collection<SimpleGrantedAuthority> authorities;
     private String userName;
     private String password;
-    private String email;
+    private String email; //dont need this in this class
     private Boolean enabled = true;
 
     public void setAuthorities(Collection<SimpleGrantedAuthority> authorities) {

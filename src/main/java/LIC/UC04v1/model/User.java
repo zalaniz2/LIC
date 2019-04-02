@@ -12,11 +12,7 @@ import java.util.List;
 public class User extends AbstractDomainObject{
 
     private String username;
-
-
-
     private String email;
-
     @Transient
     private String password;
 
@@ -25,7 +21,6 @@ public class User extends AbstractDomainObject{
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable
     private List<Role> roles = new ArrayList<>();
     private Integer failedLoginAttemptes = 0;
     public String getUsername() {
@@ -75,8 +70,11 @@ public class User extends AbstractDomainObject{
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
     public void addRole(Role role){
-        if(!roles.contains(role)){
+
+
+        if(!roles.contains(role)){ //what is this checking????? Keeps adding roles
             this.roles.add(role);
         }
         if(!role.getUsers().contains(this)){

@@ -18,7 +18,6 @@ public class Role extends AbstractDomainObject{
     private String role;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable
     private List<User> users = new ArrayList<>();
 
     public String getRole() {

@@ -1,7 +1,7 @@
 package LIC.UC04v1.converters;
 
 import LIC.UC04v1.model.User;
-import LIC.UC04v1.services.security.UserDetailsImpl;
+import LIC.UC04v1.model.UserDetailsImpl;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

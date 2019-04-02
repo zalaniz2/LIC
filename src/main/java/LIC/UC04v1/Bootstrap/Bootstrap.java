@@ -46,9 +46,10 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        createAdmin();
         loadRoles();
-        assignAdminToUser();
+        createAdmin();
+
+        //assignAdminToUser();
 //        try {
 //            initData();
 //        } catch (IOException e) {
@@ -129,27 +130,30 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         user2.setUsername("admin");
         user2.setPassword("password");
         user2.setEmail("j.herold@tcu.edu");
+        Role role = roleService.getById(1).get();
+        user2.addRole(role);
+        role.addUser(user2);
         userService.saveOrUpdate(user2);
     }
 
-    private void assignAdminToUser(){
-        List<Role> roles = (List<Role>)roleService.listAll();
-        List<User> users = (List<User>)userService.listAll();
-        roles.forEach(role-> {
-            if (role.getRole().equalsIgnoreCase("ADMIN")) {
-                users.forEach(user -> {
-                    if (user.getUsername().equals("admin")) {
-                        user.addRole(role);
-                        userService.saveOrUpdate(user);
-                    }
-                });
-            }
-        });
-    }
+//    private void assignAdminToUser(){
+//        List<Role> roles = (List<Role>)roleService.listAll();
+//        List<User> users = (List<User>)userService.listAll();
+//        roles.forEach(role-> {
+//            if (role.getRole().equalsIgnoreCase("SUPER_ADMIN")) {
+//                users.forEach(user -> {
+//                    if (user.getUsername().equals("admin")) {
+//                        user.addRole(role);
+//                        userService.saveOrUpdate(user);
+//                    }
+//                });
+//            }
+//        });
+//    }
 
     private void loadRoles(){
         Role role = new Role();
-        role.setRole("CUSTOMER");
+        role.setRole("SUPER_ADMIN");
         roleService.saveOrUpdate(role);
 
         Role adminRole = new Role();

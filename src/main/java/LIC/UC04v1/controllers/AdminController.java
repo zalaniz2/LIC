@@ -41,7 +41,7 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
-            //userService.saveUser(user);
+            userService.saveOrUpdate(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("registration");
