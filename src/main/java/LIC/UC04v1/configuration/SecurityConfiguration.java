@@ -79,8 +79,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 //.antMatchers("/export").permitAll()//Remove this????????
                 .antMatchers("/login").permitAll()
+                .antMatchers("/student/**").permitAll()
+                .antMatchers("/doctor/**").permitAll()
                 //.antMatchers("/registration").hasAuthority("ADMIN")
                 //.and().authorizeRequests().antMatchers("/resources/**").permitAll()
+                .antMatchers("/admin/registration").hasAuthority("SUPER_ADMIN")
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 //.antMatchers("/**").hasAuthority("ADMIN").anyRequest()
                 //.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()

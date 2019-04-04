@@ -3,10 +3,7 @@ package LIC.UC04v1.model;
 import LIC.UC04v1.model.AbstractDomainObject;
 import LIC.UC04v1.model.User;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
