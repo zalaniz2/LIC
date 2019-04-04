@@ -53,6 +53,26 @@ public class indexController {
 
     }
 
+    public int[] getSingleAvailabilities(Doctor d) {
+
+        int count = 0;
+        int counts[] = new int[24];
+
+        for (int i = 0; i < 24; i++) {
+
+            if (d.getAvailabilities().charAt(i) == '1' && d.isAvailable()) {
+                        counts[i] = counts[i] + 1;
+            }
+            count++;
+
+        }
+
+        return counts;
+
+    }
+
+
+
     public ArrayList<Integer> addScheduleDays(Schedule s) {
 
         int day = 0;
@@ -186,25 +206,25 @@ public class indexController {
     }
 
 
-
-/*
-
-    @RequestMapping(path = "/")
-    public String home() {
-
-        return "index";
-    }
-    */
-
-
-
-
-
     @GetMapping(path = "/admin")
     public String admin() {
 
         System.out.println("Admin page.");
         return "admin";
+
+    }
+
+    @GetMapping(path = "/success")
+    public String success() {
+
+        return "success";
+
+    }
+
+    @GetMapping(path = "/finished")
+    public String finished() {
+
+        return "finished";
 
     }
 
@@ -221,6 +241,32 @@ public class indexController {
 
 
         return getAvailabilities(profession, location);
+    }
+
+    @RequestMapping(value = "/poavail", method = RequestMethod.POST)
+
+    public @ResponseBody
+    int[] getSingleDoc(@RequestBody PhaseOne p) {
+
+        Student s = studentRepository.findById(p.getId()).orElse(null);
+        Doctor sd = s.getPhase1Doc();
+        System.out.println("Sending availabilities for doctor " + sd.getName());
+
+        return getSingleAvailabilities(sd);
+
+
+    }
+
+    @RequestMapping(value = "/checkstu", method = RequestMethod.POST)
+
+    public @ResponseBody
+    boolean checkStudent(@RequestBody PhaseOne p) {
+
+        Student s = studentRepository.findById(p.getId()).orElse(null);
+
+
+        return s.isHasSchedule();
+
     }
 
 
@@ -253,7 +299,6 @@ public class indexController {
 
             Collections.sort(docs, new sortDoctorByAvailDates());
             //end sorting stuffs
-
 
 
             for (Doctor doc: docs) {
@@ -299,21 +344,29 @@ public class indexController {
         studentRepository.save(stu);
 
         if (stuSched.size()!=7) {
-            System.out.println("fail at student # of specialty: "+stuSched.size());
-        }
-        else{
-            System.out.println("student scehdule success");
-
+            return false;
         }
 
-
-
-        //createStudent();
-
+        stu.setHasSchedule(true);
         return true;
+
+    }
+
+    @RequestMapping(value = "/checkdoc", method = RequestMethod.POST)
+
+    public @ResponseBody
+    Specialty checkDoc(@RequestBody PhaseOne p) {
+
+
+        Student sd = studentRepository.findById(p.getId()).orElse(null);
+
+        Doctor td = sd.getPhase1Doc();
+
+        return td.getSpecialty();
 
 
     }
+
 
 }
 
@@ -494,5 +547,21 @@ class Schedule{
 
 
 }
+
+class PhaseOne{
+
+    private String id;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+}
+
 
 
