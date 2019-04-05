@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml"
+      xmlns:Note="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>Admin Page</title>
@@ -111,11 +112,11 @@
         filter: invert(100%);
         color: white;
     }
-    .modal {
+    .modal{
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
-        padding-top: 100px; /* Location of the box */
+        padding-top: 200px; /* Location of the box */
         left: 0;
         top: 0;
         width: 100%; /* Full width */
@@ -127,17 +128,35 @@
 
     /* Modal Content */
     .modal-content {
+        position: relative;
         background-color: #fefefe;
         margin: auto;
-        padding: 20px;
+        padding: 0;
         border: 1px solid #888;
-        width: 80%;
+        width: 40%;
+        text-align: center;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s
+
+    }
+    /* Add Animation */
+    @-webkit-keyframes animatetop {
+        from {top:-300px; opacity:0}
+        to {top:0; opacity:1}
     }
 
+    @keyframes animatetop {
+        from {top:-300px; opacity:0}
+        to {top:0; opacity:1}
+    }
     /* The Close Button */
     .close {
         color: #aaaaaa;
-        float: right;
+        float: left;
+        /*padding-right: 90%;*/
         font-size: 28px;
         font-weight: bold;
     }
@@ -147,6 +166,26 @@
         color: #000;
         text-decoration: none;
         cursor: pointer;
+
+    }
+    .modal-header{
+        display: inline;
+        float: left;
+       /* padding: 2px 16px;*/
+        background-color: #4d1979;
+        color: white;
+    }
+    .modal-body{padding: 2px 16px}
+    .modal-footer{
+        padding: 2px 16px;
+        background-color: #4d1979;
+        color: white;
+    }
+    .popup-wrapper{
+        text-align: left;
+        margin: auto;
+        width: 100%;
+
     }
 
 
@@ -174,9 +213,9 @@
     </nav>
 </div>
 <div class="container cards">
-    <a>
-        <div id="import-data" class="button-link active">
-            <div class="button-label">Import Data</div>
+    <a href="#">
+        <div id="schedule" class="button-link active" onclick="functionModal1()">
+            <div class="button-label">Import Doctor Data</div>
             <div class="spacer">
                 <span style="font-size: 5em; color: white">
                     <i class="fas fa-file-import" data-fa-transform="down-2"></i>
@@ -184,9 +223,9 @@
             </div>
         </div>
     </a>
-    <a href="/send-emails">
-        <div id="send-emails" class="button-link active">
-            <div class="button-label">Send Emails</div>
+    <a href="#">
+        <div id="send-emails" class="button-link active" onclick="functionModal2()">
+            <div class="button-label">Import Student Data</div>
             <div class="spacer">
                   <span style="font-size: 5em; color: white;">
                     <i class="fas fa-envelope-open-text" data-fa-transform="down-2"></i>
@@ -194,41 +233,97 @@
             </div>
         </div>
     </a>
-    <div id="myModal" class="modal">
+    <div id="myModal1" class="modal" >
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Some text in the Modal..</p>
+            <div class="modal-header">
+                <span class="close" onclick="functionClose1()">&times;</span>
+                <h2 style="font-size: larger; font-weight: bold; padding-bottom: 10px">Upload Doctor Data Excel File</h2>
+            </div>
+            <div class="modal-body">
+                <div class="popup-wrapper">
+                    <span style="font-weight: bolder">Note:</span>
+                    <br>Only .xls, .xlsx, and .csv files accepted.</br>
+                    <span style="font-weight: bolder">Expected format:</span>
+                    <br>Names in Column 1, Emails in Column 2, Speciality in Column 3</br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <form style="padding-top: 15px" ethod="post" enctype="multipart/form-data" action="/import-Data/doctors/${uploadFileUrl}">
+                    <input type="file" name="file" accept=".xls,.xlsx, .csv" />
+                    <input type="submit" value="Upload file" class="btn btn-dark" />
+                    <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
+                    <p th:text="${docImportMsg}"></p>
+                </form>
+            </div>
         </div>
-
     </div>
-</div>
+    <div id="myModal2" class="modal" >
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="functionClose2()">&times;</span>
+                <h2 style="font-size: larger; font-weight: bold; padding-bottom: 10px">Upload Student Data Excel File</h2>
+            </div>
+            <div class="modal-body">
+                <div class="popup-wrapper">
+                    <span style="font-weight: bolder">Note:</span>
+                    <br>Only .xls, .xlsx, and .csv files accepted.</br>
+                    <span style="font-weight: bolder">Expected format:</span>
+                    <br>Names in Column 1, Emails in Column 2, Speciality in Column 3</br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <form style="padding-top: 15px" ethod="post" enctype="multipart/form-data" action="/import-Data/doctors/${uploadFileUrl}">
+                    <input type="file" name="file" accept=".xls,.xlsx, .csv" />
+                    <input type="submit" value="Upload file" class="btn btn-dark" />
+                    <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
+                    <p th:text="${docImportMsg}"></p>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     // Get the modal
-    var modal = document.getElementById('button-link');
+    var modal1 = document.getElementById('myModal1');
+
+    var modal2 = document.getElementById('myModal2');
 
     // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
+    var btn = document.getElementById("schedule");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
+    function functionModal1(){
+        modal1.style.display = "block";
+    }
+
+    function functionModal2(){
+        console.log("here");
+        console.log(modal2);
+        modal2.style.display = "block";
     }
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
+    function functionClose1() {
+        modal1.style.display = "none";
+    }
+
+    function functionClose2(){
+        modal2.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal1 || event.target == modal2) {
+            modal1.style.display = "none";
+            modal2.style.display = "none";
+        }
     }
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+
 </script>
 </html>
