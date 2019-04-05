@@ -31,7 +31,7 @@ public class BruteController {
     }
     @RequestMapping(path = "/brute")
     public String brute(Model model) {
-        return "brute";
+        return "brute1";
     }
 
     @RequestMapping(path = "/bruteEx")

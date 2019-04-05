@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Admin Page</title>
+    <title>Schedule Students</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
@@ -60,7 +60,7 @@
         padding-top: 3%;
     }
     #logout{
-       /* padding-top: 10px;*/
+        /* padding-top: 10px;*/
         text-align: center;
     }
     .btn-danger{
@@ -105,7 +105,7 @@
         border-bottom: 2px solid white;
     }
     i{
-      size: 100px;
+        size: 100px;
     }
     img{
         filter: invert(100%);
@@ -127,7 +127,7 @@
             <img src="https://12sibh1jhfkr3nhjznpf8n11-wpengine.netdna-ssl.com/wp-content/themes/fw-medical-school/images/main-logo.png" alt="TCU & UNTHSC School of Medicine">
         </a>
         <div class="wrapper">
-            <span class="admin-name">Admin Home Page</span>
+            <span class="admin-name">Schedule Students</span>
         </div>
         <form th:action="@{/logout}" id="logout" method="get">
             <button class="btn btn-lg btn-danger" name="registration"
@@ -137,28 +137,7 @@
     </nav>
 </div>
 <div class="container cards">
-    <a href="/import-Data">
-        <div id="import-data" class="button-link active">
-            <div class="button-label">Import Data</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="fas fa-file-import" data-fa-transform="down-2"></i>
-                </span>
-
-            </div>
-        </div>
-    </a>
-    <a href="/send-emails">
-        <div id="send-emails" class="button-link active">
-            <div class="button-label">Send Emails</div>
-            <div class="spacer">
-                  <span style="font-size: 5em; color: white;">
-                    <i class="fas fa-envelope-open-text" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/brute">
+    <a href="/bruteEx">
         <div id="brute" class="button-link active">
             <div class="button-label">Schedule Students</div>
             <div class="spacer">
@@ -168,52 +147,12 @@
             </div>
         </div>
     </a>
-    <a href="/adminView">
-        <div id="adminView" class="button-link active">
-            <div class="button-label">View Schedules</div>
+    <a href="/viewAdmin">
+        <div id="output" class="button-link active">
+            <div class="button-label">View Output</div>
             <div class="spacer">
                 <span style="font-size: 5em; color: white">
-                    <i class="far fa-eye" data-fa-transform="down-3"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/export">
-        <div id="export" class="button-link active">
-            <div class="button-label">Download Schedules</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="fas fa-file-download" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/registration">
-        <div id="registration" class="button-link active">
-            <div class="button-label">Add Admin</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="far fa-address-card" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/deleteUser">
-        <div id="delete" class="button-link active">
-            <div class="button-label">Remove Admin</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="far fa-trash-alt" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/viewUsers">
-        <div id="viewUsers" class="button-link active">
-            <div class="button-label">View Admins</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="fas fa-users" data-fa-transform="down-2"></i>
+                    <i class="fas fa-sign-out-alt" data-fa-transform="down-2"></i>
                 </span>
             </div>
         </div>
