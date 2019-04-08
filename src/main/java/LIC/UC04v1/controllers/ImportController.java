@@ -55,6 +55,7 @@ public class ImportController {
     @RequestMapping(path = "/import-Data/{type}/{file}")
     public String docImport(Model model, @PathVariable String type, MultipartFile file) throws IOException {
         String fileLocation;
+        System.out.println(file);
         InputStream in = file.getInputStream();
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
@@ -69,7 +70,7 @@ public class ImportController {
         if (!(fileLocation.endsWith(".xlsx")||fileLocation.endsWith(".xls")||fileLocation.endsWith(".csv"))){
            model.addAttribute(type+"Error", "Incorrect file format. Please upload a .xlsx, .xls, or .cvs file.");
            updateThymeleaf(model,currentDocFile,currentStuFile);
-           return "ImportData";
+           return "ImportData1";
         }
 
         FileOutputStream f = new FileOutputStream(fileLocation);
@@ -110,7 +111,7 @@ public class ImportController {
             else
                 model.addAttribute("studentsError", errorMsg);
             updateThymeleaf(model,currentDocFile,currentStuFile);
-            return "ImportData";
+            return "ImportData1";
         }
 
         //Update the stored file names
