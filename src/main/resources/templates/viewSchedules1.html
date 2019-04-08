@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" ></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 
 <style>
@@ -129,7 +128,7 @@
         </div>
     </a>
     <a href="#">
-        <div id="show-docs" class="button-link active">
+        <div id="show-docs" class="button-link active" onclick="showDocs()">
             <div class="button-label">Doctor Schedules</div>
             <div class="spacer">
                   <span style="font-size: 5em; color: white;">
@@ -141,14 +140,16 @@
 </div>
 <br><br>
 
+<div class="container">
 <!-- div that holds the student panels, hidden at first until user selects students button -->
-<div id="students" class="d-none">
-    <div class="panel-group" id="accordionStu" role="tablist" aria-multiselectable="true"></div>
-</div>
+    <div id="students" class="d-none">
+        <div class="panel-group" id="accordionStu" role="tablist" aria-multiselectable="true"></div>
+    </div>
 
-<!-- div that holds all doctor panels, seperated by 60 per div within -->
-<div id="doctors" class="d-none">
-    <div class="panel-group" id="accordionDoc" role="tablist" aria-multiselectable="true"></div>
+    <!-- div that holds all doctor panels, seperated by 60 per div within -->
+    <div id="doctors" class="d-none">
+        <div class="panel-group" id="accordionDoc" role="tablist" aria-multiselectable="true"></div>
+    </div>
 </div>
 </body>
 <script>
@@ -181,14 +182,14 @@
         getData();
     }
 
-    $("#show-docs").click(function(){
+    function showDocs(){
         caller["grab"] = "docs";
         $("#accordionDoc").html("");
         $("#doctors").removeClass("d-none");
         $("#students").addClass("d-none");
 
         getData();
-    });
+    }
 
     function getData() {
 
