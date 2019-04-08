@@ -30,7 +30,12 @@ public class AdminController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value="/registration", method = RequestMethod.GET)
+    @RequestMapping(path = "/adminOptions")
+    public String adminOps(Model model) {
+        return "admin";
+    }
+
+    @RequestMapping(value="/addAdmin", method = RequestMethod.GET)
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
@@ -61,7 +66,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/delete")
+    @RequestMapping(path = "/removeAdmin")
     public String brute(Model model) {
         return "deleteUser";
     }

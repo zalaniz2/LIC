@@ -28,25 +28,10 @@
         box-shadow: 0 2px 4px 4px dimgrey;
         border-radius: 6px;
     }
-    #tcu-banner{
-        padding-top: 0;
-        padding-bottom: 30%;
-        width:150px;
-        height:175px;
-        /*border: solid black 4px;*/
-    }
     body{
         background-color: #ffffff;
         background-image: url("https://www.transparenttextures.com/patterns/little-knobs.png");
         /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
-    }
-    .title{
-        position: center;
-        width: 70%;
-        max-width: 80%;
-        text-align: center;
-        padding-left: 10%;
-        padding-right: 10%;
     }
     .admin-name{
         margin: auto;
@@ -63,10 +48,6 @@
         /* padding-top: 10px;*/
         text-align: center;
     }
-    .btn-danger{
-
-    }
-
     .container{
         padding-top: 8%;
         width: 70%;
@@ -87,7 +68,6 @@
         border-bottom: 1px solid black;
         box-shadow: 0 5px 8px #4d1979;
         position: relative;
-
     }
     .wrapper{
         text-align: center;
@@ -112,6 +92,11 @@
         color: white;
     }
 
+
+
+
+
+
 </style>
 
 
@@ -122,7 +107,7 @@
             <img src="https://12sibh1jhfkr3nhjznpf8n11-wpengine.netdna-ssl.com/wp-content/themes/fw-medical-school/images/main-logo.png" alt="TCU & UNTHSC School of Medicine">
         </a>
         <div class="wrapper">
-            <span class="admin-name">Edit Admins</span>
+            <span class="admin-name">Admin Home Page</span>
         </div>
         <form th:action="@{/logout}" id="logout" method="get">
             <button class="btn btn-lg btn-danger" name="registration"
@@ -132,22 +117,23 @@
     </nav>
 </div>
 <div class="container cards">
-    <a href="/admin/addAdmin">
-        <div id="addAdmin" class="button-link active">
-            <div class="button-label">Add Admin</div>
+    <a href="/admin/send-emails/doctors">
+        <div id="import-data" class="button-link active">
+            <div class="button-label">Send Doctor Emails</div>
             <div class="spacer">
                 <span style="font-size: 5em; color: white">
-                    <i class="far fa-address-card" data-fa-transform="down-2"></i>
+                    <i class="fas fa-user-md" data-fa-transform="down-2"></i>
                 </span>
+
             </div>
         </div>
     </a>
-    <a href="/admin/removeAdmin">
-        <div id="removeAdmin" class="button-link active">
-            <div class="button-label">Remove Admin</div>
+    <a href="/admin/send-emails/students">
+        <div id="send-emails" class="button-link active">
+            <div class="button-label">Send Student Emails</div>
             <div class="spacer">
                   <span style="font-size: 5em; color: white;">
-                    <i class="far fa-trash-alt" data-fa-transform="down-2"></i>
+                    <i class="fas fa-user-graduate" data-fa-transform="down-2"></i>
                 </span>
             </div>
         </div>

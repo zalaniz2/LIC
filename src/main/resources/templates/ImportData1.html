@@ -199,7 +199,7 @@
 <body>
 <div class="header">
     <nav class="navbar" id="top-nav">
-        <a class="navbar-brand" href="/home">
+        <a class="navbar-brand" href="/admin/home">
             <img src="https://12sibh1jhfkr3nhjznpf8n11-wpengine.netdna-ssl.com/wp-content/themes/fw-medical-school/images/main-logo.png" alt="TCU & UNTHSC School of Medicine">
         </a>
         <div class="wrapper">
@@ -249,7 +249,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <form style="padding-top: 15px" ethod="post" enctype="multipart/form-data" action="/import-Data/doctors/${uploadFileUrl}">
+                <form style="padding-top: 15px" ethod="post" enctype="multipart/form-data" action="/admin/import-Data/doctors/${uploadFileUrl}">
                     <input type="file" name="file" accept=".xls,.xlsx, .csv" />
                     <input type="submit" value="Upload file" class="btn btn-dark" />
                     <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
@@ -274,11 +274,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <form style="padding-top: 15px" ethod="post" enctype="multipart/form-data" action="/import-Data/doctors/${uploadFileUrl}">
+                <form style="padding-top: 15px" ethod="post" enctype="multipart/form-data" action="/admin/import-Data/students/${uploadFileUrl}">
                     <input type="file" name="file" accept=".xls,.xlsx, .csv" />
                     <input type="submit" value="Upload file" class="btn btn-dark" />
-                    <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
-                    <p th:text="${docImportMsg}"></p>
+                    <p th:if="${studentsError != null}" style="color:red" th:text="${studentsError}"></p>
+                    <p th:text="${stuImportMsg}"></p>
                 </form>
             </div>
         </div>

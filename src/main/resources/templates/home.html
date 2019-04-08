@@ -28,25 +28,10 @@
         box-shadow: 0 2px 4px 4px dimgrey;
         border-radius: 6px;
     }
-    #tcu-banner{
-        padding-top: 0;
-        padding-bottom: 30%;
-        width:150px;
-        height:175px;
-        /*border: solid black 4px;*/
-    }
     body{
         background-color: #ffffff;
         background-image: url("https://www.transparenttextures.com/patterns/little-knobs.png");
         /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
-    }
-    .title{
-        position: center;
-        width: 70%;
-        max-width: 80%;
-        text-align: center;
-        padding-left: 10%;
-        padding-right: 10%;
     }
     .admin-name{
         margin: auto;
@@ -63,10 +48,6 @@
        /* padding-top: 10px;*/
         text-align: center;
     }
-    .btn-danger{
-
-    }
-
     .container{
         padding-top: 8%;
         width: 70%;
@@ -87,7 +68,6 @@
         border-bottom: 1px solid black;
         box-shadow: 0 5px 8px #4d1979;
         position: relative;
-
     }
     .wrapper{
         text-align: center;
@@ -123,7 +103,7 @@
 <body>
 <div class="header">
     <nav class="navbar" id="top-nav">
-        <a class="navbar-brand" href="/home">
+        <a class="navbar-brand" href="/admin/home">
             <img src="https://12sibh1jhfkr3nhjznpf8n11-wpengine.netdna-ssl.com/wp-content/themes/fw-medical-school/images/main-logo.png" alt="TCU & UNTHSC School of Medicine">
         </a>
         <div class="wrapper">
@@ -137,7 +117,7 @@
     </nav>
 </div>
 <div class="container cards">
-    <a href="/import-Data">
+    <a href="/admin/import-Data">
         <div id="import-data" class="button-link active">
             <div class="button-label">Import Data</div>
             <div class="spacer">
@@ -148,7 +128,7 @@
             </div>
         </div>
     </a>
-    <a href="/send-emails">
+    <a href="/admin/send-emails">
         <div id="send-emails" class="button-link active">
             <div class="button-label">Send Emails</div>
             <div class="spacer">
@@ -158,7 +138,7 @@
             </div>
         </div>
     </a>
-    <a href="/brute">
+    <a href="/admin/brute">
         <div id="brute" class="button-link active">
             <div class="button-label">Schedule Students</div>
             <div class="spacer">
@@ -168,7 +148,7 @@
             </div>
         </div>
     </a>
-    <a href="/adminView">
+    <a href="/admin/adminView">
         <div id="adminView" class="button-link active">
             <div class="button-label">View Schedules</div>
             <div class="spacer">
@@ -178,7 +158,7 @@
             </div>
         </div>
     </a>
-    <a href="/export">
+    <a href="/admin/export">
         <div id="export" class="button-link active">
             <div class="button-label">Download Schedules</div>
             <div class="spacer">
@@ -188,29 +168,9 @@
             </div>
         </div>
     </a>
-    <a href="/registration">
-        <div id="registration" class="button-link active">
-            <div class="button-label">Add Admin</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="far fa-address-card" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/deleteUser">
-        <div id="delete" class="button-link active">
-            <div class="button-label">Remove Admin</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="far fa-trash-alt" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/viewUsers">
-        <div id="viewUsers" class="button-link active">
-            <div class="button-label">View Admins</div>
+    <a href="/admin/adminOptions">
+        <div id="adminOps" class="button-link active">
+            <div class="button-label">Admin Options</div>
             <div class="spacer">
                 <span style="font-size: 5em; color: white">
                     <i class="fas fa-users" data-fa-transform="down-2"></i>

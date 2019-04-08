@@ -49,7 +49,7 @@ public class ImportController {
 
     @GetMapping(path = "/import-Data")
     public String getImports(Model model){
-        return "ImportData";
+        return "ImportData1";
     }
 
     @RequestMapping(path = "/import-Data/{type}/{file}")
@@ -120,7 +120,7 @@ public class ImportController {
             currentStuFile = file.getOriginalFilename();
 
         updateThymeleaf(model,currentDocFile,currentStuFile);
-        return "ImportData";
+        return "ImportData1";
     }
 
     /*******************************************************************************************************************

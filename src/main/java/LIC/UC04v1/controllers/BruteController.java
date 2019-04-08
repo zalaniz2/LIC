@@ -136,14 +136,14 @@ public class BruteController {
             if (clerks.size()!=7) {
                 System.out.println("fail at student "+i);
                 System.out.println(clerks.size());
-                return "brute";
+                return "brute1";
             }
             students.get(i).setClerkships(clerks);
             students.get(i).setHasSchedule(true);
             studentRepository.save(students.get(i));
         }
 
-        return "brute";
+        return "brute1";
     }
 
     private TimeSlot compareSchedule(ArrayList<TimeSlot> studentSched, ArrayList<TimeSlot> doctorSched, short need) {
