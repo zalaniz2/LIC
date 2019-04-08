@@ -16,6 +16,7 @@ import javax.print.Doc;
 import java.sql.Time;
 import java.util.*;
 
+@RequestMapping("/admin")
 @Controller
 public class BruteController {
     private DoctorRepository doctorRepository;

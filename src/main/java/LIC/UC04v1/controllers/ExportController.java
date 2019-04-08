@@ -37,7 +37,7 @@ import org.supercsv.prefs.CsvPreference;
 import java.util.*;
 import java.awt.Color;
 
-
+@RequestMapping("/admin")
 @Controller
 public class ExportController{
 

@@ -31,7 +31,7 @@ import java.io.*;
         database. We'll have to fix this and do extensive testing, but it works at a low fidelity!
     If you have questions about anything, let me (Katie) know. I'll come back and clean up/comment better soon.
  */
-
+@RequestMapping("/admin")
 @Controller
 public class ImportController {
 

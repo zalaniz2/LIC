@@ -254,6 +254,7 @@
                         "<td>"+stuScheds[i].week2List[6] +"</td>"+
                     "</tr>"+
                 "</table>"+
+                        "<button class=\"btn btn-default\"> Edit  </button>" +
                     "<\/div>" +
                 "<\/div>");
         }
@@ -268,11 +269,12 @@
                 "<\a class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"#" + docScheds[i].id + "\" aria-expanded=\"false\" aria-controls=\"collapseOne\">" + docScheds[i].name + "<\/a>" +
                 "<\/h5>" +
                 "<\/div>" +
-                "<\div id=\"" + docScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + docScheds[i].id + "\" data-parent=\"#accordionDoc\">" +
+                "<\div id=\"" + docScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + docScheds[i].id + "\" data-parent=\"#accordionStu\">" +
                 "<\div class=\"card-body\">" +
                 "ID: " + docScheds[i].id +  "<\/br> Email: " + docScheds[i].email + "<\/br>" + "Speciality: "+ docScheds[i].speciality + "<\/br>" +
                 "<\div class=\"container\" id=\"container"+i+"\">" +
                 "<\/div>"+
+                "<button class=\"btn btn-default\"> Edit  </button>" +
                 "<\/div>" +
                 "<\/div>");
             createDocTable(docScheds[i],i);

@@ -1,81 +1,107 @@
 package LIC.UC04v1.configuration;
 
+import LIC.UC04v1.services.security.SecUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
+
+/*
+
+ */
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private AuthenticationProvider authenticationProvider; //daoAuthenticationProvider
 
     @Autowired
-    private DataSource dataSource;
+    @Qualifier("daoAuthenticationProvider")
+    //2nd
+    //This refers to the daoAuthenticationProvider created
+    public void setAuthenticationProvider(AuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
 
+    @Bean
+    //1st
+    //Spring firsts creates daoAuthenticationProvider (places it in spring context)
+    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder, SecUserDetailsService userDetailsService){ //changed this to SecUserDetailService from UserDetailService
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
+    }
 
-    //SQL query (manually authenticating)
-    @Value("${spring.queries.users-query}")
-    private String usersQuery;
-
-    @Value("${spring.queries.roles-query}")
-    private String rolesQuery;
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        //not persisted (just in memory) placed in memory every time program is run
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(bCryptPasswordEncoder.encode("adminPass")).roles("ADMIN");
-
-        auth.
-                jdbcAuthentication()
-                .usersByUsernameQuery(usersQuery)
-                .authoritiesByUsernameQuery(rolesQuery)
-                .dataSource(dataSource)
-                .passwordEncoder(bCryptPasswordEncoder);
+    @Autowired
+    //3rd
+    //adding daoAuthenticationProvider to this authenticationManagerBuilder
+    public void configureAuthManager(AuthenticationManagerBuilder authenticationManagerBuilder){
+        authenticationManagerBuilder.authenticationProvider(authenticationProvider);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.headers().frameOptions().disable(); //WHAT DOES THIS DO??
+        http.csrf().ignoringAntMatchers("h2-console").disable()
+                /*.authorizeRequests().antMatchers("/login").permitAll()
+                .and().authorizeRequests().antMatchers("/static/css").permitAll()
+                .and().authorizeRequests().antMatchers("/js").permitAll()
+                .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/home")
+                .and().authorizeRequests().antMatchers("/home").authenticated()
+                .and().exceptionHandling().accessDeniedPage("/access_denied");*/
 
-        http.
-                authorizeRequests()
+
+
+
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/export").permitAll()
+                //.antMatchers("/export").permitAll()//Remove this????????
                 .antMatchers("/login").permitAll()
+                .antMatchers("/student/**").permitAll()
+                .antMatchers("/doctor/**").permitAll()
                 //.antMatchers("/registration").hasAuthority("ADMIN")
+                //.and().authorizeRequests().antMatchers("/resources/**").permitAll()
+                .antMatchers("/admin/registration").hasAuthority("SUPER_ADMIN")
+                .antMatchers("/admin/registration").hasAuthority("SUPER_ADMIN")
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+                //.antMatchers("/**").hasAuthority("ADMIN").anyRequest()
+                //.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/home",true)
-                .usernameParameter("email")
+                .defaultSuccessUrl("/admin/home",true)
+                .usernameParameter("username")
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
+                .logoutSuccessUrl("/")
+                .and().exceptionHandling().accessDeniedPage("/access-denied");
 
-       //DELETE BOTH OF THESE
-        http.authorizeRequests().antMatchers("/").permitAll().and()
-                .authorizeRequests().antMatchers("/h2-console/**").permitAll();
-
-        //DELETE BOTH OF THESE
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
     }
 
+
+    //DO I NEED THIS???????
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
