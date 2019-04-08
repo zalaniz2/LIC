@@ -117,18 +117,18 @@
     </nav>
 </div>
 <div class="container cards">
-    <a href="">
-        <div id="show-students" class="button-link active">
+    <a href="#">
+        <div id="show-students" class="button-link active" onclick="showStudents()">
             <div class="button-label">Student Schedules</div>
             <div class="spacer">
-                <span style="font-size: 5em; color: white">
+                <span style="font-size: 5em; color: white" >
                     <i class="fas fa-user-graduate" data-fa-transform="down-2"></i>
                 </span>
 
             </div>
         </div>
     </a>
-    <a href="">
+    <a href="#">
         <div id="show-docs" class="button-link active">
             <div class="button-label">Doctor Schedules</div>
             <div class="spacer">
@@ -171,14 +171,15 @@
     }
 
 
-    $("#show-students").click(function(){
+    function showStudents(){
+        console.log("Here1");
         caller["grab"] = "students";
         $("#accordionStu").html("");
         $("#students").removeClass("d-none");
         $("#doctors").addClass("d-none");
 
         getData();
-    });
+    }
 
     $("#show-docs").click(function(){
         caller["grab"] = "docs";
@@ -231,6 +232,7 @@
     function populateStudent(){
 
         for(var i =0; i<stuScheds.length; i++){
+            console.log("*********");
             $("#accordionStu").append(
                 "<\div class=\"card\">" +
                 "<\div class=\"card-header\" id=\"heading" + stuScheds[i].id + "\">" +

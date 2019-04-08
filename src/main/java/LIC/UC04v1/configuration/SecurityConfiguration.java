@@ -28,6 +28,7 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
     private AuthenticationProvider authenticationProvider; //daoAuthenticationProvider
 
     @Autowired
@@ -84,7 +85,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/registration").hasAuthority("ADMIN")
                 //.and().authorizeRequests().antMatchers("/resources/**").permitAll()
                 .antMatchers("/admin/registration").hasAuthority("SUPER_ADMIN")
-                .antMatchers("/admin/registration").hasAuthority("SUPER_ADMIN")
+                //.antMatchers("/admin/registration").hasAuthority("SUPER_ADMIN")
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 //.antMatchers("/**").hasAuthority("ADMIN").anyRequest()
                 //.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()

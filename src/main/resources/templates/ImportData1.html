@@ -249,7 +249,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <form style="padding-top: 15px" ethod="post" enctype="multipart/form-data" action="/admin/import-Data/doctors/${uploadFileUrl}">
+                <form style="padding-top: 15px" method="post" enctype="multipart/form-data" action="/admin/import-Data/doctors/${uploadFileUrl}">
                     <input type="file" name="file" accept=".xls,.xlsx, .csv" />
                     <input type="submit" value="Upload file" class="btn btn-dark" />
                     <p th:if="${doctorsError != null}" style="color:red" th:text="${doctorsError}"></p>
@@ -274,7 +274,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <form style="padding-top: 15px" ethod="post" enctype="multipart/form-data" action="/admin/import-Data/students/${uploadFileUrl}">
+                <form style="padding-top: 15px" method="post" enctype="multipart/form-data" action="/admin/import-Data/students/${uploadFileUrl}">
                     <input type="file" name="file" accept=".xls,.xlsx, .csv" />
                     <input type="submit" value="Upload file" class="btn btn-dark" />
                     <p th:if="${studentsError != null}" style="color:red" th:text="${studentsError}"></p>
