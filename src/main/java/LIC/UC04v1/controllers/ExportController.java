@@ -123,18 +123,13 @@ public class ExportController{
         String csvFileName = "studentsSchedule.csv";
         response2.setContentType("text/csv");
 
-
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"", csvFileName);
         response2.setHeader(headerKey, headerValue);
 
-
-
-
         ArrayList<Student> listStudents = new ArrayList<>();
 
         for(Student stu: studentRepository.findAll()) { listStudents.add(stu); } //list of doctors
-
 
         try{
             CSVWriter writer = new CSVWriter (response2.getWriter());
@@ -506,9 +501,7 @@ public class ExportController{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         workbook.close();
-
     }
 
     public void writeToCell(Sheet sheet, CellReference weekDay, XSSFCellStyle dataStyle, Clerkship clerk){
@@ -516,7 +509,6 @@ public class ExportController{
         Cell cell = row.getCell(weekDay.getCol());
         cell.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
         cell.setCellStyle(dataStyle);
-
     }
 
 
@@ -641,8 +633,6 @@ public class ExportController{
                         cell.setCellStyle(dataStyle);
                     }
                 }
-
-
                 //Week 1 Header
                 Cell week1Cell = row2.createCell(1);
                 week1Cell.setCellValue("WEEK 1:");
@@ -719,7 +709,6 @@ public class ExportController{
                 //Iterates through all clerkships a student has and place info in correct cell
 
                 for (Clerkship clerk : clerkships) {
-
                     String s = clerk.getSpecialty().name();
                     Specialty specialty = clerk.getSpecialty();
                     switch (clerk.getDay()) {
@@ -851,7 +840,6 @@ public class ExportController{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         workbook.close();
 
     }
@@ -933,5 +921,4 @@ public class ExportController{
         stuInfoStyle.setFont(stuInfoFont);
         stuInfoStyle.setWrapText(true);
     }
-
 }

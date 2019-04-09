@@ -90,11 +90,23 @@
         filter: invert(100%);
         color: white;
     }
+    .sched-container{
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 2%;
+        width: 75%;
+        max-width: 100%;
+        padding-left: 10%;
+        padding-right: 10%;
+        background: #a3a9ac;
+        border-radius: 6px;
+        border-bottom: 1px solid black;
+        box-shadow: 0 5px 8px #4d1979;
+    }
+    .title{
+        position: center;
 
-
-
-
-
+    }
 
 </style>
 
@@ -140,7 +152,8 @@
 </div>
 <br><br>
 
-<div class="container">
+<div class="sched-container d-none" id="sched-contain">
+    <h2 class="title" id="schedHeader"></h2>
 <!-- div that holds the student panels, hidden at first until user selects students button -->
     <div id="students" class="d-none">
         <div class="panel-group" id="accordionStu" role="tablist" aria-multiselectable="true"></div>
@@ -178,7 +191,7 @@
         $("#accordionStu").html("");
         $("#students").removeClass("d-none");
         $("#doctors").addClass("d-none");
-
+        $("#sched-contain").removeClass("d-none");
         getData();
     }
 
@@ -187,7 +200,7 @@
         $("#accordionDoc").html("");
         $("#doctors").removeClass("d-none");
         $("#students").addClass("d-none");
-
+        $("#sched-contain").removeClass("d-none");
         getData();
     }
 
@@ -196,15 +209,12 @@
         if (caller.grab === "students") {
             console.log(caller.grab);
             $.ajax({
-
                 type: "POST",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 url: "/admin/grabStudents", // route to hit
                 data: JSON.stringify(caller), // IMPORTANT
-
                 success: function (result) {
-
                     stuScheds = result;
                     populateStudent();
                 },
@@ -213,15 +223,12 @@
         }else if(caller.grab === "docs"){
             console.log(caller.grab);
             $.ajax({
-
                 type: "POST",
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 url: "/admin/grabDocs", // route to hit
                 data: JSON.stringify(caller), // IMPORTANT
-
                 success: function (result) {
-
                     docScheds = result;
                     populateDoc();
                 },
@@ -231,7 +238,7 @@
     }
 
     function populateStudent(){
-
+        document.getElementById("schedHeader").innerHTML = "Student Schedules:";
         for(var i =0; i<stuScheds.length; i++){
             console.log("*********");
             $("#accordionStu").append(
@@ -241,7 +248,6 @@
                 "<\a class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"#" + stuScheds[i].id + "\" aria-expanded=\"false\" aria-controls=\"collapseOne\">" + stuScheds[i].name + "<\/a>" +
                 "<\/h5>" +
                 "<\/div>" +
-
                 "<\div id=\"" + stuScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + stuScheds[i].id + "\" data-parent=\"#accordionStu\">" +
                 "<\div class=\"card-body\">" +
                 "ID: " + stuScheds[i].id +  "<\/br> Email: " + stuScheds[i].email + "<\/br>" +
@@ -252,7 +258,7 @@
                 "<th>DAY</th>"+
                 "<th>TIME</th>"+
                 "<th>WEEK 1</th>"+
-                "<th>WEEK 1</th>"+
+                "<th>WEEK 2</th>"+
                 "</tr>"+
                 "<tr>"+
                 "<td id='clerk1'>"+stuScheds[i].profList[0]+"</td>"+
@@ -311,13 +317,13 @@
                 "<td>"+stuScheds[i].week2List[6] +"</td>"+
                 "</tr>"+
                 "</table>"+
-                "<button class=\"btn btn-default\"> Edit  </button>" +
                 "<\/div>" +
                 "<\/div>");
         }
     }
 
     function populateDoc(){
+        document.getElementById("schedHeader").innerHTML = "Doctor Schedules:";
         for(var i =0; i<docScheds.length; i++){
             $("#accordionDoc").append(
                 "<\div class=\"card\">" +
@@ -329,9 +335,8 @@
                 "<\div id=\"" + docScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + docScheds[i].id + "\" data-parent=\"#accordionStu\">" +
                 "<\div class=\"card-body\">" +
                 "ID: " + docScheds[i].id +  "<\/br> Email: " + docScheds[i].email + "<\/br>" + "Speciality: "+ docScheds[i].speciality + "<\/br>" +
-                "<\div class=\"container\" id=\"container"+i+"\">" +
+                "<\div class=\"container-table\" id=\"container"+i+"\">" +
                 "<\/div>"+
-                "<button class=\"btn btn-default\"> Edit  </button>" +
                 "<\/div>" +
                 "<\/div>");
             createDocTable(docScheds[i],i);
