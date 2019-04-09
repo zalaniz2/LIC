@@ -7,6 +7,7 @@ import LIC.UC04v1.model.sortDoctorByAvailDates;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.StudentRepository;
+import LIC.UC04v1.services.StudentService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +24,14 @@ public class indexController {
     private ClerkshipRepository clerkshipRepository;
     private StudentRepository studentRepository;
     private MiscMethods misc = new MiscMethods();
+    private final StudentService studentService;
 
-    public indexController(DoctorRepository doctorRepository, ClerkshipRepository clerkshipRepository, StudentRepository studentRepository) {
+
+    public indexController(StudentService studentService, DoctorRepository doctorRepository, ClerkshipRepository clerkshipRepository, StudentRepository studentRepository) {
         this.doctorRepository = doctorRepository;
         this.clerkshipRepository = clerkshipRepository;
         this.studentRepository = studentRepository;
+        this.studentService = studentService;
     }
 
     public int[] getAvailabilities(String profession, String location) {
@@ -179,6 +183,9 @@ public class indexController {
     @RequestMapping(path = "/{stuID}")
     public String neuro(Model model, @PathVariable String stuID){
         Student stu = studentRepository.findById(stuID).orElse(null);
+        if(stu == null){
+            stu = studentService.findById(stuID);
+        }
         if (stu!=null) {
             model.addAttribute("stu", stu);
         }
