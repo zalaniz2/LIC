@@ -102,11 +102,15 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             Student stu = new Student();
             stu.setName(values[0]);
             stu.setEmail(values[1]);
-
             List<Doctor> phase1 = doctorRepository.findByEmail(values[2]);
-            stu.setPhase1Doc(phase1.get(0));
+            Doctor doc = phase1.get(0);
+
+            stu.setPhase1Doc(doc);
 
             studentRepository.save(stu);
+            doc.setPhase1Stu(stu);
+            doc.setHasPhase1(false);
+            doctorRepository.save(phase1.get(0));
         }
     }
 
