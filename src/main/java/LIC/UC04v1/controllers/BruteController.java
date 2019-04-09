@@ -42,15 +42,65 @@ public class BruteController {
         ArrayList<Student> students = new ArrayList<Student>();
         studentRepository.findAll().forEach(students::add);
 
+        //phase1 doctors
+        ArrayList<Clerkship> clerksPhase1 = new ArrayList<>();
+        for (int i = 0; i<studentCount; i++) {
+            Student stu = students.get(i);
+            Doctor doc = stu.getPhase1Doc();
+            Clerkship clerk = new Clerkship();
+            clerk.setDoctor(doc);
+            clerk.setStudent(stu);
+            clerk.setLocation(doc.getLocation());
+            Specialty specialty = doc.getSpecialty();
+            clerk.setSpecialty(specialty);
+            clerk.setTitle(doc.getSpecialty().toString());
+            TimeSlot time = misc.convertAvailabilities(doc.getAvailabilities()).get(0);
+            clerk.setTime(time);
+            if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
+                clerk.setTime2(misc.getOtherTime(time));
+            }
+            clerk.setDay(time.ordinal());
+            clerkshipRepository.save(clerk);
+            doc.setHasStu(doc.getHasStu()+1);
+            if (doc.getNumStu()==doc.getHasStu()){
+                doc.setAvailable(false);
+            }
+            String availabilities = doc.getAvailabilities();
+            availabilities = availabilities.substring(0,time.ordinal())+"0"+availabilities.substring(time.ordinal()+1);
+            if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
+                availabilities = availabilities.substring(0,misc.getOtherTime(time).ordinal())+"0"+availabilities.substring(misc.getOtherTime(time).ordinal()+1);
+            }
+            doc.setAvailabilities(availabilities);
+            doc.addClerkship(clerk);
+            doctorRepository.save(doc);
+            clerksPhase1.add(clerk);
+
+        }
+
         //loop through all students
         for (int i = 0; i <studentCount; i++) {
+            Student stu = students.get(i);
+
             List<Specialty> specialties = new ArrayList (Arrays.asList(Specialty.values()));
+
             ArrayList<TimeSlot> studentSched = new ArrayList<TimeSlot>();
             Map<String,Clerkship> clerks = new HashMap<String, Clerkship>() ;
             //randomize through all specialties
             for (int z = 0; z< 7; z++) {
                 int randomIndex = rand.nextInt(specialties.size());
                 Specialty specialty = specialties.get(randomIndex);
+                System.out.println("================="+specialty.toString()+"=====================");
+                if (specialty==clerksPhase1.get(z).getSpecialty()){
+                    System.out.println("in here");
+                    clerks.put(clerksPhase1.get(z).getSpecialty().toString(), clerksPhase1.get(z));
+                    TimeSlot time = misc.toTimeSlot(clerksPhase1.get(z).getDay());
+                    studentSched.add(time);
+                    if (clerksPhase1.get(z).getTime2()!=null) {
+                        studentSched.add(clerksPhase1.get(z).getTime2());
+                    }
+                    specialties.remove(randomIndex);
+                    continue;
+                }
 
                 short need;
                 if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
@@ -81,7 +131,7 @@ public class BruteController {
                             Clerkship clerk = new Clerkship();
 
                             clerk.setDoctor(doc);
-                            clerk.setStudent(students.get(i));
+                            clerk.setStudent(stu);
                             clerk.setTime(time);
                             clerk.setSpecialty(specialty);
                             clerk.setDay(time.ordinal());
@@ -92,8 +142,8 @@ public class BruteController {
 
                             clerkshipRepository.save(clerk);
                             doc.addClerkship(clerk);
-                            availabilities = availabilities.substring(0,day1)+"0"+availabilities.substring(day1);
-
+                            availabilities = availabilities.substring(0,day1)+"0"+availabilities.substring(day1+1);
+                            doc.setAvailabilities(availabilities);
                             doctorRepository.save(doc);
                             break;
                         }
@@ -119,9 +169,9 @@ public class BruteController {
                             clerks.put(clerk.getSpecialty().toString(),clerk);
                             clerkshipRepository.save(clerk);
                             doc.addClerkship(clerk);
-                            availabilities = availabilities.substring(0,day1)+"0"+availabilities.substring(day1);
-                            availabilities = availabilities.substring(0,day2)+"0"+availabilities.substring(day2);
-
+                            availabilities = availabilities.substring(0,day1)+"0"+availabilities.substring(day1+1);
+                            availabilities = availabilities.substring(0,day2)+"0"+availabilities.substring(day2+1);
+                            doc.setAvailabilities(availabilities);
                             doctorRepository.save(doc);
 
                             break;
@@ -137,9 +187,9 @@ public class BruteController {
                 System.out.println(clerks.size());
                 return "brute";
             }
-            students.get(i).setClerkships(clerks);
-            students.get(i).setHasSchedule(true);
-            studentRepository.save(students.get(i));
+            stu.setClerkships(clerks);
+            stu.setHasSchedule(true);
+            studentRepository.save(stu);
         }
 
         return "brute";
