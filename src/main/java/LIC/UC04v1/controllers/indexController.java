@@ -37,7 +37,7 @@ public class indexController {
 
         for (Doctor doc : doctorRepository.findAll()) {
 
-            if ((doc.getSpecialty()==misc.convertSpecialty(profession)) && doc.getLocation()==misc.convertLocation(location)) {
+            if ((doc.getSpecialty()==misc.convertSpecialty(profession)) && doc.getLocation()==misc.convertLocation(location) && doc.getHasPhase1()) {
 
                 for (int i = 0; i < 24; i++) {
 
@@ -284,14 +284,58 @@ public class indexController {
         System.out.println(s.getPsychiatryLocation() + "psych location");
         System.out.println(s.getPediatricsLocation() + "pedi location");
 
+        List<Clerkship> clerks = new ArrayList<Clerkship>();
+        List<Doctor> dlst = new ArrayList<Doctor>();
+
 
 
         Student stu = studentRepository.findById(s.getId()).orElse(null);
+        Doctor pd = stu.getPhase1Doc();
+
         List<Doctor> docs;
         Map<String, Clerkship> stuSched = new HashMap<>();
+
+
         for( int i = 0; i<7; i++){
+
+
             String spe = getSpecialty(i);
             Specialty specialty = misc.toSpecialty(spe);
+
+            if (specialty==pd.getSpecialty()){
+
+                Clerkship clerk = new Clerkship();
+                String availabilities = pd.getAvailabilities();
+                int day = getClerkshipDay(i,s);
+                clerk.setStudent(stu);
+                clerk.setDoctor(pd);
+                clerk.setTitle(spe);
+                clerk.setTime(misc.toTimeSlot(day));
+                clerk.setSpecialty(specialty);
+                clerk.setLocation(pd.getLocation());
+
+                clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
+                clerk.setDay(day-12);
+                availabilities = availabilities.substring(0,day-12)+"0"+availabilities.substring(day-11);
+                availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day+1);
+
+                clerks.add(clerk);
+                pd.addClerkship(clerk);
+                pd.setAvailabilities(availabilities);
+                pd.setAvailabilities(pd.getAvailabilities());
+
+                pd.setHasStu(pd.getHasStu() + 1);
+                if (pd.getNumStu()==pd.getHasStu()){
+                    pd.setAvailable(false);
+                }
+
+                pd.setHasPhase1(true);
+                dlst.add(pd);
+                stuSched.put(spe,clerk);
+
+                continue;
+            }
+
             Location loc = misc.convertLocation(getClerkshipLocation(i, s));
             docs = doctorRepository.findBySpecialtyAndAvailableAndLocation(specialty, true, loc);
 
@@ -302,7 +346,9 @@ public class indexController {
 
 
             for (Doctor doc: docs) {
+
                 if (doc.getAvailabilities().charAt(getClerkshipDay(i,s ))=='1'){
+
                     Clerkship clerk = new Clerkship();
                     String availabilities = doc.getAvailabilities();
                     int day = getClerkshipDay(i,s);
@@ -312,17 +358,30 @@ public class indexController {
                     clerk.setTime(misc.toTimeSlot(day));
                     clerk.setSpecialty(specialty);
                     clerk.setLocation(doc.getLocation());
+
                     if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
-                        clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
-                        clerk.setDay(day-12);
-                        availabilities = availabilities.substring(0,day-12)+"0"+availabilities.substring(day-12);
-                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day);
-                    } else {
-                        clerk.setDay(day);
-                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day);
+
+                        //flag check
+                        if (doc.getHasPhase1()) {
+                            clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i, s))));
+                            clerk.setDay(day - 12);
+                            availabilities = availabilities.substring(0, day - 12) + "0" + availabilities.substring(day - 11);
+                            availabilities = availabilities.substring(0, day) + "0" + availabilities.substring(day+1);
+                        }
+                        else{
+                            continue;
+                        }
+
+
 
                     }
-                    clerkshipRepository.save(clerk);
+                    else {
+                        clerk.setDay(day);
+                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day+1);
+
+                    }
+
+                    clerks.add(clerk);
                     doc.addClerkship(clerk);
                     doc.setAvailabilities(availabilities);
                     doc.setAvailabilities(doc.getAvailabilities());
@@ -332,22 +391,33 @@ public class indexController {
                         doc.setAvailable(false);
                     }
 
-                    doctorRepository.save(doc);
+                    dlst.add(doc);
                     stuSched.put(spe,clerk);
                     break;
                 }
             }
 
         }
+
+
+        System.out.println(stuSched.size());
+
+        if (clerks.size()!=7) {
+            return false;
+        }
+
+        for( int i = 0; i<clerks.size(); i++){
+
+
+            clerkshipRepository.save(clerks.get(i));
+            doctorRepository.save(dlst.get(i));
+
+        }
+
         stu.setClerkships(stuSched);
         stu.setHasSchedule(true);
         studentRepository.save(stu);
 
-        if (stuSched.size()!=7) {
-            return false;
-        }
-
-        stu.setHasSchedule(true);
         return true;
 
     }

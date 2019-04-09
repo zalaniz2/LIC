@@ -106,6 +106,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
             studentRepository.save(stu);
             doc.setPhase1Stu(stu);
+            doc.setHasPhase1(false);
             doctorRepository.save(phase1.get(0));
         }
     }

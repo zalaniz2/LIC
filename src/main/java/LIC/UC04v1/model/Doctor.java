@@ -34,7 +34,7 @@ public class Doctor {
     private int hasStu = 0;
     @OneToOne
     private Student phase1Stu;
-    private Boolean hasPhase1 = false;
+    private Boolean hasPhase1 = true;
 
     public Student getPhase1Stu() {
         return phase1Stu;
