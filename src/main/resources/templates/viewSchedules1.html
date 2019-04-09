@@ -103,8 +103,12 @@
         border-bottom: 1px solid black;
         box-shadow: 0 5px 8px #4d1979;
     }
-    .title{
-        position: center;
+    .head{
+        font-size: 30px;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        -webkit-text-stroke-width: 2px;
+        padding-bottom: 3%;
 
     }
 
@@ -153,7 +157,8 @@
 <br><br>
 
 <div class="sched-container d-none" id="sched-contain">
-    <h2 class="title" id="schedHeader"></h2>
+    <div class="head text-center" id="schedHeader"></div>
+
 <!-- div that holds the student panels, hidden at first until user selects students button -->
     <div id="students" class="d-none">
         <div class="panel-group" id="accordionStu" role="tablist" aria-multiselectable="true"></div>
@@ -238,7 +243,7 @@
     }
 
     function populateStudent(){
-        document.getElementById("schedHeader").innerHTML = "Student Schedules:";
+        document.getElementById("schedHeader").innerHTML = "Student Schedules";
         for(var i =0; i<stuScheds.length; i++){
             console.log("*********");
             $("#accordionStu").append(
@@ -323,7 +328,7 @@
     }
 
     function populateDoc(){
-        document.getElementById("schedHeader").innerHTML = "Doctor Schedules:";
+        document.getElementById("schedHeader").innerHTML = "Doctor Schedules";
         for(var i =0; i<docScheds.length; i++){
             $("#accordionDoc").append(
                 "<\div class=\"card\">" +
