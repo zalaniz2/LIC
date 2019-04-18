@@ -853,7 +853,7 @@ public class ExportController{
             cell.setCellStyle(dataStyle);
         }
     }
-    
+
     /*****************************************************************
      *Method that edits the styles and fonts for the cells
      ******************************************************************/

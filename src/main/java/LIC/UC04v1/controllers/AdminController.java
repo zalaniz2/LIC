@@ -30,11 +30,13 @@ public class AdminController {
     @Autowired
     private UserRepository userRepository;
 
+    //URL mapping for "admin.html" page
     @RequestMapping(path = "/adminOptions")
-    public String adminOps(Model model) {
+    public String adminOps() {
         return "admin";
     }
 
+    //creates new user model to be bound with info from "registration1.html" page
     @RequestMapping(value="/addAdmin", method = RequestMethod.GET)
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
@@ -48,7 +50,6 @@ public class AdminController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        //User userExists = userService.findByUserName(user.getUsername());
         User userExists = userRepository.findByEmail(user.getEmail());
         if (userExists != null) {
             bindingResult
@@ -67,7 +68,7 @@ public class AdminController {
     }
 
     @RequestMapping(path = "/removeAdmin")
-    public String brute(Model model) {
+    public String brute() {
         return "deleteUser";
     }
 
