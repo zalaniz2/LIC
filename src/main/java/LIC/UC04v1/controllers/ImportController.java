@@ -1,7 +1,10 @@
 package LIC.UC04v1.controllers;
 
+import LIC.UC04v1.model.Admin;
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Student;
+import LIC.UC04v1.repositories.AdminRepository;
+import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -37,19 +40,32 @@ public class ImportController {
 
     private DoctorRepository doctorRepository;
     private StudentRepository studentRepository;
+    private ClerkshipRepository clerkshipRepository;
+    private AdminRepository adminRepository;
     private String currentDocFile = null;
     private String currentStuFile = null;
     private MiscMethods misc;
+    private Admin fileAdmin;
 
-    public ImportController(DoctorRepository doctorRepository, StudentRepository studentRepository){
+    public ImportController(DoctorRepository doctorRepository, StudentRepository studentRepository,
+                            ClerkshipRepository clerkshipRepository, AdminRepository adminRepository){
         this.doctorRepository = doctorRepository;
         this.studentRepository = studentRepository;
+        this.clerkshipRepository = clerkshipRepository;
+        this.adminRepository = adminRepository;
         misc = new MiscMethods();
     }
 
     @GetMapping(path = "/import-Data")
     public String getImports(Model model){
         return "ImportData1";
+        //Get previous file names
+        if (adminRepository.count() == 0)
+            adminRepository.save(new Admin());
+        fileAdmin = adminRepository.findAll().iterator().next();
+        updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
+
+        return "ImportData";
     }
 
     @RequestMapping(path = "/import-Data/{type}/{file}")
@@ -62,6 +78,12 @@ public class ImportController {
         String[] fileName;
         String errorMsg="";
 
+//        //Get previous file names
+//        if (adminRepository.count() == 0)
+//            adminRepository.save(new Admin());
+//
+//        fileAdmin = adminRepository.findAll().iterator().next();
+
         //Some browsers use the absolute filepath and some use just the filename.
         //Make sure we have the absolute filepath.
         fileName = file.getOriginalFilename().split("/|\\\\");
@@ -71,6 +93,8 @@ public class ImportController {
            model.addAttribute(type+"Error", "Incorrect file format. Please upload a .xlsx, .xls, or .cvs file.");
            updateThymeleaf(model,currentDocFile,currentStuFile);
            return "ImportData1";
+           updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
+           return "ImportData";
         }
 
         FileOutputStream f = new FileOutputStream(fileLocation);
@@ -81,15 +105,21 @@ public class ImportController {
         f.flush();
         f.close();
 
-        //Clear the appropriate table
+        //Clear the appropriate table(s)
         if (type.equals("doctors")){
+            studentRepository.deleteAll();
             doctorRepository.deleteAll();
             currentDocFile = null;
+            fileAdmin.setDocFile("");
+            fileAdmin.setStuFile("");
         }
         else {
             studentRepository.deleteAll();
             currentStuFile = null;
+            fileAdmin.setStuFile("");
         }
+        //Clear out clerkships
+        clerkshipRepository.deleteAll();
 
         //Read in a modern .xlsx Excel file
         if (fileLocation.endsWith(".xlsx")) {
@@ -110,16 +140,20 @@ public class ImportController {
                 model.addAttribute("doctorsError", errorMsg);
             else
                 model.addAttribute("studentsError", errorMsg);
-            updateThymeleaf(model,currentDocFile,currentStuFile);
-            return "ImportData1";
+            updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
+            return "ImportData";
         }
 
         //Update the stored file names
-        if (type.equals("doctors"))
+        if (type.equals("doctors")) {
+            fileAdmin.setDocFile(file.getOriginalFilename());
             currentDocFile = file.getOriginalFilename();
-        else
+        }
+        else {
+            fileAdmin.setStuFile(file.getOriginalFilename());
             currentStuFile = file.getOriginalFilename();
-
+        }
+        adminRepository.save(fileAdmin);
         updateThymeleaf(model,currentDocFile,currentStuFile);
         return "ImportData1";
     }
@@ -131,11 +165,11 @@ public class ImportController {
     public void updateThymeleaf(Model model, String currentDocFile, String currentStuFile){
         if (currentDocFile != null) {
             model.addAttribute("docImportMsg", "File: " + currentDocFile
-                    + " has been uploaded successfully!");
+                    + " has been uploaded.");
         }
         if(currentStuFile !=null) {
             model.addAttribute("stuImportMsg", "File: " + currentStuFile
-                    + " has been uploaded successfully!");
+                    + " has been uploaded.");
         }
         return;
     }
@@ -165,6 +199,10 @@ public class ImportController {
                 stu.setPhase1Doc(doc);
                 return "";
             }
+            //Set phase 1 doctor for Student
+            //Set phase 1 student for Doctor
+            //Set phase 1 flag to true for Doctor
+            //Doctor information is set later in the code - the student must be saved first
         }
         return "WARNING: No doctor found with email " + email + " for student " + stu.getName() + "\n\n";
     }
@@ -198,6 +236,11 @@ public class ImportController {
                 stu.setEmail(row.getCell(1).getStringCellValue());
                 errorStr = errorStr + getPhase1Doc(row.getCell(2).getStringCellValue(),stu);
                 studentRepository.save(stu);
+                if (stu.getPhase1Doc()!=null) {
+                    stu.getPhase1Doc().setHasPhase1(true);
+                    stu.getPhase1Doc().setPhase1Stu(stu);
+                    doctorRepository.save(stu.getPhase1Doc());
+                }
             }
         }
         return errorStr;
@@ -233,6 +276,11 @@ public class ImportController {
                 stuXLS.setEmail(rowXLS.getCell(1).getStringCellValue());
                 errorStr = errorStr + getPhase1Doc(rowXLS.getCell(2).getStringCellValue(),stuXLS);
                 studentRepository.save(stuXLS);
+                if (stuXLS.getPhase1Doc()!=null) {
+                    stuXLS.getPhase1Doc().setHasPhase1(true);
+                    stuXLS.getPhase1Doc().setPhase1Stu(stuXLS);
+                    doctorRepository.save(stuXLS.getPhase1Doc());
+                }
             }
         }
         return errorStr;
@@ -246,7 +294,6 @@ public class ImportController {
      ******************************************************************************************************************/
     public String csvFile(String type, MultipartFile file, Model model) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));//read file
-
         String errorStr = "";
         String line;//read file into database on instance of doctor at a time.
         br.readLine(); //Don't read in the header
@@ -270,18 +317,33 @@ public class ImportController {
             }
         }
         else if (type.equals("students")) {
-            while ((line = br.readLine()) != null) {
-                values = line.split(",");
-                if (values.length < 3){
-                    return "CSV File incorrectly formatted. Not enough columns.";
-                }
+            String st;
+            while ((st = br.readLine()) != null){
+                values = st.split(",");
                 Student stu = new Student();
+
                 stu.setName(values[0]);
                 errorStr = errorStr + checkEmail(values[1], stu.getName());
                 stu.setEmail(values[1]);
                 errorStr = errorStr + getPhase1Doc(values[2],stu);
                 studentRepository.save(stu);
+                if (stu.getPhase1Doc()!=null) {
+                    stu.getPhase1Doc().setHasPhase1(true);
+                    stu.getPhase1Doc().setPhase1Stu(stu);
+                    doctorRepository.save(stu.getPhase1Doc());
+                }
             }
+//            while ((line = br.readLine()) != null) {
+//                values = line.split(",");
+//                if (values.length < 3){
+//                    return "CSV File incorrectly formatted. Not enough columns.";
+//                }
+//                Student stu = new Student();
+//                stu.setName(values[0] +" "+ values[1]);
+//                stu.setEmail(values[2]);
+//                errorStr = errorStr + getPhase1Doc(values[3],stu);
+//                studentRepository.save(stu);
+//            }
         }
         return errorStr;
     }

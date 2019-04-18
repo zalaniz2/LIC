@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+/*
+This controller controls interaction between the doctor form and the doctor repository.
+ */
 @Slf4j
 @Controller
 public class DoctorController {
@@ -32,7 +34,9 @@ public class DoctorController {
     public String docForm(Model model, @PathVariable String id){
         doctorForm docF = new doctorForm();
         docF.id = id;
+
         Doctor doc = doctorService.findById(id);
+        docF.address = doc.getAddress();
         docF.name = doc.getName();
         docF.location = doc.getLocation();
         if(doc.getAvailabilities().charAt(0)=='1') docF.MM = true;

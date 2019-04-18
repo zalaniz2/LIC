@@ -54,8 +54,8 @@ public class EmailsController {
 
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         sender.setHost("smtp.gmail.com");
-        sender.setUsername("no.reply.lic.tcu");
-        sender.setPassword("clifbar123");
+        sender.setUsername("alexander.parris");
+        sender.setPassword("aigc2001");
         sender.setPort(587);
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

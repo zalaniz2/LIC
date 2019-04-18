@@ -7,6 +7,7 @@ import LIC.UC04v1.model.sortDoctorByAvailDates;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.StudentRepository;
+import LIC.UC04v1.services.StudentService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +24,14 @@ public class indexController {
     private ClerkshipRepository clerkshipRepository;
     private StudentRepository studentRepository;
     private MiscMethods misc = new MiscMethods();
+    private final StudentService studentService;
 
-    public indexController(DoctorRepository doctorRepository, ClerkshipRepository clerkshipRepository, StudentRepository studentRepository) {
+
+    public indexController(StudentService studentService, DoctorRepository doctorRepository, ClerkshipRepository clerkshipRepository, StudentRepository studentRepository) {
         this.doctorRepository = doctorRepository;
         this.clerkshipRepository = clerkshipRepository;
         this.studentRepository = studentRepository;
+        this.studentService = studentService;
     }
 
     public int[] getAvailabilities(String profession, String location) {
@@ -37,7 +41,7 @@ public class indexController {
 
         for (Doctor doc : doctorRepository.findAll()) {
 
-            if ((doc.getSpecialty()==misc.convertSpecialty(profession)) && doc.getLocation()==misc.convertLocation(location)) {
+            if ((doc.getSpecialty()==misc.convertSpecialty(profession)) && doc.getLocation()==misc.convertLocation(location) && doc.getHasPhase1()) {
 
                 for (int i = 0; i < 24; i++) {
 
@@ -52,6 +56,26 @@ public class indexController {
         return counts;
 
     }
+
+    public int[] getSingleAvailabilities(Doctor d) {
+
+        int count = 0;
+        int counts[] = new int[24];
+
+        for (int i = 0; i < 24; i++) {
+
+            if (d.getAvailabilities().charAt(i) == '1' && d.isAvailable()) {
+                        counts[i] = counts[i] + 1;
+            }
+            count++;
+
+        }
+
+        return counts;
+
+    }
+
+
 
     public ArrayList<Integer> addScheduleDays(Schedule s) {
 
@@ -179,6 +203,9 @@ public class indexController {
     @RequestMapping(path = "/student/{stuID}")
     public String neuro(Model model, @PathVariable String stuID){
         Student stu = studentRepository.findById(stuID).orElse(null);
+        if(stu == null){
+            stu = studentService.findById(stuID);
+        }
         if (stu!=null) {
             model.addAttribute("stu", stu);
         }
@@ -186,25 +213,25 @@ public class indexController {
     }
 
 
-
-/*
-
-    @RequestMapping(path = "/")
-    public String home() {
-
-        return "index";
-    }
-    */
-
-
-
-
-
     @GetMapping(path = "/admin")
     public String admin() {
 
         System.out.println("Admin page.");
         return "admin";
+
+    }
+
+    @GetMapping(path = "/success")
+    public String success() {
+
+        return "success";
+
+    }
+
+    @GetMapping(path = "/finished")
+    public String finished() {
+
+        return "finished";
 
     }
 
@@ -223,6 +250,32 @@ public class indexController {
         return getAvailabilities(profession, location);
     }
 
+    @RequestMapping(value = "/poavail", method = RequestMethod.POST)
+
+    public @ResponseBody
+    int[] getSingleDoc(@RequestBody PhaseOne p) {
+
+        Student s = studentRepository.findById(p.getId()).orElse(null);
+        Doctor sd = s.getPhase1Doc();
+        System.out.println("Sending availabilities for doctor " + sd.getName());
+
+        return getSingleAvailabilities(sd);
+
+
+    }
+
+    @RequestMapping(value = "/checkstu", method = RequestMethod.POST)
+
+    public @ResponseBody
+    boolean checkStudent(@RequestBody PhaseOne p) {
+
+        Student s = studentRepository.findById(p.getId()).orElse(null);
+
+
+        return s.isHasSchedule();
+
+    }
+
 
     @RequestMapping(value = "/sendschedule", method = RequestMethod.POST)
 
@@ -238,14 +291,58 @@ public class indexController {
         System.out.println(s.getPsychiatryLocation() + "psych location");
         System.out.println(s.getPediatricsLocation() + "pedi location");
 
+        List<Clerkship> clerks = new ArrayList<Clerkship>();
+        List<Doctor> dlst = new ArrayList<Doctor>();
+
 
 
         Student stu = studentRepository.findById(s.getId()).orElse(null);
+        Doctor pd = stu.getPhase1Doc();
+
         List<Doctor> docs;
         Map<String, Clerkship> stuSched = new HashMap<>();
+
+
         for( int i = 0; i<7; i++){
+
+
             String spe = getSpecialty(i);
             Specialty specialty = misc.toSpecialty(spe);
+
+            if (specialty==pd.getSpecialty()){
+
+                Clerkship clerk = new Clerkship();
+                String availabilities = pd.getAvailabilities();
+                int day = getClerkshipDay(i,s);
+                clerk.setStudent(stu);
+                clerk.setDoctor(pd);
+                clerk.setTitle(spe);
+                clerk.setTime(misc.toTimeSlot(day));
+                clerk.setSpecialty(specialty);
+                clerk.setLocation(pd.getLocation());
+
+                clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
+                clerk.setDay(day-12);
+                availabilities = availabilities.substring(0,day-12)+"0"+availabilities.substring(day-11);
+                availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day+1);
+
+                clerks.add(clerk);
+                pd.addClerkship(clerk);
+                pd.setAvailabilities(availabilities);
+                pd.setAvailabilities(pd.getAvailabilities());
+
+                pd.setHasStu(pd.getHasStu() + 1);
+                if (pd.getNumStu()==pd.getHasStu()){
+                    pd.setAvailable(false);
+                }
+
+                pd.setHasPhase1(true);
+                dlst.add(pd);
+                stuSched.put(spe,clerk);
+
+                continue;
+            }
+
             Location loc = misc.convertLocation(getClerkshipLocation(i, s));
             docs = doctorRepository.findBySpecialtyAndAvailableAndLocation(specialty, true, loc);
 
@@ -255,9 +352,10 @@ public class indexController {
             //end sorting stuffs
 
 
-
             for (Doctor doc: docs) {
+
                 if (doc.getAvailabilities().charAt(getClerkshipDay(i,s ))=='1'){
+
                     Clerkship clerk = new Clerkship();
                     String availabilities = doc.getAvailabilities();
                     int day = getClerkshipDay(i,s);
@@ -267,17 +365,30 @@ public class indexController {
                     clerk.setTime(misc.toTimeSlot(day));
                     clerk.setSpecialty(specialty);
                     clerk.setLocation(doc.getLocation());
+
                     if (specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine) {
-                        clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i,s))));
-                        clerk.setDay(day-12);
-                        availabilities = availabilities.substring(0,day-12)+"0"+availabilities.substring(day-12);
-                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day);
-                    } else {
-                        clerk.setDay(day);
-                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day);
+
+                        //flag check
+                        if (doc.getHasPhase1()) {
+                            clerk.setTime2(misc.getOtherTime(misc.toTimeSlot(getClerkshipDay(i, s))));
+                            clerk.setDay(day - 12);
+                            availabilities = availabilities.substring(0, day - 12) + "0" + availabilities.substring(day - 11);
+                            availabilities = availabilities.substring(0, day) + "0" + availabilities.substring(day+1);
+                        }
+                        else{
+                            continue;
+                        }
+
+
 
                     }
-                    clerkshipRepository.save(clerk);
+                    else {
+                        clerk.setDay(day);
+                        availabilities = availabilities.substring(0,day)+"0"+availabilities.substring(day+1);
+
+                    }
+
+                    clerks.add(clerk);
                     doc.addClerkship(clerk);
                     doc.setAvailabilities(availabilities);
                     doc.setAvailabilities(doc.getAvailabilities());
@@ -287,33 +398,52 @@ public class indexController {
                         doc.setAvailable(false);
                     }
 
-                    doctorRepository.save(doc);
+                    dlst.add(doc);
                     stuSched.put(spe,clerk);
                     break;
                 }
             }
 
         }
+
+
+        System.out.println(stuSched.size());
+
+        if (clerks.size()!=7) {
+            return false;
+        }
+
+        for( int i = 0; i<clerks.size(); i++){
+
+
+            clerkshipRepository.save(clerks.get(i));
+            doctorRepository.save(dlst.get(i));
+
+        }
+
         stu.setClerkships(stuSched);
         stu.setHasSchedule(true);
         studentRepository.save(stu);
 
-        if (stuSched.size()!=7) {
-            System.out.println("fail at student # of specialty: "+stuSched.size());
-        }
-        else{
-            System.out.println("student scehdule success");
-
-        }
-
-
-
-        //createStudent();
-
         return true;
+
+    }
+
+    @RequestMapping(value = "/checkdoc", method = RequestMethod.POST)
+
+    public @ResponseBody
+    Specialty checkDoc(@RequestBody PhaseOne p) {
+
+
+        Student sd = studentRepository.findById(p.getId()).orElse(null);
+
+        Doctor td = sd.getPhase1Doc();
+
+        return td.getSpecialty();
 
 
     }
+
 
 }
 
@@ -494,5 +624,21 @@ class Schedule{
 
 
 }
+
+class PhaseOne{
+
+    private String id;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+}
+
 
 

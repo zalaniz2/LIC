@@ -11,6 +11,7 @@ import LIC.UC04v1.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@Profile("dev")
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private ClerkshipRepository clerkshipRepository;
     private DoctorRepository doctorRepository;
@@ -60,6 +62,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     public Bootstrap(ClerkshipRepository clerkshipRepository, DoctorRepository doctorRepository, StudentRepository studentRepository,UserRepository userRepository,
                      RoleRepository roleRepository,
                      BCryptPasswordEncoder bCryptPasswordEncoder) {
+        System.out.println("default bootstraping data");
         this.clerkshipRepository = clerkshipRepository;
         this.doctorRepository = doctorRepository;
         this.studentRepository = studentRepository;
@@ -118,9 +121,15 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             Student stu = new Student();
             stu.setName(values[0]);
             stu.setEmail(values[1]);
+            List<Doctor> phase1 = doctorRepository.findByEmail(values[2]);
+            Doctor doc = phase1.get(0);
 
+            stu.setPhase1Doc(doc);
 
             studentRepository.save(stu);
+            doc.setPhase1Stu(stu);
+            doc.setHasPhase1(false);
+            doctorRepository.save(phase1.get(0));
         }
     }
 
