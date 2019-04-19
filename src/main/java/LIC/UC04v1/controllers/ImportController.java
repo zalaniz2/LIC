@@ -58,14 +58,13 @@ public class ImportController {
 
     @GetMapping(path = "/import-Data")
     public String getImports(Model model){
-        return "ImportData1";
         //Get previous file names
         if (adminRepository.count() == 0)
             adminRepository.save(new Admin());
         fileAdmin = adminRepository.findAll().iterator().next();
         updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
 
-        return "ImportData";
+        return "ImportData1";
     }
 
     @RequestMapping(path = "/import-Data/{type}/{file}")
@@ -91,10 +90,8 @@ public class ImportController {
 
         if (!(fileLocation.endsWith(".xlsx")||fileLocation.endsWith(".xls")||fileLocation.endsWith(".csv"))){
            model.addAttribute(type+"Error", "Incorrect file format. Please upload a .xlsx, .xls, or .cvs file.");
-           updateThymeleaf(model,currentDocFile,currentStuFile);
-           return "ImportData1";
            updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
-           return "ImportData";
+           return "ImportData1";
         }
 
         FileOutputStream f = new FileOutputStream(fileLocation);
@@ -141,7 +138,7 @@ public class ImportController {
             else
                 model.addAttribute("studentsError", errorMsg);
             updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
-            return "ImportData";
+            return "ImportData1";
         }
 
         //Update the stored file names

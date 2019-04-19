@@ -90,14 +90,12 @@ public class BruteController {
             for (int z = 0; z< 7; z++) {
                 int randomIndex = rand.nextInt(specialties.size());
                 Specialty specialty = specialties.get(randomIndex);
-                System.out.println("================="+specialty.toString()+"=====================");
-                if (specialty==clerksPhase1.get(z).getSpecialty()){
-                    System.out.println("in here");
-                    clerks.put(clerksPhase1.get(z).getSpecialty().toString(), clerksPhase1.get(z));
-                    TimeSlot time = misc.toTimeSlot(clerksPhase1.get(z).getDay());
+                if (specialty==clerksPhase1.get(i).getSpecialty()){
+                    clerks.put(clerksPhase1.get(i).getSpecialty().toString(), clerksPhase1.get(i));
+                    TimeSlot time = misc.toTimeSlot(clerksPhase1.get(i).getDay());
                     studentSched.add(time);
-                    if (clerksPhase1.get(z).getTime2()!=null) {
-                        studentSched.add(clerksPhase1.get(z).getTime2());
+                    if (clerksPhase1.get(i).getTime2()!=null) {
+                        studentSched.add(clerksPhase1.get(i).getTime2());
                     }
                     specialties.remove(randomIndex);
                     continue;

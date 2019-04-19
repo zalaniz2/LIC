@@ -48,8 +48,12 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        loadRoles();
-        createAdmin();
+
+       if(roleService.listAll() == null){
+           loadRoles();
+           createAdmin();
+       }
+
 
         //assignAdminToUser();
 //        try {
