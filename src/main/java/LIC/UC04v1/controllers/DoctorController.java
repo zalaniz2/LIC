@@ -72,12 +72,6 @@ public class DoctorController {
         return "DoctorForm";
     }
 
-    @RequestMapping("/student/{id}")
-    public String stuForm(Model model, @PathVariable int id){
-        model.addAttribute("doctor", new doctorForm());
-
-        return "StudentForm";
-    }
 
     @PostMapping
     @RequestMapping("thankDoctor")

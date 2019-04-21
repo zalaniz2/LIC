@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Admin Home Page</title>
+    <title>Export Schedules</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
@@ -33,10 +33,34 @@
         background-image: url("https://www.transparenttextures.com/patterns/little-knobs.png");
         /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
     }
+    .title{
+        padding-left: 10%;
+        padding-right: 10%;
+        font-size: 30px;
+        color: black;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: #a3a9ac;
+        font-weight: bold;
+        padding-top: 3%;
+    }
     .admin-name{
-        margin: auto;
-        font-size: 5vh;
+        position: relative;
+        padding-right: 7%;
+        font-size: 30px;
         color: whitesmoke;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: #a3a9ac;
+        font-weight: bold;
+        padding-top: 3%;
+    }
+    .export{
+        margin: auto;
+        padding-left: 36%;
+        display: block;
+        font-size: 30px;
+        color: black;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         -webkit-text-stroke-width: 2px;
         -webkit-text-stroke-color: #a3a9ac;
@@ -45,11 +69,10 @@
         padding-top: 3%;
     }
     #logout{
-       /* padding-top: 10px;*/
+        /* padding-top: 10px;*/
         text-align: center;
     }
     .container{
-        padding-top: 8%;
         width: 70%;
         max-width: 100%;
         text-align: center;
@@ -68,13 +91,7 @@
         border-bottom: 1px solid black;
         box-shadow: 0 5px 8px #4d1979;
         position: relative;
-    }
-    .wrapper{
-        text-align: center;
-        margin: auto;
-        width: 40%;
-        padding-top: 2%;
-        padding-right: 10%;
+
     }
     a{
         color: white;
@@ -85,7 +102,7 @@
         border-bottom: 2px solid white;
     }
     i{
-      size: 100px;
+        size: 100px;
     }
     img{
         filter: invert(100%);
@@ -106,9 +123,7 @@
         <a class="navbar-brand" href="/admin/home">
             <img src="https://12sibh1jhfkr3nhjznpf8n11-wpengine.netdna-ssl.com/wp-content/themes/fw-medical-school/images/main-logo.png" alt="TCU & UNTHSC School of Medicine">
         </a>
-        <div class="wrapper">
-            <span class="admin-name">Admin Home Page</span>
-        </div>
+        <span class="admin-name text-center">Export Schedules</span>
         <form th:action="@{/logout}" id="logout" method="get">
             <button class="btn btn-lg btn-danger" name="registration"
                     type="Submit">Logout
@@ -116,65 +131,49 @@
         </form>
     </nav>
 </div>
+<div class="title text-center">Export as CSV</div>
 <div class="container cards">
-    <a href="/admin/import-Data">
-        <div id="import-data" class="button-link active">
-            <div class="button-label">Import Data</div>
+    <a href="/admin/downloadStudentScheduleCSV">
+        <div id="studentCSV" class="button-link active">
+            <div class="button-label">Students</div>
             <div class="spacer">
                 <span style="font-size: 5em; color: white">
-                    <i class="fas fa-file-import" data-fa-transform="down-2"></i>
+                    <i class="fas fa-user-graduate" data-fa-transform="down-2"></i>
                 </span>
 
             </div>
         </div>
     </a>
-    <a href="/admin/send-emails">
-        <div id="send-emails" class="button-link active">
-            <div class="button-label">Send Emails</div>
+    <a href="/admin/downloadDoctorScheduleCSV">
+        <div id="doctorCSV" class="button-link active">
+            <div class="button-label">Doctors</div>
             <div class="spacer">
                   <span style="font-size: 5em; color: white;">
-                    <i class="fas fa-envelope-open-text" data-fa-transform="down-2"></i>
+                    <i class="fas fa-user-md" data-fa-transform="down-2"></i>
                 </span>
             </div>
         </div>
     </a>
-    <a href="/admin/brute">
-        <div id="brute" class="button-link active">
-            <div class="button-label">Schedule Students</div>
+</div>
+<div class="title text-center">Export as Excel</div>
+<div class="container cards">
+    <a href="/admin/downloadStudentExcel">
+        <div id="stuExcel" class="button-link active">
+            <div class="button-label">Students</div>
             <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="far fa-calendar-alt" data-fa-transform="down-2"></i>
-                </span>
+                    <span style="font-size: 5em; color: white">
+                        <i class="fas fa-user-graduate" data-fa-transform="down-2"></i>
+                    </span>
             </div>
         </div>
     </a>
-    <a href="/admin/adminView">
-        <div id="adminView" class="button-link active">
-            <div class="button-label">View Schedules</div>
+    <a href="/admin/downloadDoctorExcel">
+        <div id="docExcel" class="button-link active">
+            <div class="button-label">Doctors</div>
             <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="far fa-eye" data-fa-transform="down-3"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/admin/export">
-        <div id="export" class="button-link active">
-            <div class="button-label">Download Schedules</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="fas fa-file-download" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/admin/adminOptions">
-        <div id="adminOps" class="button-link active">
-            <div class="button-label">Admin Options</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="fas fa-users" data-fa-transform="down-2"></i>
-                </span>
+                    <span style="font-size: 5em; color: white">
+                        <i class="fas fa-user-md" data-fa-transform="down-3"></i>
+                    </span>
             </div>
         </div>
     </a>

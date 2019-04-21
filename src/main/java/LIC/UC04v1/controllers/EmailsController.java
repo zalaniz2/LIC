@@ -31,6 +31,7 @@ import java.util.Properties;
     If you have questions about anything, let me (Katie) know. I'll come back and clean up/comment better soon.
  */
 
+@RequestMapping("/admin")
 @Controller
 public class EmailsController {
 
@@ -45,7 +46,7 @@ public class EmailsController {
 
     @GetMapping(path = "/send-emails")
     public String getImports(Model model){
-        return "SendEmails";
+        return "sendEmails1";
     }
 
     @RequestMapping(path = "/send-emails/{type}")
@@ -110,6 +111,6 @@ public class EmailsController {
                 sender.send(message);
             }
         }
-        return "Sendemails";
+        return "sendemails1";
     }
 }
