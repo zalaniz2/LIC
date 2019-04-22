@@ -24,7 +24,6 @@ import java.util.List;
 
 @Slf4j
 @Component
-@Profile("dev")
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private ClerkshipRepository clerkshipRepository;
     private DoctorRepository doctorRepository;
@@ -49,10 +48,10 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
-       if(roleService.listAll() == null){
+      // if(roleService.listAll() == null){
            loadRoles();
            createAdmin();
-       }
+       //}
 
 
         //assignAdminToUser();
@@ -75,6 +74,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         this.userRepository = userRepository;
         misc = new MiscMethods();
     }
+
     private void initData() throws IOException {
         createAdmin();
 
@@ -138,7 +138,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private void createAdmin(){
-
+        System.out.println("Creating admin...");
         User user2 = new User();
         user2.setUsername("admin");
         user2.setPassword("password");
@@ -147,6 +147,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         user2.addRole(role);
         role.addUser(user2);
         userService.saveOrUpdate(user2);
+        System.out.println("Admin Created!");
     }
 
 //    private void assignAdminToUser(){
@@ -165,6 +166,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 //    }
 
     private void loadRoles(){
+        System.out.println("loading Roles!");
         Role role = new Role();
         role.setRole("SUPER_ADMIN");
         roleService.saveOrUpdate(role);

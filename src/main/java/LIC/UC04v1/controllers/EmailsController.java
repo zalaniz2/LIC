@@ -77,7 +77,7 @@ public class EmailsController {
                 MimeMessage msg = new MimeMessage(session);
 
                 msg.setFrom(new InternetAddress( "MEDClerkship@tcu.edu","Kayla Beeler"));
-                msg.setRecipient(Message.RecipientType.TO, new InternetAddress("no.reply.lic.tcu@gmail.com"));
+                msg.setRecipient(Message.RecipientType.TO, new InternetAddress("success@simulator.amazonses.com"));
                 msg.setSubject("TCU/UNTHSC Med School Availabillity Questionair");
                 msg.setContent(doc.getName() + ", \n " +
                         "Thank you for offering to teach a medical school student. The next step is to indicate " +
@@ -138,12 +138,12 @@ public class EmailsController {
                 MimeMessage msg = new MimeMessage(session);
 
                 msg.setFrom(new InternetAddress( "MEDClerkship@tcu.edu","Kayla Beeler"));
-                msg.setRecipient(Message.RecipientType.TO, new InternetAddress("no.reply.lic.tcu@gmail.com"));
+                msg.setRecipient(Message.RecipientType.TO, new InternetAddress("success@simulator.amazonses.com"));
                 msg.setSubject("TCU/UNTHSC Student Clerkship Schedule");
                 msg.setContent(stu.getName() + ", \n " +
                         "It's time to request your clerkships. Please follow the unique link below to complete " +
                         "the process. Please do not share the link with others, as it is linked to your name. \n" +
-                        "localhost:8080/" + stu.getId() +
+                        "localhost:8080/student/" + stu.getId() +
                         "\n\nThank you!\nTCU/UNTHSC Medical School","text/html");
 
                 //msg.setHeader("X-SES-CONFIGURATION-SET", "ConfigSet");
