@@ -68,12 +68,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/access-denied");
 
        //DELETE BOTH OF THESE
-        http.authorizeRequests().antMatchers("/").permitAll().and()
-                .authorizeRequests().antMatchers("/h2-console/**").permitAll();
-
-        //DELETE BOTH OF THESE
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
+//        http.authorizeRequests().antMatchers("/").permitAll().and()
+//                .authorizeRequests().antMatchers("/h2-console/**").permitAll();
+//
+//        //DELETE BOTH OF THESE
+//        http.csrf().disable();
+//        http.headers().frameOptions().disable();
     }
 
     @Override
