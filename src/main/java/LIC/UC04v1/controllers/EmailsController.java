@@ -53,9 +53,9 @@ public class EmailsController {
     public String docEmails(Model model, @PathVariable String type) throws Exception{
 
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
-        sender.setHost("smtp.gmail.com");
-        sender.setUsername("alexander.parris");
-        sender.setPassword("aigc2001");
+        sender.setHost("email-smtp.us-east-1.amazonaws.com");
+        sender.setUsername("AKIA5DFOVNYYM4QZ7RML");
+        sender.setPassword("BPSHBFaQi/8nt1Fn1wYsdC6lFoAEzqgbXDPlGwcrXgA5");
         sender.setPort(587);
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
