@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Admin Home Page</title>
+    <title>Admin Page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
@@ -45,7 +45,7 @@
         padding-top: 3%;
     }
     #logout{
-       /* padding-top: 10px;*/
+        /* padding-top: 10px;*/
         text-align: center;
     }
     .container{
@@ -85,7 +85,7 @@
         border-bottom: 2px solid white;
     }
     i{
-      size: 100px;
+        size: 100px;
     }
     img{
         filter: invert(100%);
@@ -117,63 +117,23 @@
     </nav>
 </div>
 <div class="container cards">
-    <a href="/admin/import-Data">
+    <a href="/admin/send-emails/doctors">
         <div id="import-data" class="button-link active">
-            <div class="button-label">Import Data</div>
+            <div class="button-label">Send Doctor Emails</div>
             <div class="spacer">
                 <span style="font-size: 5em; color: white">
-                    <i class="fas fa-file-import" data-fa-transform="down-2"></i>
+                    <i class="fas fa-user-md" data-fa-transform="down-2"></i>
                 </span>
 
             </div>
         </div>
     </a>
-    <a href="/admin/send-emails">
+    <a href="/admin/send-emails/students">
         <div id="send-emails" class="button-link active">
-            <div class="button-label">Send Emails</div>
+            <div class="button-label">Send Student Emails</div>
             <div class="spacer">
                   <span style="font-size: 5em; color: white;">
-                    <i class="fas fa-envelope-open-text" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/admin/brute">
-        <div id="brute" class="button-link active">
-            <div class="button-label">Schedule Students</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="far fa-calendar-alt" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/admin/adminView">
-        <div id="adminView" class="button-link active">
-            <div class="button-label">View Schedules</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="far fa-eye" data-fa-transform="down-3"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/admin/export">
-        <div id="export" class="button-link active">
-            <div class="button-label">Download Schedules</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="fas fa-file-download" data-fa-transform="down-2"></i>
-                </span>
-            </div>
-        </div>
-    </a>
-    <a href="/admin/adminOptions">
-        <div id="adminOps" class="button-link active">
-            <div class="button-label">Admin Options</div>
-            <div class="spacer">
-                <span style="font-size: 5em; color: white">
-                    <i class="fas fa-users" data-fa-transform="down-2"></i>
+                    <i class="fas fa-user-graduate" data-fa-transform="down-2"></i>
                 </span>
             </div>
         </div>

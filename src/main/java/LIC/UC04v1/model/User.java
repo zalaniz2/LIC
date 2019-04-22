@@ -1,41 +1,97 @@
 package LIC.UC04v1.model;
 
-import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-
+import LIC.UC04v1.model.Role;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+/**
+ * Created by bingyang.wei on 5/9/2017.
+ */
 @Entity
-@Table(name = "user")
-public class User {
+public class User extends AbstractDomainObject{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
-    private int id;
-    @Column(name = "email")
-    @Email(message = "*Please provide a valid Email")
-    @NotEmpty(message = "*Please provide an email")
+    private String username;
     private String email;
-    @Column(name = "password")
-    @Length(min = 5, message = "*Your password must have at least 5 characters")
-    @NotEmpty(message = "*Please provide your password")
+    @Transient
     private String password;
-    @Column(name = "name")
-    @NotEmpty(message = "*Please provide your name")
-    private String name;
-    @Column(name = "last_name")
-    @NotEmpty(message = "*Please provide your last name")
-    private String lastName;
-    @Column(name = "active")
-    private int active;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
 
+    private String encryptedPassword;
+    private Boolean enabled = true;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles = new ArrayList<>();
+    private Integer failedLoginAttemptes = 0;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role){
+
+
+        if(!roles.contains(role)){ //what is this checking????? Keeps adding roles
+            this.roles.add(role);
+        }
+        if(!role.getUsers().contains(this)){
+            role.getUsers().add(this);
+        }
+    }
+    public void removeRole(Role role){
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
+
+    public Integer getFailedLoginAttemptes() {
+        return failedLoginAttemptes;
+    }
+
+    public void setFailedLoginAttemptes(Integer failedLoginAttemptes) {
+        this.failedLoginAttemptes = failedLoginAttemptes;
+    }
 }
 

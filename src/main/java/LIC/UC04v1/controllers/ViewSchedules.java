@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@RequestMapping("/admin")
 @Controller
 public class ViewSchedules{
 
@@ -28,7 +29,7 @@ public class ViewSchedules{
     @RequestMapping(path = "/adminView")
     public String admin() {
 
-        return "viewSchedules";
+        return "viewSchedules1";
     }
 
     @RequestMapping(path = "/grabDocs", method = RequestMethod.POST)

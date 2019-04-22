@@ -16,6 +16,7 @@ import javax.print.Doc;
 import java.sql.Time;
 import java.util.*;
 
+@RequestMapping("/admin")
 @Controller
 public class BruteController {
     private DoctorRepository doctorRepository;
@@ -31,7 +32,7 @@ public class BruteController {
     }
     @RequestMapping(path = "/brute")
     public String brute(Model model) {
-        return "brute";
+        return "brute1";
     }
 
     @RequestMapping(path = "/bruteEx")
@@ -89,14 +90,12 @@ public class BruteController {
             for (int z = 0; z< 7; z++) {
                 int randomIndex = rand.nextInt(specialties.size());
                 Specialty specialty = specialties.get(randomIndex);
-                System.out.println("================="+specialty.toString()+"=====================");
-                if (specialty==clerksPhase1.get(z).getSpecialty()){
-                    System.out.println("in here");
-                    clerks.put(clerksPhase1.get(z).getSpecialty().toString(), clerksPhase1.get(z));
-                    TimeSlot time = misc.toTimeSlot(clerksPhase1.get(z).getDay());
+                if (specialty==clerksPhase1.get(i).getSpecialty()){
+                    clerks.put(clerksPhase1.get(i).getSpecialty().toString(), clerksPhase1.get(i));
+                    TimeSlot time = misc.toTimeSlot(clerksPhase1.get(i).getDay());
                     studentSched.add(time);
-                    if (clerksPhase1.get(z).getTime2()!=null) {
-                        studentSched.add(clerksPhase1.get(z).getTime2());
+                    if (clerksPhase1.get(i).getTime2()!=null) {
+                        studentSched.add(clerksPhase1.get(i).getTime2());
                     }
                     specialties.remove(randomIndex);
                     continue;
@@ -185,14 +184,14 @@ public class BruteController {
             if (clerks.size()!=7) {
                 System.out.println("fail at student "+i);
                 System.out.println(clerks.size());
-                return "brute";
+                return "brute1";
             }
             stu.setClerkships(clerks);
             stu.setHasSchedule(true);
             studentRepository.save(stu);
         }
 
-        return "brute";
+        return "brute1";
     }
 
     private TimeSlot compareSchedule(ArrayList<TimeSlot> studentSched, ArrayList<TimeSlot> doctorSched, short need) {

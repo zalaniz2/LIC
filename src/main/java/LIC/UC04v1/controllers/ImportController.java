@@ -34,7 +34,7 @@ import java.io.*;
         database. We'll have to fix this and do extensive testing, but it works at a low fidelity!
     If you have questions about anything, let me (Katie) know. I'll come back and clean up/comment better soon.
  */
-
+@RequestMapping("/admin")
 @Controller
 public class ImportController {
 
@@ -64,12 +64,13 @@ public class ImportController {
         fileAdmin = adminRepository.findAll().iterator().next();
         updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
 
-        return "ImportData";
+        return "ImportData1";
     }
 
     @RequestMapping(path = "/import-Data/{type}/{file}")
     public String docImport(Model model, @PathVariable String type, MultipartFile file) throws IOException {
         String fileLocation;
+        System.out.println(file);
         InputStream in = file.getInputStream();
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
@@ -90,7 +91,7 @@ public class ImportController {
         if (!(fileLocation.endsWith(".xlsx")||fileLocation.endsWith(".xls")||fileLocation.endsWith(".csv"))){
            model.addAttribute(type+"Error", "Incorrect file format. Please upload a .xlsx, .xls, or .cvs file.");
            updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
-           return "ImportData";
+           return "ImportData1";
         }
 
         FileOutputStream f = new FileOutputStream(fileLocation);
@@ -137,7 +138,7 @@ public class ImportController {
             else
                 model.addAttribute("studentsError", errorMsg);
             updateThymeleaf(model,fileAdmin.getDocFile(),fileAdmin.getStuFile());
-            return "ImportData";
+            return "ImportData1";
         }
 
         //Update the stored file names
@@ -151,7 +152,7 @@ public class ImportController {
         }
         adminRepository.save(fileAdmin);
         updateThymeleaf(model,currentDocFile,currentStuFile);
-        return "ImportData";
+        return "ImportData1";
     }
 
     /*******************************************************************************************************************

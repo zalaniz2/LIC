@@ -4,7 +4,6 @@ package LIC.UC04v1.controllers;
 import LIC.UC04v1.model.Clerkship;
 import LIC.UC04v1.model.Doctor;
 import LIC.UC04v1.model.Student;
-import LIC.UC04v1.repositories.ClerkshipRepository;
 import LIC.UC04v1.repositories.DoctorRepository;
 import LIC.UC04v1.repositories.StudentRepository;
 import com.opencsv.CSVWriter;
@@ -17,64 +16,60 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.supercsv.cellprocessor.FmtDate;
-import org.supercsv.cellprocessor.constraint.NotNull;
-import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.cellprocessor.Optional;
-import org.supercsv.io.CsvBeanWriter;
-import org.supercsv.io.ICsvBeanWriter;
-import org.supercsv.prefs.CsvPreference;
 import java.util.*;
-import java.awt.Color;
 
 
+/**************************************************************************************
+* Controller that handles exporting doctors and students schedules into csv or
+* excel format based on the url mapping indicated by the front end file "export1.html".
+ *Uses Apachie POI to write to excel workbooks.
+ ***************************************************************************************/
+
+
+//All url mappings in export controller begin with /admin
+@RequestMapping("/admin")
 @Controller
 public class ExportController{
 
     private DoctorRepository doctorRepository;
     private StudentRepository studentRepository;
-    private ClerkshipRepository clerkshipRepository;
-    private List<Object> studentList;
 
-    public ExportController(DoctorRepository doctorRepository, StudentRepository studentRepository, ClerkshipRepository clerkshipRepository){
+    public ExportController(DoctorRepository doctorRepository, StudentRepository studentRepository){
         this.doctorRepository = doctorRepository;
         this.studentRepository = studentRepository;
-        this.clerkshipRepository = clerkshipRepository;
-
     }
 
+    // url mapping /admin/export returns the "export1.html" view
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public String home(){
-        return "export";
+        return "export1";
     }
 
 
+    /*Method for exporting doctors schedules in csv format.
+    * Doctors' schedule info is downloaded on local machine
+    * in the format indicated by the header.
+     */
     @RequestMapping(value = "/downloadDoctorScheduleCSV")
-    public void downloadDoctorCSV(HttpServletResponse response1) throws IOException {
+    public void downloadDoctorCSV(HttpServletResponse response1){
 
         String csvFileName = "doctorsSchedule.csv";
         response1.setContentType("text/csv"); //set content type of the response so that jQuery knows what it can expect
-
 
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"", csvFileName);
         response1.setHeader(headerKey, headerValue);
 
-
         ArrayList<Doctor> listDoctors = new ArrayList<>();
 
+        //add all doctors to listDoctors
         for(Doctor doc: doctorRepository.findAll()) { listDoctors.add(doc); } //list of doctors
-
 
         try{
             CSVWriter writer = new CSVWriter (response1.getWriter());
@@ -82,29 +77,34 @@ public class ExportController{
             String[] header = {"Doctor Name", "Title", "Student", "Description", "Day", "Week", "Start Time", "End Time", "Location", "Event Type"};
             writer.writeNext(header);
 
+            //For every doctor
             for(Doctor doc: listDoctors) {
                 List<Clerkship> clerkships = doc.getClerkship();
+                //for every clerkship of a doctor
                 for (Clerkship clerk : clerkships) {
                     String docName = doc.getName();
                     String title = clerk.getTitle();
                     String stuName = clerk.getStudent().getName();
                     String description = "";
                     String day = clerk.getTime();
-                    String week = "";
+                    String week;
                     String week2 = "week 2";
                     String startT = clerk.getStartTime();
                     String endT = clerk.getEndTime();
-                    String loc = "";
+                    String loc = ""; //THIS NEEDS TO BE CHANGED
                     String event = "Clinic";
+
+                    //if the clerkship occurs in week 1
                     if (clerk.getDay() < 12) {
                         week = "week 1";
-                    } else {
+                    } else { //clerkship is in week 2
                         week = "week 2";
                     }
 
                     String[] data = {docName, title, stuName, description, day, week, startT, endT, loc, event};
                     writer.writeNext(data);
 
+                    //if the clerkship occurs both weeks create second data entry for week 2
                     if (title.equals("Surgery") || title.equals("Pediatrics") || title.equals("Family Medicine") || title.equals("Internal Medicine")) {
                         String[] data1 = {docName, title, stuName, description, day, week2, startT, endT, loc, event};
                         writer.writeNext(data1);
@@ -117,24 +117,24 @@ public class ExportController{
             }
     }
 
+    /*******************************************************
+     *Method for exporting doctors schedules in csv format.
+     * Doctors' schedule info is downloaded on local machine
+     * in the format indicated by the header.
+     *******************************************************/
     @RequestMapping(value = "/downloadStudentScheduleCSV")
-    public void downloadStudentCSV(HttpServletResponse response2) throws IOException {
+    public void downloadStudentCSV(HttpServletResponse response2){
 
         String csvFileName = "studentsSchedule.csv";
         response2.setContentType("text/csv");
-
 
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"", csvFileName);
         response2.setHeader(headerKey, headerValue);
 
-
-
-
         ArrayList<Student> listStudents = new ArrayList<>();
 
         for(Student stu: studentRepository.findAll()) { listStudents.add(stu); } //list of doctors
-
 
         try{
             CSVWriter writer = new CSVWriter (response2.getWriter());
@@ -155,55 +155,65 @@ public class ExportController{
                     String doctor = clerk.getDoctor().getName();
                     String description = "";
                     String day = clerk.getTime();
-                    String week = "";
+                    String week;
                     String week2 = "Week 2";
                     String startT = clerk.getStartTime();
                     String endT = clerk.getEndTime();
                     String loc = clerk.getLocation().name();
                     String event = "clinic";
+
+
                     if (clerk.getDay() < 12) {
                         week = "week 1";
                     } else {
                         week = "week 2";
                     }
+
                     String[] data = {stuName, title, doctor, description, day, week, startT, endT, loc, event};
                     writer.writeNext(data);
+
                     if (title.equals("Surgery") || title.equals("Pediatrics") || title.equals("Family Medicine") || title.equals("Internal Medicine")) {
-                        String[] data1 = {stuName, title, doctor, description, day, week, startT, endT, loc, event};
+                        String[] data1 = {stuName, title, doctor, description, day, week2, startT, endT, loc, event};
                         writer.writeNext(data1);
                     }
                 }
-                }
+            }
             writer.close();
         }catch (IOException e){
             e.printStackTrace();
         }
-
     }
 
+    /*************************************************************************************
+     *Method that downloads to local machine all student's schedules in .xlsx format for
+     *visual representation. Each schedule is a separate sheet in the excel workbook.
+     *************************************************************************************/
     @RequestMapping(value = "/downloadStudentExcel")
     public void downloadExcel(HttpServletResponse response2) throws IOException{
 
+        final boolean doctor = false; //is it a doctor's schedule (used in write cell method)
         int yr = Calendar.getInstance().get(Calendar.YEAR);
         String year = Integer.toString(yr);
         String excelFileName = "StudentSchedules-" + year + ".xlsx"; //file name
 
-        response2.setHeader("Content-Disposition", "attachment; filename="+excelFileName); //set content type of the response so that jQuery knows what to expect
+        //set content type of the response so that jQuery knows what to expect
+        response2.setHeader("Content-Disposition", "attachment; filename="+excelFileName);
         response2.setContentType("application/vnd.ms-excel");
 
-        String[] columns = {"Time/Period","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}; //weekly calendar header
+        //weekly calendar header
+        String[] columns = {"Time/Period","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
+        //new excel workbook
         Workbook workbook = new XSSFWorkbook(); //New excel workbook
 
+        /****************************CREATING NEW FONTS AND HEADERS FOR CELLS START**********************************/
         //Header Cell style formatting
         XSSFFont headerFont = (XSSFFont) workbook.createFont();
         CellStyle headerCellStyle = workbook.createCellStyle();
 
-
         //Header Cell style formatting
         XSSFFont headerFont1 = (XSSFFont) workbook.createFont();
         CellStyle headerCellStyle1 = workbook.createCellStyle();
-
 
         //2nd Header Cell Style formatting
         XSSFFont headerFont2 = (XSSFFont) workbook.createFont();
@@ -214,39 +224,37 @@ public class ExportController{
         XSSFFont font = (XSSFFont) workbook.createFont();
         XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
 
-
-
         //Style for data cells
         XSSFFont dataFont = (XSSFFont) workbook.createFont();
         XSSFCellStyle dataStyle = (XSSFCellStyle) workbook.createCellStyle();
 
-
-        //LEAPS cell style
+        //Style for LEAPS cells
         XSSFCellStyle leapsStyle = (XSSFCellStyle) workbook.createCellStyle();
 
         //Style for WEEK header cell
         XSSFFont weekHeaderFont = (XSSFFont) workbook.createFont();
         CellStyle weekHeaderStyle = workbook.createCellStyle();
 
-
         //Font and Style for Stu Info Cell
         XSSFFont stuInfoFont = (XSSFFont) workbook.createFont();
         CellStyle stuInfoStyle = workbook.createCellStyle();
 
         //edit styles for cells and fonts
-        createStyle(workbook,headerFont,headerCellStyle,headerFont1,headerCellStyle1,headerFont2,headerCellStyle2,
+        createStyle(headerFont,headerCellStyle,headerFont1,headerCellStyle1,headerFont2,headerCellStyle2,
                 font,style,dataFont,dataStyle,leapsStyle,weekHeaderFont,weekHeaderStyle,stuInfoFont,stuInfoStyle);
-
+        /****************************CREATING NEW FONTS AND HEADERS END**********************************/
 
         //Creates a new sheet in the workbook for every student in repository
         for(Student stu: studentRepository.findAll()){
 
-            Map<String, Clerkship> clerkships = stu.getClerkships(); //map of the student's clerkships
+            //map of the student's clerkships
+            Map<String, Clerkship> clerkships = stu.getClerkships();
 
             String stuName = stu.getName() + "'s Schedule-"+year; //sheet name
             Sheet sheet = workbook.createSheet(stuName); //create new sheet
             sheet.setDefaultColumnWidth(20); //set default column width
 
+            /************CELL CREATION AND FORMATTING START*********************/
             sheet.addMergedRegion(new CellRangeAddress(0,0,3,6));
             String head = "Weekly Schedule";
             Cell cellMerge = CellUtil.createCell(CellUtil.getRow(0,sheet),3,head,headerCellStyle);
@@ -300,7 +308,6 @@ public class ExportController{
                 }
             }
 
-
             //Week 1 Header
             Cell week1Cell = row2.createCell(1);
             week1Cell.setCellValue("WEEK 1:");
@@ -335,8 +342,6 @@ public class ExportController{
             afternoonCell2.setCellValue("Afternoon:");
             afternoonCell2.setCellStyle(style);
 
-
-
             //Creating references for all cells where clerkships will need to go
             CellReference MonAM = new CellReference("C5");
             CellReference MonPM = new CellReference("C6");
@@ -350,8 +355,6 @@ public class ExportController{
             CellReference FriPM = new CellReference("G6");
             CellReference SatAM = new CellReference("H5");
             CellReference SatPM = new CellReference("H6");
-            //CellReference SunAM = new CellReference("I5");
-            //CellReference SunPM = new CellReference("I6");
 
             CellReference MonAM2 = new CellReference("C12");
             CellReference MonPM2 = new CellReference("C13");
@@ -375,128 +378,133 @@ public class ExportController{
             Cell c20 = r20.getCell(ThursPM2.getCol());
             c20.setCellValue("LEAPS");
             c20.setCellStyle(leapsStyle);
+            /************CELL CREATION AND FORMATTING END *********************/
 
             //Iterates through all clerkships a student has and place info in correct cell 
             for(String key: clerkships.keySet()){
                 Clerkship clerk = clerkships.get(key);
-                String s = clerk.getSpecialty().name();
                 Specialty specialty = clerk.getSpecialty();
+
+                //Find cell that corresponds to day of clerkship
                 switch(clerk.getDay()) {
                     case 0:
-                        writeToCell(sheet, MonAM,dataStyle,clerk);
+                        writeToCell(sheet, MonAM,dataStyle,clerk,doctor);
                         break;
                     case 1:
-                        writeToCell(sheet, MonPM,dataStyle,clerk);
+                        writeToCell(sheet, MonPM,dataStyle,clerk,doctor);
                         break;
                     case 2:
-                        writeToCell(sheet, TuesAM,dataStyle,clerk);
+                        writeToCell(sheet, TuesAM,dataStyle,clerk,doctor);
                         break;
                     case 3:
-                        writeToCell(sheet, TuesPM,dataStyle,clerk);
+                        writeToCell(sheet, TuesPM,dataStyle,clerk,doctor);
                         break;
                     case 4:
-                        writeToCell(sheet, WedAM,dataStyle,clerk);
+                        writeToCell(sheet, WedAM,dataStyle,clerk,doctor);
                         break;
                     case 5:
-                        writeToCell(sheet, WedPM,dataStyle,clerk);
+                        writeToCell(sheet, WedPM,dataStyle,clerk,doctor);
                         break;
                     case 6:
-                        writeToCell(sheet, ThursAM,dataStyle,clerk);
+                        writeToCell(sheet, ThursAM,dataStyle,clerk,doctor);
                         break;
                     case 8:
-                        writeToCell(sheet, FriAM,dataStyle,clerk);
+                        writeToCell(sheet, FriAM,dataStyle,clerk,doctor);
                         break;
                     case 9:
-                        writeToCell(sheet, FriPM,dataStyle,clerk);
+                        writeToCell(sheet, FriPM,dataStyle,clerk,doctor);
                         break;
                     case 10:
-                        writeToCell(sheet, SatAM,dataStyle,clerk);
+                        writeToCell(sheet, SatAM,dataStyle,clerk,doctor);
                         break;
                     case 11:
-                        writeToCell(sheet, SatPM,dataStyle,clerk);
+                        writeToCell(sheet, SatPM,dataStyle,clerk,doctor);
                         break;
                     case 12:
-                        writeToCell(sheet, MonAM2,dataStyle,clerk);
+                        writeToCell(sheet, MonAM2,dataStyle,clerk,doctor);
                         break;
                     case 13:
-                        writeToCell(sheet, MonPM2,dataStyle,clerk);
+                        writeToCell(sheet, MonPM2,dataStyle,clerk,doctor);
                         break;
                     case 14:
-                        writeToCell(sheet, TuesPM2,dataStyle,clerk);
+                        writeToCell(sheet, TuesPM2,dataStyle,clerk,doctor);
                         break;
                     case 15:
-                        writeToCell(sheet, TuesPM2,dataStyle,clerk);
+                        writeToCell(sheet, TuesPM2,dataStyle,clerk,doctor);
                         break;
                     case 16:
-                        writeToCell(sheet, WedAM2,dataStyle,clerk);
+                        writeToCell(sheet, WedAM2,dataStyle,clerk,doctor);
                         break;
                     case 17:
-                        writeToCell(sheet, WedPM2,dataStyle,clerk);
+                        writeToCell(sheet, WedPM2,dataStyle,clerk,doctor);
                         break;
                     case 18:
-                        writeToCell(sheet, ThursAM2,dataStyle,clerk);
+                        writeToCell(sheet, ThursAM2,dataStyle,clerk,doctor);
                         break;
                     case 20:
-                        writeToCell(sheet, FriAM2,dataStyle,clerk);
+                        writeToCell(sheet, FriAM2,dataStyle,clerk,doctor);
                         break;
                     case 21:
-                        writeToCell(sheet, FriPM2,dataStyle,clerk);
+                        writeToCell(sheet, FriPM2,dataStyle,clerk,doctor);
                         break;
                     case 22:
-                        writeToCell(sheet, SatAM2,dataStyle,clerk);
+                        writeToCell(sheet, SatAM2,dataStyle,clerk,doctor);
                         break;
                     case 23:
-                        writeToCell(sheet, SatPM2,dataStyle,clerk);
+                        writeToCell(sheet, SatPM2,dataStyle,clerk,doctor);
                         break;
                         default:
                             System.out.println("Did not write to cell");
                             System.out.println(clerk.getDay());
                             break;
                 }
+
+                //If the clerkship occurs both weeks
                 if(specialty==Specialty.FamilyMedicine||specialty==Specialty.Pediatrics||specialty==Specialty.Surgery||specialty==Specialty.InternalMedicine){
                     int week2 = clerk.getDay() + 12;
                     switch(week2){
                         case 12:
-                            writeToCell(sheet, MonAM2,dataStyle,clerk);
+                            writeToCell(sheet, MonAM2,dataStyle,clerk,doctor);
                             break;
                         case 13:
-                            writeToCell(sheet, MonPM2,dataStyle,clerk);
+                            writeToCell(sheet, MonPM2,dataStyle,clerk,doctor);
                             break;
                         case 14:
-                            writeToCell(sheet, TuesAM2,dataStyle,clerk);
+                            writeToCell(sheet, TuesAM2,dataStyle,clerk,doctor);
                             break;
                         case 15:
-                            writeToCell(sheet, TuesPM2,dataStyle,clerk);
+                            writeToCell(sheet, TuesPM2,dataStyle,clerk,doctor);
                             break;
                         case 16:
-                            writeToCell(sheet, WedAM2,dataStyle,clerk);
+                            writeToCell(sheet, WedAM2,dataStyle,clerk,doctor);
                             break;
                         case 17:
-                            writeToCell(sheet, WedPM2,dataStyle,clerk);
+                            writeToCell(sheet, WedPM2,dataStyle,clerk,doctor);
                             break;
                         case 18:
-                            writeToCell(sheet, ThursAM2,dataStyle,clerk);
+                            writeToCell(sheet, ThursAM2,dataStyle,clerk,doctor);
                             break;
                         case 20:
-                            writeToCell(sheet, FriAM2,dataStyle,clerk);
+                            writeToCell(sheet, FriAM2,dataStyle,clerk,doctor);
                             break;
                         case 21:
-                            writeToCell(sheet, FriPM2,dataStyle,clerk);
+                            writeToCell(sheet, FriPM2,dataStyle,clerk,doctor);
                             break;
                         case 22:
-                            writeToCell(sheet, SatAM2,dataStyle,clerk);
+                            writeToCell(sheet, SatAM2,dataStyle,clerk,doctor);
                             break;
                         case 23:
-                            writeToCell(sheet, SatPM2,dataStyle,clerk);
+                            writeToCell(sheet, SatPM2,dataStyle,clerk,doctor);
                             break;
                         default:
                             break;
-                }
+                    }
                 }
             }
         }
 
-        OutputStream outputStream = null;
+        //Writing to workbook
+        OutputStream outputStream;
         try {
             outputStream = response2.getOutputStream();
             workbook.write(outputStream);
@@ -506,40 +514,17 @@ public class ExportController{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         workbook.close();
-
     }
 
-    public void writeToCell(Sheet sheet, CellReference weekDay, XSSFCellStyle dataStyle, Clerkship clerk){
-        Row row = sheet.getRow(weekDay.getRow());
-        Cell cell = row.getCell(weekDay.getCol());
-        cell.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nPhysician: " + clerk.getDoctor().getName());
-        cell.setCellStyle(dataStyle);
-
-    }
-
-
-    public static CellProcessor[] getProcessors(){
-
-        final CellProcessor[] PROCESSORS = new CellProcessor[]{
-                new NotNull(), //Student Name
-                new Optional(), //Clerkship Title
-                new Optional(), //Doctor Name
-                new Optional(), //Description
-                new NotNull(), //"Time" (day) remove
-                new Optional(), //Date
-                new Optional(), //Start Time (need to format)
-                new Optional(), //End Time (need to format)
-                new Optional(), //location
-                new Optional(), //Event Type
-        };
-        return PROCESSORS;
-    }
-
+    /************************************************************************************
+     *Method that downloads to local machine all doctor's schedules in .xlsx format
+     *for visual representation. Each schedule is a separate sheet in the excel workbook.
+     ************************************************************************************/
     @RequestMapping(value = "/downloadDoctorExcel")
     public void downloadDoctorExcel(HttpServletResponse response1) throws IOException {
 
+        final boolean doctor = true; //is it a doctor's schedule (used in write cell method)
         int yr = Calendar.getInstance().get(Calendar.YEAR);
         String year = Integer.toString(yr);
         String excelFileName = "DoctorSchedules-" + year + ".xlsx"; //file name
@@ -551,6 +536,7 @@ public class ExportController{
 
         Workbook workbook = new XSSFWorkbook(); //New excel workbook
 
+        /****************************CREATING NEW FONTS AND HEADERS FOR CELLS START**********************************/
         XSSFFont headerFont = (XSSFFont) workbook.createFont();
         CellStyle headerCellStyle = workbook.createCellStyle();
 
@@ -574,16 +560,17 @@ public class ExportController{
         XSSFFont stuInfoFont = (XSSFFont) workbook.createFont();
         CellStyle stuInfoStyle = workbook.createCellStyle();
 
-        createStyle(workbook,headerFont,headerCellStyle,headerFont1,headerCellStyle1,headerFont2,headerCellStyle2,
+        createStyle(headerFont,headerCellStyle,headerFont1,headerCellStyle1,headerFont2,headerCellStyle2,
                 font,style,dataFont,dataStyle,leapsStyle,weekHeaderFont,weekHeaderStyle,stuInfoFont,stuInfoStyle);
 
+        /****************************CREATING NEW FONTS AND HEADERS FOR CELLS END**********************************/
 
-        //Creates a new sheet in the workbook for every student in repository
+        //Creates a new sheet in the workbook for every doctor in repository
         for(Doctor doc: doctorRepository.findAll()) {
 
             if (doc.getHasStu() == 1) { //only the doctors that have students
 
-                List<Clerkship> clerkships = doc.getClerkship(); //map of the student's clerkships
+                List<Clerkship> clerkships = doc.getClerkship(); //map of the doctor's clerkships
 
                 String docName = doc.getName() + "'s Schedule-" + year; //sheet name
                 Sheet sheet = workbook.createSheet(docName); //create new sheet
@@ -594,6 +581,7 @@ public class ExportController{
                 Cell cellMerge = CellUtil.createCell(CellUtil.getRow(0, sheet), 3, head, headerCellStyle);
                 CellUtil.setAlignment(cellMerge, HorizontalAlignment.CENTER);
 
+                /************CELL CREATION AND FORMATTING START*********************/
                 //Creating Header cell
                 Row headerRow = sheet.createRow(1);
                 Cell headerCell = headerRow.createCell(0);
@@ -605,7 +593,7 @@ public class ExportController{
                 //Creating cell for student info
                 Row row2 = sheet.createRow(2);
                 Cell stuNameCell = row2.createCell(0);
-                stuNameCell.setCellValue("Student: " + doc.getName() + "\n" + "Email: " + doc.getEmail());
+                stuNameCell.setCellValue("Doctor: " + doc.getName() + "\n" + "Email: " + doc.getEmail());
                 stuNameCell.setCellStyle(stuInfoStyle);
 
                 //creating weekday header cells (w1)
@@ -641,8 +629,6 @@ public class ExportController{
                         cell.setCellStyle(dataStyle);
                     }
                 }
-
-
                 //Week 1 Header
                 Cell week1Cell = row2.createCell(1);
                 week1Cell.setCellValue("WEEK 1:");
@@ -715,123 +701,120 @@ public class ExportController{
                 Cell c20 = r20.getCell(ThursPM2.getCol());
                 c20.setCellValue("LEAPS");
                 c20.setCellStyle(leapsStyle);
+                /************CELL CREATION AND FORMATTING END*********************/
 
                 //Iterates through all clerkships a student has and place info in correct cell
-
                 for (Clerkship clerk : clerkships) {
-
-                    String s = clerk.getSpecialty().name();
                     Specialty specialty = clerk.getSpecialty();
                     switch (clerk.getDay()) {
                         case 0:
-                            writeToCell(sheet, MonAM, dataStyle, clerk);
+                            writeToCell(sheet, MonAM, dataStyle, clerk, doctor);
                             break;
                         case 1:
-                            writeToCell(sheet, MonPM, dataStyle, clerk);
+                            writeToCell(sheet, MonPM, dataStyle, clerk, doctor);
                             break;
                         case 2:
-                            writeToCell(sheet, TuesAM, dataStyle, clerk);
+                            writeToCell(sheet, TuesAM, dataStyle, clerk, doctor);
                             break;
                         case 3:
-                            writeToCell(sheet, TuesPM, dataStyle, clerk);
+                            writeToCell(sheet, TuesPM, dataStyle, clerk, doctor);
                             break;
                         case 4:
-                            writeToCell(sheet, WedAM, dataStyle, clerk);
+                            writeToCell(sheet, WedAM, dataStyle, clerk, doctor);
                             break;
                         case 5:
-                            writeToCell(sheet, WedPM, dataStyle, clerk);
+                            writeToCell(sheet, WedPM, dataStyle, clerk, doctor);
                             break;
                         case 6:
-                            writeToCell(sheet, ThursAM, dataStyle, clerk);
+                            writeToCell(sheet, ThursAM, dataStyle, clerk, doctor);
                             break;
-                    /*case 7:
-                        writeToCell(sheet, ThursPM,dataStyle,clerk);
-                        break;*/
                         case 8:
-                            writeToCell(sheet, FriAM, dataStyle, clerk);
+                            writeToCell(sheet, FriAM, dataStyle, clerk, doctor);
                             break;
                         case 9:
-                            writeToCell(sheet, FriPM, dataStyle, clerk);
+                            writeToCell(sheet, FriPM, dataStyle, clerk, doctor);
                             break;
                         case 10:
-                            writeToCell(sheet, SatAM, dataStyle, clerk);
+                            writeToCell(sheet, SatAM, dataStyle, clerk, doctor);
                             break;
                         case 11:
-                            writeToCell(sheet, SatPM, dataStyle, clerk);
+                            writeToCell(sheet, SatPM, dataStyle, clerk, doctor);
                             break;
                         case 12:
-                            writeToCell(sheet, MonAM2, dataStyle, clerk);
+                            writeToCell(sheet, MonAM2, dataStyle, clerk, doctor);
                             break;
                         case 13:
-                            writeToCell(sheet, MonPM2, dataStyle, clerk);
+                            writeToCell(sheet, MonPM2, dataStyle, clerk, doctor);
                             break;
                         case 14:
-                            writeToCell(sheet, TuesPM2, dataStyle, clerk);
+                            writeToCell(sheet, TuesPM2, dataStyle, clerk,doctor);
                             break;
                         case 15:
-                            writeToCell(sheet, TuesPM2, dataStyle, clerk);
+                            writeToCell(sheet, TuesPM2, dataStyle, clerk, doctor);
                             break;
                         case 16:
-                            writeToCell(sheet, WedAM2, dataStyle, clerk);
+                            writeToCell(sheet, WedAM2, dataStyle, clerk, doctor);
                             break;
                         case 17:
-                            writeToCell(sheet, WedPM2, dataStyle, clerk);
+                            writeToCell(sheet, WedPM2, dataStyle, clerk, doctor);
                             break;
                         case 18:
-                            writeToCell(sheet, ThursAM2, dataStyle, clerk);
+                            writeToCell(sheet, ThursAM2, dataStyle, clerk, doctor);
                             break;
                         case 20:
-                            writeToCell(sheet, FriAM2, dataStyle, clerk);
+                            writeToCell(sheet, FriAM2, dataStyle, clerk, doctor);
                             break;
                         case 21:
-                            writeToCell(sheet, FriPM2, dataStyle, clerk);
+                            writeToCell(sheet, FriPM2, dataStyle, clerk, doctor);
                             break;
                         case 22:
-                            writeToCell(sheet, SatAM2, dataStyle, clerk);
+                            writeToCell(sheet, SatAM2, dataStyle, clerk, doctor);
                             break;
                         case 23:
-                            writeToCell(sheet, SatPM2, dataStyle, clerk);
+                            writeToCell(sheet, SatPM2, dataStyle, clerk, doctor);
                             break;
                         default:
                             System.out.println("Did not write to cell");
                             System.out.println(clerk.getDay());
                             break;
                     }
+
+                    //If the clerkship occurs both weeks
                     if (specialty == Specialty.FamilyMedicine || specialty == Specialty.Pediatrics || specialty == Specialty.Surgery || specialty == Specialty.InternalMedicine) {
                         int week2 = clerk.getDay() + 12;
                         switch (week2) {
                             case 12:
-                                writeToCell(sheet, MonAM2, dataStyle, clerk);
+                                writeToCell(sheet, MonAM2, dataStyle, clerk, doctor);
                                 break;
                             case 13:
-                                writeToCell(sheet, MonPM2, dataStyle, clerk);
+                                writeToCell(sheet, MonPM2, dataStyle, clerk, doctor);
                                 break;
                             case 14:
-                                writeToCell(sheet, TuesAM2, dataStyle, clerk);
+                                writeToCell(sheet, TuesAM2, dataStyle, clerk, doctor);
                                 break;
                             case 15:
-                                writeToCell(sheet, TuesPM2, dataStyle, clerk);
+                                writeToCell(sheet, TuesPM2, dataStyle, clerk, doctor);
                                 break;
                             case 16:
-                                writeToCell(sheet, WedAM2, dataStyle, clerk);
+                                writeToCell(sheet, WedAM2, dataStyle, clerk, doctor);
                                 break;
                             case 17:
-                                writeToCell(sheet, WedPM2, dataStyle, clerk);
+                                writeToCell(sheet, WedPM2, dataStyle, clerk, doctor);
                                 break;
                             case 18:
-                                writeToCell(sheet, ThursAM2, dataStyle, clerk);
+                                writeToCell(sheet, ThursAM2, dataStyle, clerk, doctor);
                                 break;
                             case 20:
-                                writeToCell(sheet, FriAM2, dataStyle, clerk);
+                                writeToCell(sheet, FriAM2, dataStyle, clerk, doctor);
                                 break;
                             case 21:
-                                writeToCell(sheet, FriPM2, dataStyle, clerk);
+                                writeToCell(sheet, FriPM2, dataStyle, clerk, doctor);
                                 break;
                             case 22:
-                                writeToCell(sheet, SatAM2, dataStyle, clerk);
+                                writeToCell(sheet, SatAM2, dataStyle, clerk, doctor);
                                 break;
                             case 23:
-                                writeToCell(sheet, SatPM2, dataStyle, clerk);
+                                writeToCell(sheet, SatPM2, dataStyle, clerk, doctor);
                                 break;
                             default:
                                 break;
@@ -840,8 +823,9 @@ public class ExportController{
                 }
             }
         }
+
         //writing to workbook
-        OutputStream outputStream = null;
+        OutputStream outputStream;
         try {
             outputStream = response1.getOutputStream();
             workbook.write(outputStream);
@@ -851,13 +835,29 @@ public class ExportController{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         workbook.close();
-
     }
 
+    /*****************************************************************
+     *Method that is passed cell, data style, and clerkship and writes
+     * info to the cell.
+     ******************************************************************/
+    private void writeToCell(Sheet sheet, CellReference weekDay, XSSFCellStyle dataStyle, Clerkship clerk, boolean doctor) {
+        Row row = sheet.getRow(weekDay.getRow());
+        Cell cell = row.getCell(weekDay.getCol());
+        if (doctor) {
+            cell.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nStudent: " + clerk.getStudent().getName());
+            cell.setCellStyle(dataStyle);
+        } else{
+            cell.setCellValue("Title: " + clerk.getTitle() + "\nLocation: " + clerk.getLocation() + "\nDoctor: " + clerk.getDoctor().getName());
+            cell.setCellStyle(dataStyle);
+        }
+    }
 
-    public void createStyle(Workbook workbook,XSSFFont headerFont,CellStyle headerCellStyle, XSSFFont headerFont1,
+    /*****************************************************************
+     *Method that edits the styles and fonts for the cells
+     ******************************************************************/
+    private void createStyle(XSSFFont headerFont,CellStyle headerCellStyle, XSSFFont headerFont1,
                             CellStyle headerCellStyle1,XSSFFont headerFont2,XSSFCellStyle headerCellStyle2,
                            XSSFFont font,XSSFCellStyle style,XSSFFont dataFont,XSSFCellStyle dataStyle,XSSFCellStyle leapsStyle,
                            XSSFFont weekHeaderFont,CellStyle weekHeaderStyle,XSSFFont stuInfoFont,CellStyle stuInfoStyle){
@@ -893,6 +893,7 @@ public class ExportController{
         style.setFont(font);
         style.setFillForegroundColor(new XSSFColor(new java.awt.Color(72,130,63)));
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setVerticalAlignment(VerticalAlignment.TOP);
         style.setBorderBottom(BorderStyle.THIN);
         style.setBorderTop(BorderStyle.THIN);
         style.setBorderRight(BorderStyle.THIN);
@@ -904,6 +905,7 @@ public class ExportController{
         dataStyle.setFont(dataFont);
         dataStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(193,224,184)));
         dataStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        dataStyle.setVerticalAlignment(VerticalAlignment.TOP);
         dataStyle.setBorderBottom(BorderStyle.THIN);
         dataStyle.setBorderTop(BorderStyle.THIN);
         dataStyle.setBorderRight(BorderStyle.THIN);
@@ -913,8 +915,8 @@ public class ExportController{
         //LEAPS cell style
         leapsStyle.setFont(font);
         leapsStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(136, 132, 132)));
-        leapsStyle.setAlignment(CellStyle.ALIGN_CENTER);
-        leapsStyle.setVerticalAlignment(CellStyle.VERTICAL_JUSTIFY);
+        leapsStyle.setAlignment(HorizontalAlignment.CENTER);
+        leapsStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         leapsStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         leapsStyle.setBorderBottom(BorderStyle.THIN);
         leapsStyle.setBorderTop(BorderStyle.THIN);
@@ -933,5 +935,4 @@ public class ExportController{
         stuInfoStyle.setFont(stuInfoFont);
         stuInfoStyle.setWrapText(true);
     }
-
 }

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Admin Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<style>
+    .navbar{
+        margin: auto;
+        width: 100%;
+        padding: 10px;
+    }
+    .header{
+        height: 120px;
+        min-height: 70px;
+        background: #4d1979;
+        box-shadow: 0 2px 4px 4px dimgrey;
+        border-radius: 6px;
+    }
+    body{
+        background-color: #ffffff;
+        background-image: url("https://www.transparenttextures.com/patterns/little-knobs.png");
+        /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+    }
+    .admin-name{
+        margin: auto;
+        font-size: 5vh;
+        color: whitesmoke;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: #a3a9ac;
+        font-weight: bold;
+        text-align: center;
+        padding-top: 3%;
+    }
+    #logout{
+        /* padding-top: 10px;*/
+        text-align: center;
+    }
+    .container{
+        padding-top: 8%;
+        width: 70%;
+        max-width: 100%;
+        text-align: center;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+    .button-link{
+        cursor: pointer;
+        display: inline-block;
+        width: 165px;
+        height: 200px;
+        margin: 8px 5px;
+        padding: 0;
+        background: #a3a9ac;
+        border-radius: 6px;
+        border-bottom: 1px solid black;
+        box-shadow: 0 5px 8px #4d1979;
+        position: relative;
+    }
+    .wrapper{
+        text-align: center;
+        margin: auto;
+        width: 40%;
+        padding-top: 2%;
+        padding-right: 10%;
+    }
+    a{
+        color: white;
+    }
+    .button-label{
+        padding-top: 5%;
+        text-decoration-style: double;
+        border-bottom: 2px solid white;
+    }
+    i{
+        size: 100px;
+    }
+    img{
+        filter: invert(100%);
+        color: white;
+    }
+    .sched-container{
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 2%;
+        width: 75%;
+        max-width: 100%;
+        padding-left: 10%;
+        padding-right: 10%;
+        background: #a3a9ac;
+        border-radius: 6px;
+        border-bottom: 1px solid black;
+        box-shadow: 0 5px 8px #4d1979;
+    }
+    .title{
+        font-size: 30px;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        -webkit-text-stroke-width: 2px;
+        padding-bottom: 2%;
+    }
+
+</style>
+
+
+<body>
+<div class="header">
+    <nav class="navbar" id="top-nav">
+        <a class="navbar-brand" href="/admin/home">
+            <img src="https://12sibh1jhfkr3nhjznpf8n11-wpengine.netdna-ssl.com/wp-content/themes/fw-medical-school/images/main-logo.png" alt="TCU & UNTHSC School of Medicine">
+        </a>
+        <div class="wrapper">
+            <span class="admin-name">View Schedules</span>
+        </div>
+        <form th:action="@{/logout}" id="logout" method="get">
+            <button class="btn btn-lg btn-danger" name="registration"
+                    type="Submit">Logout
+            </button>
+        </form>
+    </nav>
+</div>
+<div class="container cards">
+    <a href="#">
+        <div id="show-students" class="button-link active" onclick="showStudents()">
+            <div class="button-label">Student Schedules</div>
+            <div class="spacer">
+                <span style="font-size: 5em; color: white" >
+                    <i class="fas fa-user-graduate" data-fa-transform="down-2"></i>
+                </span>
+
+            </div>
+        </div>
+    </a>
+    <a href="#">
+        <div id="show-docs" class="button-link active" onclick="showDocs()">
+            <div class="button-label">Doctor Schedules</div>
+            <div class="spacer">
+                  <span style="font-size: 5em; color: white;">
+                    <i class="fas fa-user-md" data-fa-transform="down-2"></i>
+                </span>
+            </div>
+        </div>
+    </a>
+</div>
+<br><br>
+
+<div class="sched-container d-none" id="sched-contain">
+    <div class="title text-center" id="schedHeader"></div>
+<!-- div that holds the student panels, hidden at first until user selects students button -->
+    <div id="students" class="d-none">
+        <div class="panel-group" id="accordionStu" role="tablist" aria-multiselectable="true"></div>
+    </div>
+
+    <!-- div that holds all doctor panels, seperated by 60 per div within -->
+    <div id="doctors" class="d-none">
+        <div class="panel-group" id="accordionDoc" role="tablist" aria-multiselectable="true"></div>
+    </div>
+</div>
+</body>
+<script>
+    /*
+        The following three functions create objects for student, doctor, and clerkship, similar to what is currently in the database.
+        This page currently doesn't talk to the database, so these were created for testing/making the page like it is.
+     */
+
+    //These arrays hold all of the current doctors,students, and clerkships everytime page is loaded.
+    var students = [];
+    var doctors = [];
+    var clerkships = [];
+    // pages holds the amount of pages for pagination creation
+    var pages;
+    var stuScheds;
+    var docScheds;
+    var arg = "";
+    var caller = {
+        "grab": arg
+    }
+
+
+    function showStudents(){
+        console.log("Here1");
+        caller["grab"] = "students";
+        $("#accordionStu").html("");
+        $("#students").removeClass("d-none");
+        $("#doctors").addClass("d-none");
+        $("#sched-contain").removeClass("d-none");
+        getData();
+    }
+
+    function showDocs(){
+        caller["grab"] = "docs";
+        $("#accordionDoc").html("");
+        $("#doctors").removeClass("d-none");
+        $("#students").addClass("d-none");
+        $("#sched-contain").removeClass("d-none");
+        getData();
+    }
+
+    function getData() {
+
+        if (caller.grab === "students") {
+            console.log(caller.grab);
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/admin/grabStudents", // route to hit
+                data: JSON.stringify(caller), // IMPORTANT
+                success: function (result) {
+                    stuScheds = result;
+                    populateStudent();
+                },
+                error: console.log("Error")
+            });
+        }else if(caller.grab === "docs"){
+            console.log(caller.grab);
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: "/admin/grabDocs", // route to hit
+                data: JSON.stringify(caller), // IMPORTANT
+                success: function (result) {
+                    docScheds = result;
+                    populateDoc();
+                },
+                error: console.log("Error")
+            });
+        }
+    }
+
+    function populateStudent(){
+        document.getElementById("schedHeader").innerHTML = "Student Schedules";
+        for(var i =0; i<stuScheds.length; i++){
+            console.log("*********");
+            $("#accordionStu").append(
+                "<\div class=\"card\">" +
+                "<\div class=\"card-header\" id=\"heading" + stuScheds[i].id + "\">" +
+                "<\h5 class=\"mb-0\">" +
+                "<\a class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"#" + stuScheds[i].id + "\" aria-expanded=\"false\" aria-controls=\"collapseOne\">" + stuScheds[i].name + "<\/a>" +
+                "<\/h5>" +
+                "<\/div>" +
+                "<\div id=\"" + stuScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + stuScheds[i].id + "\" data-parent=\"#accordionStu\">" +
+                "<\div class=\"card-body\">" +
+                "ID: " + stuScheds[i].id +  "<\/br> Email: " + stuScheds[i].email + "<\/br>" +
+                "<table class='table table-dark table-striped text-center' id='myTable' style='border:1px solid black'>" +
+                "<tr>"+
+                "<th>CLERKSHIP</th>"+
+                "<th>DOCTOR</th>"+
+                "<th>DAY</th>"+
+                "<th>TIME</th>"+
+                "<th>WEEK 1</th>"+
+                "<th>WEEK 2</th>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='clerk1'>"+stuScheds[i].profList[0]+"</td>"+
+                "<td id='doc1'>"+stuScheds[i].docList[0]+"</td>"+
+                "<td id='day1'>"+stuScheds[i].dayList[0]+"</td>"+
+                "<td id='time1'>"+stuScheds[i].timeList[0]+"</td>"+
+                "<td>"+stuScheds[i].week1List[0] +"</td>"+
+                "<td>"+stuScheds[i].week2List[0] +"</td>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='clerk2'>"+stuScheds[i].profList[1]+"</td>"+
+                "<td id='doc2'>"+stuScheds[i].docList[1]+"</td>"+
+                "<td id='day2'>"+stuScheds[i].dayList[1]+"</td>"+
+                "<td id='time2'>"+stuScheds[i].timeList[1]+"</td>"+
+                "<td>"+stuScheds[i].week1List[1] +"</td>"+
+                "<td>"+stuScheds[i].week2List[1] +"</td>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='clerk3'>"+stuScheds[i].profList[2]+"</td>"+
+                "<td id='doc3'>"+stuScheds[i].docList[2]+"</td>"+
+                "<td id='day3'>"+stuScheds[i].dayList[2]+"</td>"+
+                "<td id='time3'>"+stuScheds[i].timeList[2]+"</td>"+
+                "<td>"+stuScheds[i].week1List[2] +"</td>"+
+                "<td>"+stuScheds[i].week2List[2] +"</td>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='clerk4'>"+stuScheds[i].profList[3]+"</td>"+
+                "<td id='doc4'>"+stuScheds[i].docList[3]+"</td>"+
+                "<td id='day4'>"+stuScheds[i].dayList[3]+"</td>"+
+                "<td id='time4'>"+stuScheds[i].timeList[3]+"</td>"+
+                "<td>"+stuScheds[i].week1List[3] +"</td>"+
+                "<td>"+stuScheds[i].week2List[3] +"</td>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='clerk5'>"+stuScheds[i].profList[4]+"</td>"+
+                "<td id='doc5'>"+stuScheds[i].docList[4]+"</td>"+
+                "<td id='day5'>"+stuScheds[i].dayList[4]+"</td>"+
+                "<td id='time5'>"+stuScheds[i].timeList[4]+"</td>"+
+                "<td>"+stuScheds[i].week1List[4] +"</td>"+
+                "<td>"+stuScheds[i].week2List[4] +"</td>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='clerk6'>"+stuScheds[i].profList[5]+"</td>"+
+                "<td id='doc6'>"+stuScheds[i].docList[5]+"</td>"+
+                "<td id='day6'>"+stuScheds[i].dayList[5]+"</td>"+
+                "<td id='time6'>"+stuScheds[i].timeList[5]+"</td>"+
+                "<td>"+stuScheds[i].week1List[5] +"</td>"+
+                "<td>"+stuScheds[i].week2List[5] +"</td>"+
+                "</tr>"+
+                "<tr>"+
+                "<td id='clerk7'>"+stuScheds[i].profList[6]+"</td>"+
+                "<td id='doc7'>"+stuScheds[i].docList[6]+"</td>"+
+                "<td id='day7'>"+stuScheds[i].dayList[6]+"</td>"+
+                "<td id='time7'>"+stuScheds[i].timeList[6]+"</td>"+
+                "<td>"+stuScheds[i].week1List[6] +"</td>"+
+                "<td>"+stuScheds[i].week2List[6] +"</td>"+
+                "</tr>"+
+                "</table>"+
+                "<\/div>" +
+                "<\/div>");
+        }
+    }
+
+    function populateDoc(){
+        document.getElementById("schedHeader").innerHTML = "Doctor Schedules";
+        for(var i =0; i<docScheds.length; i++){
+            $("#accordionDoc").append(
+                "<\div class=\"card\">" +
+                "<\div class=\"card-header\" id=\"heading" + docScheds[i].id + "\">" +
+                "<\h5 class=\"mb-0\">" +
+                "<\a class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"#" + docScheds[i].id + "\" aria-expanded=\"false\" aria-controls=\"collapseOne\">" + docScheds[i].name + "<\/a>" +
+                "<\/h5>" +
+                "<\/div>" +
+                "<\div id=\"" + docScheds[i].id + "\" class=\"collapse\" aria-labelledby=\"heading" + docScheds[i].id + "\" data-parent=\"#accordionStu\">" +
+                "<\div class=\"card-body\">" +
+                "ID: " + docScheds[i].id +  "<\/br> Email: " + docScheds[i].email + "<\/br>" + "Speciality: "+ docScheds[i].speciality + "<\/br>" +
+                "<\div class=\"container-table\" id=\"container"+i+"\">" +
+                "<\/div>"+
+                "<\/div>" +
+                "<\/div>");
+            createDocTable(docScheds[i],i);
+        }
+    }
+
+    function createDocTable(docSched,index){
+
+        $("#container"+index).append(
+            "<table class='table table-dark table-striped text-center' id=\"myTable"+index+"\" style='border:1px solid black'>" +
+            "<tr>"+
+            "<th>STUDENT</th>"+
+            "<th>DAY</th>"+
+            "<th>TIME</th>"+
+            "<th>WEEK 1</th>"+
+            "<th>WEEK 2</th>"+
+            "</tr>"+
+            "</table>");
+        for(var i =0;i<docSched.stuNameList.length;i++){
+
+            $("#myTable"+index).append(
+                "<tr>"+
+                "<td id='doc1'>"+docSched.stuNameList[i]+"</td>"+
+                "<td id='day1'>"+docSched.dayList[i]+"</td>"+
+                "<td id='time1'>"+docSched.timeList[i]+"</td>"+
+                "<td id='week11'>"+docSched.week1List[i] +"</td>"+
+                "<td id='week21'>"+docSched.week2List[i] +"</td>"+
+                "</tr>");
+        }
+    }
+
+
+
+    // createPagination finds out how many pages are needed for the doctor's within the database and creates the needed html.
+    function createPagination(){
+        pages = doctors.length/60; // finds how many pages are needed. Each page holds 60 doctors.
+        for( var i = 0; i<pages; i++){
+            // this string creates the seperate page html to be hidden/shown on pagination
+            $("#doctors").append("<\div id=\"page"+i+"\" class=\"hidden pagination-check\">" + "<div class=\"panel-group\" id=\"accordion" + i + "\" role=\"tablist\" aria-multiselectable=\"true\"></div>" + "</div>");
+        }
+        $("#doctors").append("<div class=\"btn-group\" id=\"pag-group\">");
+        for( var i = 0; i<pages; i++){
+            // this loop adds the pagination buttons.
+            $("#pag-group").append("<button type=\"button\" class=\"btn btn-primary\" id=pag" + i + ">" + (i+1) + "</button>");
+        }
+        $("#doctors").append("</div>");
+    }
+
+</script>
+
+</html>
