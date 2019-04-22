@@ -19,6 +19,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -34,11 +35,11 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @java.lang.Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        try {
-//            initData();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            initData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Autowired
     public Bootstrap(ClerkshipRepository clerkshipRepository, DoctorRepository doctorRepository, StudentRepository studentRepository,UserRepository userRepository,
@@ -101,9 +102,15 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
             Student stu = new Student();
             stu.setName(values[0]);
             stu.setEmail(values[1]);
+            List<Doctor> phase1 = doctorRepository.findByEmail(values[2]);
+            Doctor doc = phase1.get(0);
 
+            stu.setPhase1Doc(doc);
 
             studentRepository.save(stu);
+            doc.setPhase1Stu(stu);
+            doc.setHasPhase1(false);
+            doctorRepository.save(phase1.get(0));
         }
     }
 

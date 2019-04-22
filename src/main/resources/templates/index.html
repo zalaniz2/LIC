@@ -297,7 +297,7 @@
 
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-light disabled" data-toggle="modal" data-target="#scheduleModal" id="schedule-popup">
-                            Schedule
+                            Review
                         </button>
 
                         </div>
@@ -431,10 +431,10 @@
 
             // ***** getLocClass is backwards, must fix later *****
 
-
             var onProfession = false; //boolean to see whether student is clicked into a Profession or not
             var profession;
             var availResult;
+            var phaseOneType = "";
             var loc = "Fort Worth";
 
             var spots = {
@@ -476,11 +476,75 @@
                 return "ft-worth";
             }
 
+            function getDocType(myId){
+
+                var d = {
+                    "id": myId
+                }
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    url: "/checkdoc", // route to hit
+                    data: JSON.stringify(d), // IMPORTANT
+
+                    success: function (result) {
+
+                        var s = "" + result;
+
+                        if( s == "InternalMedicine"){
+                            phaseOneType = "Internal Medicine";
+                        }
+                        else{
+                            phaseOneType = "Family Medicine";
+                        }
+
+                        console.log("Phase 1 Doctor is a " + phaseOneType + " doctor.");
+
+
+                    }
+                });
+
+
+            }
+
+            function alreadyHasSchedule(myId){
+
+                var d = {
+                    "id": myId
+                }
+
+                $.ajax({
+                    type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    url: "/checkstu", // route to hit
+                    data: JSON.stringify(d), // IMPORTANT
+
+                    success: function (result) {
+
+                        if( result ){
+                            document.location.href = '/finished';
+
+                        }
+
+
+                    }
+                });
+
+            }
+
 
            var studentID = $("#stuid").text();
+
            var stuName = $("#stuname").text();
-           console.log(studentID);
+
+           alreadyHasSchedule(studentID);
+           getDocType(studentID);
+
            console.log(stuName);
+
 
            $("#sender").html(stuName);
 
@@ -692,21 +756,49 @@
 
             function getAvailableDoctors(specialty) {
 
-                $.ajax({
-                    type: "POST",
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-                    url: "/getdocs", // route to hit
-                    data: JSON.stringify(specialty), // IMPORTANT
+                if( specialty.profession == phaseOneType){
+                    console.log("ONLY GET PHASE 1 DOC INFO!!!");
 
-                    success: function (result) {
-
-                        availResult = result;
-                        updateCalendar();
-                        updateTooltips();
-
+                    var phaseone = {
+                        "id": studentID
                     }
-                });
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        url: "/poavail", // route to hit
+                        data: JSON.stringify(phaseone), // IMPORTANT
+
+                        success: function (result) {
+
+                            availResult = result;
+                            updateCalendar();
+                            updateTooltips();
+
+                        }
+                    });
+                }
+                else{
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        url: "/getdocs", // route to hit
+                        data: JSON.stringify(specialty), // IMPORTANT
+
+                        success: function (result) {
+
+                            availResult = result;
+                            updateCalendar();
+                            updateTooltips();
+
+                        }
+                    });
+                }
+
+
             }
 
             function updateCalendar(){
@@ -1030,7 +1122,11 @@
                     success: function (result) {
 
                        if (result){
-                           console.log("successful submit");
+                           document.location.href = '/success';
+
+                       }
+                       else{
+                            console.log("there was a failure.");
                        }
 
                     }

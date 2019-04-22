@@ -10,4 +10,5 @@ import java.util.List;
 public interface DoctorRepository extends CrudRepository<Doctor, String> {
     List<Doctor> findBySpecialtyAndAvailable(Specialty specialty, boolean avail);
     List<Doctor> findBySpecialtyAndAvailableAndLocation(Specialty specialty, boolean avail, Location location);
+    List<Doctor> findByEmail(String email);
 }
